@@ -283,6 +283,20 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 - Checkpoint 4, from scratch with more hospitals' photos in training, is ahead of the ImageNet model on MIDAS (0.750 against 0.723 on its test part) and DDI (0.650 against 0.626). New photos from new places did more for the outside scores than ImageNet weights.
 - The ImageNet model was trained at checkpoint 3's learning rate (1e-3 on every layer), not tuned for a pretrained start. A ten times lower rate is the usual choice for fine-tuning and is being tried as a third reference before drawing a final line.
 
+## Idea K: ISIC 2019 dermoscopy in training (15 Nov 2026)
+
+Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancers, 2,500 not cancer, one per lesion), about a fifth of the draws. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.
+
+| Set | Score | Checkpoint 4 | Idea K | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.791 | −0.028 [−0.051, −0.005] | yes, a loss |
+| `val` | AUC | 0.900 | 0.893 | −0.007 [−0.016, +0.001] | no |
+| `val` | Within-source AUC | 0.905 | 0.908 | +0.002 [−0.011, +0.016] | no |
+
+**Outcome: discarded at the first step**, not scored on any test set.
+
+**Reading.** Dermoscopy adds thousands of cancers, but they are close-ups through a lens with no skin around them. They did nothing at home and cost 0.028 on MIDAS's clinic photos. Together with idea Q, it says what kind of data helps: clinical photos of the hard cases, from new places. More cancers of a different kind of image do not.
+
 ## Idea Q: MILK10k photos in training, checkpoint 4 (14 Nov 2026)
 
 4,908 biopsy-confirmed clinical close-ups from MILK10k (five centres: Vienna, Ankara, Queensland, Memorial Sloan Kettering, Skopje) added to checkpoint 3's training images: 3,620 cancers (2,520 BCC, 652 SCC, 448 melanoma) and 1,288 benign growths. Three seeds, test-time flips, seed average, paired comparison with checkpoint 3.

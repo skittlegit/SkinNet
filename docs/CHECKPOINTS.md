@@ -152,6 +152,7 @@ Seven models were trained on the way to checkpoint 1, and two ideas for using it
 | N | Checkpoint 3's recipe trained for 120 epochs, not 60 | validation, then test and outside sets, paired comparison with checkpoint 3 | Our test split: AUC 0.898 → 0.930, supported. MIDAS test 0.698 → 0.733, not supported. DDI 0.657 → 0.592, a supported loss | Discarded (14 Nov): the extra training learns our home datasets, not other hospitals |
 | L | Self-supervised pretraining (SimCLR, 200 epochs on about 17,000 unlabelled photos), then checkpoint 3's recipe from those weights | validation only, paired comparison with checkpoint 3 | Our validation split: within-source AUC 0.882 → 0.939, supported. MIDAS validation part: AUC 0.793 → 0.753, not supported (against checkpoint 4, 0.818 → 0.753, a supported loss) | Discarded at the first step (14 Nov); not scored on test sets. Pretraining on our own photos learns our home datasets |
 | P | Reference only, never a candidate: torchvision ResNet-18 with checkpoint 3's recipe, from ImageNet weights and from random weights | every set, paired comparison | Random start: no better than SkinNet anywhere. ImageNet against random start: home scores +0.05 to +0.07, supported; MIDAS validation −0.029, MIDAS test +0.010, DDI −0.037, none supported. Checkpoint 4 is ahead of both on MIDAS and DDI | Measurement (14 Nov): at this learning rate ImageNet weights help at home only. Same model at 1e-4 running |
+| K | Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancers, 2,500 not cancer, one per lesion) | validation only, paired comparison with checkpoint 4 | MIDAS validation part: AUC 0.818 → 0.791, a supported loss. Our validation split: within-source AUC 0.905 → 0.908, flat | Discarded at the first step (15 Nov); not scored on test sets. Dermoscopy does not carry over to clinic photos |
 | G+H | Both together | test and outside sets, paired comparison | Our test split: AUC 0.890 → 0.904, false alarms 40% → 33%, a supported gain. MIDAS +0.006 and DDI +0.006, neither supported | **Kept: checkpoint 2** (see above for how) |
 
 The deciding score on validation was the within-source AUC: the AUC inside each dataset, averaged. Seeds of one model differ by about 0.01 on it, so B to F are "no better than A", not "clearly worse".
@@ -186,14 +187,9 @@ Each idea has a letter, continuing from A to H above. The rule is the same for e
 
 **Setup step: done (13 Nov 2026).** MIDAS is split by patient into a training part (552 images), an outside validation part (414, never trained on, used to choose models) and a test part (414). DDI is untouched. Ideas are now chosen on the outside validation part as well as our own.
 
-| # | Idea | What it targets | Cost | Expected effect |
-| --- | --- | --- | --- | --- |
-| K | **Add ISIC 2019 to training:** about 8,500 cancers, 12,900 nevi | Far more cancers | Large download; dermoscopy, a different kind of image | Uncertain: may not carry over to ordinary photos |
-| Q | **More biopsy-confirmed tumour photos from new sources** (clinical, not dermoscopy) | The outside gap: the only lever that has moved DDI | Finding and checking sources | The most likely to help outside, if sources exist |
+Every idea on the list has now been run (15 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above. New ideas are chosen by the team. Data details are in [DATA_PLAN.md](DATA_PLAN.md).
 
-Counts for SCIN and ISIC 2019 are from memory and must be confirmed at download. Data details are in [DATA_PLAN.md](DATA_PLAN.md).
-
-**Order (14 Nov 2026):** N, M and L are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done (table above); its follow-up at a lower learning rate is running, and so is K (ISIC 2019, a 5,000-image subsample) on top of checkpoint 4 (section 20). From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
+**Order (15 Nov 2026):** N, M, L and K are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done (table above); its follow-up at a lower learning rate is running. From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 

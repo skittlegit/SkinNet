@@ -516,3 +516,15 @@ Written before the images were downloaded and before anything was trained. K goe
 **Expectation recorded now.** Dermoscopy is a close-up through a lens with polarised light: no skin texture around the lesion, no glare, a fixed distance. It is uncertain whether what the network learns there carries to phone and clinic photos. The most likely gain is on melanoma against nevi, where ISIC 2019 adds far more examples than all other sources together; the most likely harm is that it weakens what MILK10k taught.
 
 **Order.** K trains after the queue already running (idea L, then the two ResNet-18 references), around midnight.
+
+**Outcome of idea K, step 1 (15 Nov 2026): failed, discarded.** 23,022 training images (5,000 from ISIC 2019). The seeds peaked at epochs 48, 53 and 59, within-source AUC on `val` 0.883, 0.894 and 0.888. Paired comparison with checkpoint 4, both after test-time flips and the seed average:
+
+| Set | Score | Checkpoint 4 | Idea K | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.791 | −0.028 [−0.051, −0.005] | yes, a loss |
+| `val` | AUC | 0.900 | 0.893 | −0.007 [−0.016, +0.001] | no |
+| `val` | Within-source AUC | 0.905 | 0.908 | +0.002 [−0.011, +0.016] | no |
+
+- Lower on `midas_val` by a supported amount and flat on `val`: no rise on either set, so not a case for the team. K is discarded and was not scored on any test set.
+- Its config and runs are deleted. The subsample stays on disk (`data/extra/isic2019.csv` and its images, git-ignored) and the download code stays in `data/extra.py`, so a different use of ISIC 2019 needs no new download.
+- The reading: the expectation's "most likely harm" happened. Dermoscopy close-ups at a fifth of the draws pulled the network away from what helps on MIDAS's clinic photos and did not add anything at home. More cancers are not enough; they have to look like the photos the model will see.

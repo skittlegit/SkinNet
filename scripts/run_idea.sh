@@ -3,14 +3,14 @@
 # on the validation sets only. Test-only sets are never touched here (scripts/run.sh does that,
 # once an idea has passed step 1).
 #   PY=.venv/Scripts/python bash scripts/run_idea.sh n            # configs/skinnet-idea-n.yaml
-#   REF=skinnet-c3 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh m
+#   REF=skinnet-c3 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh m   # against an older checkpoint
 # Safe to re-run: seeds with a finished summary.json are skipped.
 set -uo pipefail
 PY=${PY:-python}
 LETTER=${1:?usage: run_idea.sh <letter>}
 EXP=skinnet-idea-$LETTER
 CFG=configs/$EXP.yaml
-REF=${REF:-skinnet-c3}
+REF=${REF:-skinnet-c4}
 SEEDS=${SEEDS:-"0 1 2"}
 VAL="val midas_val"
 LOGS=runs/$EXP/logs

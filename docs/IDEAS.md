@@ -26,7 +26,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | Q | MILK10k's biopsied clinical photos added (five new centres) | 14 Nov | **Kept: checkpoint 4** (`skinnet-c4`) |
 | L | Self-supervised pretraining on our own and other unlabelled photos | 14 Nov | Discarded: largest SkinNet gain at home, loss on MIDAS |
 | P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside; lower learning rate being checked |
-| K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 14 Nov | Running, on top of checkpoint 4 |
+| K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
 
@@ -181,7 +181,10 @@ Letters were given when an idea was first listed, not when it was run, which is 
 ### K. ISIC 2019 in training
 
 - **What:** add about 8,500 cancers and 12,900 nevi from ISIC 2019. These are dermoscopy images, a different kind of picture from ordinary photos.
-- **Status:** not started. Large download; uncertain whether it carries over to clinical photos. Team decision (14 Nov, DECISIONS.md section 19): tried only if Q becomes a checkpoint with a supported gain on MIDAS test or DDI; dropped otherwise. Q did, so K goes ahead (section 20): checkpoint 4's recipe plus a fixed subsample of 2,500 cancers and 2,500 not cancer, one image per lesion, so dermoscopy is about a fifth of the draws, not over half (`configs/skinnet-idea-k.yaml`, `data/extra/isic2019.csv`).
+- **Status:** not started. Large download; uncertain whether it carries over to clinical photos. Team decision (14 Nov, DECISIONS.md section 19): tried only if Q becomes a checkpoint with a supported gain on MIDAS test or DDI; dropped otherwise. Q did, so K goes ahead (section 20): checkpoint 4's recipe plus a fixed subsample of 2,500 cancers and 2,500 not cancer, one image per lesion, so dermoscopy is about a fifth of the draws, not over half (`data/extra/isic2019.csv`).
+- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 4.
+- **Result:** MIDAS validation 0.818 → 0.791, a supported loss; within-source AUC on our validation split 0.905 → 0.908, flat.
+- **Outcome:** discarded at the first step (15 Nov), not scored on test sets. Dermoscopy close-ups do not carry over to clinic photos and crowd out what MILK10k taught. The subsample stays on disk.
 
 ## Keeping this file up to date
 
