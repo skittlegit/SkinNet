@@ -27,7 +27,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | L | Self-supervised pretraining on our own and other unlabelled photos | 14 Nov | Discarded: largest SkinNet gain at home, loss on MIDAS |
 | P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside, at either learning rate |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
-| R | MILK10k drawn twice as often | 15 Nov | Running (chosen without the team: the list was empty) |
+| R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
 
@@ -189,7 +189,10 @@ Letters were given when an idea was first listed, not when it was run, which is 
 ### R. MILK10k drawn twice as often
 
 - **What:** checkpoint 4's recipe with MILK10k's photos drawn twice as often (27% of the draws → 43%). MILK10k is the only new data since checkpoint 3 that raised an outside score.
-- **Status:** running (15 Nov), specified in DECISIONS.md, section 21. Chosen without the team when the list ran out, so the GPU was not idle overnight.
+- **Chosen** without the team when the list ran out (DECISIONS.md, section 21), so the GPU was not idle overnight.
+- **Compared on:** validation only, paired comparison with checkpoint 4.
+- **Result:** within-source AUC on our validation split 0.905 → 0.894, a supported loss; MIDAS validation 0.818 → 0.815, flat.
+- **Outcome:** discarded at the first step (15 Nov), not scored on test sets. MILK10k's gain came from having new centres' photos, not from how often they are drawn.
 
 ## Keeping this file up to date
 

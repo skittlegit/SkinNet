@@ -554,3 +554,14 @@ Written before the run. Every idea on the team's list has been run (L, K, M, N d
 **How it is judged:** section 19's rule against checkpoint 4. Step 1: higher on both `midas_val` (AUC) and `val` (within-source AUC), neither lower by a supported amount. Then scored once on the test sets: checkpoint 5 if higher on `test`, `midas_test` and DDI, at least one by a supported amount, none lower by a supported amount (DermaCon-IN only must not be lower by a supported amount).
 
 **Expectation recorded now.** A small gain on `midas_val` and DDI is possible if MILK10k's lesions are what helped; a loss at home is likely, since Fitzpatrick17k loses a fifth of its draws. If MILK10k's gain came from simply having photos from new centres, doubling the same photos adds little.
+
+**Outcome of idea R, step 1 (15 Nov 2026): failed, discarded.** Paired comparison with checkpoint 4, both after test-time flips and the seed average:
+
+| Set | Score | Checkpoint 4 | Idea R | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.815 | −0.004 [−0.028, +0.021] | no |
+| `val` | AUC | 0.900 | 0.884 | −0.016 [−0.024, −0.010] | yes, a loss |
+| `val` | Within-source AUC | 0.905 | 0.894 | −0.011 [−0.022, −0.001] | yes, a loss |
+
+- Lower at home by a supported amount and flat outside: no rise on either set, so not a case for the team. R was not scored on any test set. Its config and runs are deleted; the sampling option (`train.dataset_weight`) stays in the code.
+- The reading: the second half of the expectation held. Doubling MILK10k took draws from Fitzpatrick17k and lost at home, and the same photos seen twice as often taught nothing more for MIDAS. What MILK10k gave came from having photos from new centres at all, not from how often they are drawn. The next gain outside needs new photos, not a new mix of the ones we have.

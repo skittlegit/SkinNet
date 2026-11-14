@@ -294,6 +294,18 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## Idea R: MILK10k drawn twice as often (15 Nov 2026)
+
+Checkpoint 4's recipe with MILK10k's share of the draws raised from 27% to 43%. Paired comparison with checkpoint 4.
+
+| Set | Score | Checkpoint 4 | Idea R | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.815 | −0.004 [−0.028, +0.021] | no |
+| `val` | AUC | 0.900 | 0.884 | −0.016 [−0.024, −0.010] | yes, a loss |
+| `val` | Within-source AUC | 0.905 | 0.894 | −0.011 [−0.022, −0.001] | yes, a loss |
+
+**Outcome: discarded at the first step.** Fewer Fitzpatrick17k draws cost at home; the same MILK10k photos seen more often added nothing outside.
+
 ## Idea K: ISIC 2019 dermoscopy in training (15 Nov 2026)
 
 Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancers, 2,500 not cancer, one per lesion), about a fifth of the draws. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.
