@@ -25,7 +25,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | M | Wider network (four times the parameters) | 14 Nov | Discarded |
 | Q | MILK10k's biopsied clinical photos added (five new centres) | 14 Nov | **Kept: checkpoint 4** (`skinnet-c4`) |
 | L | Self-supervised pretraining on our own and other unlabelled photos | 14 Nov | Discarded: largest SkinNet gain at home, loss on MIDAS |
-| P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside; lower learning rate being checked |
+| P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside, at either learning rate |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Running (chosen without the team: the list was empty) |
 
@@ -177,7 +177,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 | DDI | AUC | 0.657 | 0.650 | 0.664 | 0.626 | −0.037 [−0.085, +0.008] |
 | DermaCon-IN tumours | AUC | 0.841 | 0.818 | 0.836 | 0.867 | +0.031 [−0.115, +0.205] |
 
-- **Outcome:** a measurement, not a candidate. The bigger network alone does not help. ImageNet weights raise every home score by 0.05 to 0.07 and no outside score; checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. With this recipe the from-scratch rule costs nothing outside. The learning rate (1e-3 on every layer) was not tuned for an ImageNet start, so the same model at 1e-4 (`resnet18-imagenet-lr1e4`) is running as a third reference.
+- **Outcome:** a measurement, not a candidate. The bigger network alone does not help. ImageNet weights raise every home score by 0.05 to 0.07 and no outside score; checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. With this recipe the from-scratch rule costs nothing outside. The learning rate (1e-3 on every layer) was not tuned for an ImageNet start, so the same model was trained at 1e-4 (`resnet18-imagenet-lr1e4`, 15 Nov): better everywhere at home (within-source AUC on our test split 0.964, the best in the project), still below checkpoint 4 on MIDAS validation (0.778), MIDAS test (0.737) and DDI (0.631). The reading stands.
 
 ### K. ISIC 2019 in training
 

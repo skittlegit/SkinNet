@@ -281,7 +281,18 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 - A bigger network on its own does nothing: the random-start ResNet-18 matches SkinNet within noise everywhere, as idea M found.
 - ImageNet weights make the model much better on our two home datasets and no better at other hospitals. This is the same pattern as ideas I, N and L: whatever helps the network learn our home photos better does not carry outside.
 - Checkpoint 4, from scratch with more hospitals' photos in training, is ahead of the ImageNet model on MIDAS (0.750 against 0.723 on its test part) and DDI (0.650 against 0.626). New photos from new places did more for the outside scores than ImageNet weights.
-- The ImageNet model was trained at checkpoint 3's learning rate (1e-3 on every layer), not tuned for a pretrained start. A ten times lower rate is the usual choice for fine-tuning and is being tried as a third reference before drawing a final line.
+- The ImageNet model was trained at checkpoint 3's learning rate (1e-3 on every layer), not tuned for a pretrained start, so a third reference used ten times lower, the usual choice for fine-tuning (15 Nov):
+
+| Set | Score | Checkpoint 4 | ImageNet, lr 1e-3 | ImageNet, lr 1e-4 | lr 1e-4 against checkpoint 4 [95% interval] |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.905 | 0.943 | 0.961 | +0.056 [+0.041, +0.073], supported |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.756 | 0.778 | −0.041 [−0.085, +0.005] |
+| `test` | Within-source AUC | 0.907 | 0.937 | 0.964 | +0.057 [+0.040, +0.077], supported |
+| `midas_test` | AUC | 0.750 | 0.723 | 0.737 | −0.013 [−0.066, +0.035] |
+| DDI | AUC | 0.650 | 0.626 | 0.631 | −0.019 [−0.060, +0.021] |
+| DermaCon-IN tumours | AUC | 0.818 | 0.867 | 0.804 | −0.014 [−0.187, +0.143] |
+
+- The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
 ## Idea K: ISIC 2019 dermoscopy in training (15 Nov 2026)
 

@@ -497,6 +497,20 @@ Decided by the team on 14 Nov, after ideas M and N (section 14) and before idea 
 - So with checkpoint 3's recipe the from-scratch rule costs nothing outside: checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. That is not what published work leads one to expect.
 - **Follow-up, decided without the team (14 Nov) under the standing instruction to pick the recommended option and record it.** Section 19 named the untuned learning rate as the first thing to check if the ImageNet start did less than expected: 1e-3 on every layer for 60 epochs may overwrite most of what ImageNet taught and leave a model that has simply learned our home datasets well. `resnet18-imagenet-lr1e4` is the same model at 1e-4 (`configs/resnet18-imagenet-lr1e4.yaml`), a reference like the other two: scored once on every set, never a checkpoint. It uses the GPU lane freed by the two references, alongside idea K.
 
+**Outcome of the follow-up (15 Nov 2026).** Scored once on every set (ledger, 15 Nov):
+
+| Set | Score | Checkpoint 4 | ImageNet, lr 1e-3 | ImageNet, lr 1e-4 | lr 1e-4 against checkpoint 4 [95% interval] |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.905 | 0.943 | 0.961 | +0.056 [+0.041, +0.073], supported |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.756 | 0.778 | −0.041 [−0.085, +0.005] |
+| `test` | Within-source AUC | 0.907 | 0.937 | 0.964 | +0.057 [+0.040, +0.077], supported |
+| `midas_test` | AUC | 0.750 | 0.723 | 0.737 | −0.013 [−0.066, +0.035] |
+| DDI | AUC | 0.650 | 0.626 | 0.631 | −0.019 [−0.060, +0.021] |
+| DermaCon-IN tumours | AUC | 0.818 | 0.867 | 0.804 | −0.014 [−0.187, +0.143] |
+
+- The lower rate does what fine-tuning should: it is better than lr 1e-3 everywhere at home (within-source AUC on `test` +0.027, supported) and slightly better outside (MIDAS test +0.014, DDI +0.004, neither supported). It is the best model in the project at home by a wide margin.
+- It is still below checkpoint 4 on all three outside sets. So the reading of idea P stands with the learning rate checked: with our training data, ImageNet weights buy a large gain at home and none at other hospitals, and keeping the from-scratch rule has cost nothing outside so far. The outside gap is a data problem, not a starting-weights problem.
+
 ## 20. Idea K: ISIC 2019 dermoscopy in training (14 Nov 2026)
 
 Written before the images were downloaded and before anything was trained. K goes ahead because idea Q became checkpoint 4 with a supported gain on `midas_test` (section 19, decision 3).
