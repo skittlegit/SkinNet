@@ -528,3 +528,15 @@ Written before the images were downloaded and before anything was trained. K goe
 - Lower on `midas_val` by a supported amount and flat on `val`: no rise on either set, so not a case for the team. K is discarded and was not scored on any test set.
 - Its config and runs are deleted. The subsample stays on disk (`data/extra/isic2019.csv` and its images, git-ignored) and the download code stays in `data/extra.py`, so a different use of ISIC 2019 needs no new download.
 - The reading: the expectation's "most likely harm" happened. Dermoscopy close-ups at a fifth of the draws pulled the network away from what helps on MIDAS's clinic photos and did not add anything at home. More cancers are not enough; they have to look like the photos the model will see.
+
+## 21. Idea R: MILK10k drawn twice as often (15 Nov 2026)
+
+Written before the run. Every idea on the team's list has been run (L, K, M, N discarded; Q is checkpoint 4; P a reference). Chosen without the team, under the standing instruction to pick the recommended option and record it, so the GPU does not sit idle overnight. The team may stop it or discard it at any point.
+
+**Why this one.** Across ideas I, J/O, K, L, M, N, P and Q only two changes raised an outside score: MIDAS photos (checkpoint 3) and MILK10k's biopsied clinical photos (checkpoint 4). Everything that helped the network learn our home datasets better (longer training, pretraining, ImageNet weights) lost outside, and dermoscopy (K) lost too. The cheapest next step along the one direction that works is to give MILK10k more of the draws. It needs no new data.
+
+**What.** Checkpoint 4's recipe with one change: MILK10k photos are drawn twice as often (`train.dataset_weight: {milk10k: 2}`, `configs/skinnet-idea-r.yaml`). Inside each dataset cancer and not cancer stay balanced. MILK10k's share of the draws goes from 27% to 43%; Fitzpatrick17k's from 64% to 50%, PAD-UFES-20's from 6% to 5%, MIDAS's from 3.1% to 2.4%. MIDAS is not weighted up, because `midas_val` comes from the same hospital and a gain there would not show a gain anywhere new.
+
+**How it is judged:** section 19's rule against checkpoint 4. Step 1: higher on both `midas_val` (AUC) and `val` (within-source AUC), neither lower by a supported amount. Then scored once on the test sets: checkpoint 5 if higher on `test`, `midas_test` and DDI, at least one by a supported amount, none lower by a supported amount (DermaCon-IN only must not be lower by a supported amount).
+
+**Expectation recorded now.** A small gain on `midas_val` and DDI is possible if MILK10k's lesions are what helped; a loss at home is likely, since Fitzpatrick17k loses a fifth of its draws. If MILK10k's gain came from simply having photos from new centres, doubling the same photos adds little.

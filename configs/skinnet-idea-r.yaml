@@ -1,0 +1,6 @@
+# Idea R (DECISIONS.md, section 21): checkpoint 4's recipe with MILK10k drawn twice as often.
+# MILK10k (idea Q) is the only new data since checkpoint 3 that raised an outside score.
+extends: skinnet-c4.yaml
+name: skinnet-idea-r
+train:
+  dataset_weight: {milk10k: 2}

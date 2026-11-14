@@ -150,6 +150,11 @@ def test_sampling_weights_balance_classes_inside_each_dataset():
     assert cells["atlas"].tolist() == pytest.approx([50, 50]) and cells["phone"].tolist() == pytest.approx([10, 10])
     with pytest.raises(ValueError):
         sample_weights(df, "nope", "label_cancer")
+    df["w2"] = sample_weights(df, "source_class", "label_cancer", {"phone": 2})
+    share = df.groupby("dataset")["w2"].sum() / df["w2"].sum()
+    assert share["phone"] == pytest.approx(40 / 140)  # 20 photos counted twice against 100
+    with pytest.raises(ValueError, match="not in training"):
+        sample_weights(df, "source_class", "label_cancer", {"nope": 2})
 
 
 def test_source_auc_ignores_differences_between_datasets():

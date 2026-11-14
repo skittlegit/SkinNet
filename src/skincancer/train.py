@@ -33,11 +33,13 @@ def class_weights(counts: np.ndarray, weighting: str) -> np.ndarray:
     return w / (w * pi).sum()
 
 
-def sample_weights(df: pd.DataFrame, mode: str, label_col: str) -> np.ndarray | None:
+def sample_weights(df: pd.DataFrame, mode: str, label_col: str,
+                   dataset_weight: dict | None = None) -> np.ndarray | None:
     """Per-image sampling weights for training (mean 1), or None for one plain pass per epoch.
 
     source_class: inside each dataset, cancer and not cancer are drawn equally often, so the
-    kind of photo no longer predicts the class. A dataset keeps its share of the draws."""
+    kind of photo no longer predicts the class. A dataset keeps its share of the draws, times
+    `dataset_weight[dataset]` if given (e.g. {milk10k: 2} draws MILK10k twice as often)."""
     if mode == "none":
         return None
     if mode != "source_class":
@@ -46,6 +48,10 @@ def sample_weights(df: pd.DataFrame, mode: str, label_col: str) -> np.ndarray | 
     for _, cell in df.groupby(["dataset", label_col]):
         in_dataset = df["dataset"] == cell["dataset"].iloc[0]
         w[cell.index] = in_dataset.sum() / df.loc[in_dataset, label_col].nunique() / len(cell)
+    for name, factor in (dataset_weight or {}).items():
+        if not (df["dataset"] == name).any():
+            raise ValueError(f"train.dataset_weight names a dataset not in training: {name!r}")
+        w[(df["dataset"] == name).to_numpy()] *= factor
     return w / w.mean()
 
 
@@ -86,7 +92,7 @@ def train(cfg: dict) -> dict:
         raise ValueError(f"empty class in training data: {dict(zip(classes, counts))}")
     weights = class_weights(counts, t["class_weighting"])
     train_df = train_df.reset_index(drop=True)
-    sampling = sample_weights(train_df, t.get("sampling", "none"), label_col)
+    sampling = sample_weights(train_df, t.get("sampling", "none"), label_col, t.get("dataset_weight"))
     if sampling is not None and t["class_weighting"] != "none":
         raise ValueError("train.sampling already balances the classes: set train.class_weighting to none")
     select_metric = t.get("select_metric", "auc")

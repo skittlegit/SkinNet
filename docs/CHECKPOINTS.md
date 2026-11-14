@@ -189,7 +189,7 @@ Each idea has a letter, continuing from A to H above. The rule is the same for e
 
 Every idea on the list has now been run (15 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above. New ideas are chosen by the team. Data details are in [DATA_PLAN.md](DATA_PLAN.md).
 
-**Order (15 Nov 2026):** N, M, L and K are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done (table above); its follow-up at a lower learning rate is running. From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
+**Order (15 Nov 2026):** N, M, L and K are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done (table above); its follow-up at a lower learning rate is running, and so is R (MILK10k drawn twice as often, section 21). From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 
