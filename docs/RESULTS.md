@@ -262,6 +262,27 @@ SkinNet first learned from about 17,000 photos without their labels (SimCLR, 200
 
 **Reading.** The largest gain at home of any SkinNet, and a loss at the outside hospital: the same shape as ideas I and N. About three in four of the pretraining photos come from our two home datasets, so the pretraining learned what those photos look like. Starting weights that help outside would have to come from photos unlike ours, which is what the ImageNet reference (idea P) tests.
 
+## Idea P: what ImageNet weights would add, a reference (14 Nov 2026)
+
+Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recipe unchanged: one from ImageNet weights, one from random weights, so the effect of the weights can be told apart from the effect of a different, larger network. Three seeds each, test-time flips and the seed average, scored once on every set. Never a checkpoint.
+
+| Set | Score | Checkpoint 3 | Checkpoint 4 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
+| --- | --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.882 | 0.905 | 0.875 | 0.943 | +0.067 [+0.048, +0.090], supported |
+| `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.785 | 0.756 | −0.029 [−0.094, +0.036] |
+| `test` | AUC | 0.898 | 0.903 | 0.883 | 0.929 | +0.047 [+0.034, +0.061], supported |
+| `test` | Within-source AUC | 0.876 | 0.907 | 0.880 | 0.937 | +0.057 [+0.036, +0.081], supported |
+| `midas_test` | AUC | 0.698 | 0.750 | 0.713 | 0.723 | +0.010 [−0.051, +0.069] |
+| DDI | AUC | 0.657 | 0.650 | 0.664 | 0.626 | −0.037 [−0.085, +0.008] |
+| DermaCon-IN tumours | AUC | 0.841 | 0.818 | 0.836 | 0.867 | +0.031 [−0.115, +0.205] |
+
+**Reading.**
+
+- A bigger network on its own does nothing: the random-start ResNet-18 matches SkinNet within noise everywhere, as idea M found.
+- ImageNet weights make the model much better on our two home datasets and no better at other hospitals. This is the same pattern as ideas I, N and L: whatever helps the network learn our home photos better does not carry outside.
+- Checkpoint 4, from scratch with more hospitals' photos in training, is ahead of the ImageNet model on MIDAS (0.750 against 0.723 on its test part) and DDI (0.650 against 0.626). New photos from new places did more for the outside scores than ImageNet weights.
+- The ImageNet model was trained at checkpoint 3's learning rate (1e-3 on every layer), not tuned for a pretrained start. A ten times lower rate is the usual choice for fine-tuning and is being tried as a third reference before drawing a final line.
+
 ## Idea Q: MILK10k photos in training, checkpoint 4 (14 Nov 2026)
 
 4,908 biopsy-confirmed clinical close-ups from MILK10k (five centres: Vienna, Ankara, Queensland, Memorial Sloan Kettering, Skopje) added to checkpoint 3's training images: 3,620 cancers (2,520 BCC, 652 SCC, 448 melanoma) and 1,288 benign growths. Three seeds, test-time flips, seed average, paired comparison with checkpoint 3.

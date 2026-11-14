@@ -1,0 +1,7 @@
+# Idea P follow-up, reference comparison (DECISIONS.md, section 19): resnet18-imagenet with a ten
+# times lower learning rate. Section 19 named the untuned learning rate as the first thing to check
+# if the ImageNet start did less than expected: 1e-3 on every layer may overwrite what ImageNet taught.
+extends: resnet18-imagenet.yaml
+name: resnet18-imagenet-lr1e4
+train:
+  lr: 1.0e-4

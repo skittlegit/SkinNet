@@ -25,7 +25,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | M | Wider network (four times the parameters) | 14 Nov | Discarded |
 | Q | MILK10k's biopsied clinical photos added (five new centres) | 14 Nov | **Kept: checkpoint 4** (`skinnet-c4`) |
 | L | Self-supervised pretraining on our own and other unlabelled photos | 14 Nov | Discarded: largest SkinNet gain at home, loss on MIDAS |
-| P | Pretrained (ImageNet) weights | 14 Nov | Running, as a reference comparison only (never a checkpoint) |
+| P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside; lower learning rate being checked |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 14 Nov | Running, on top of checkpoint 4 |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
@@ -163,7 +163,20 @@ Letters were given when an idea was first listed, not when it was run, which is 
 ### P. Pretrained weights
 
 - **What:** start from ImageNet weights and train every layer. The largest known lever for new hospitals.
-- **Status:** listed on 14 Nov after the supervisor called the outside scores poor (DECISIONS.md, section 16). The team decided the same day (section 19) to run it as a reference comparison only: the from-scratch rule stays for every checkpoint, and P measures what the rule costs. Two models on checkpoint 3's recipe: torchvision's ResNet-18 from ImageNet weights (`resnet18-imagenet`) and the same network from random weights (`resnet18-scratch`), so the gain can be put on the weights and not on the network. Both are scored once on every set. Queued after L.
+- **Status:** listed on 14 Nov after the supervisor called the outside scores poor (DECISIONS.md, section 16). The team decided the same day (section 19) to run it as a reference comparison only: the from-scratch rule stays for every checkpoint, and P measures what the rule costs. Two models on checkpoint 3's recipe: torchvision's ResNet-18 from ImageNet weights (`resnet18-imagenet`) and the same network from random weights (`resnet18-scratch`), so the gain can be put on the weights and not on the network. Both are scored once on every set.
+- **Result (14 Nov):**
+
+| Set | Score | Checkpoint 3 | Checkpoint 4 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
+| --- | --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.882 | 0.905 | 0.875 | 0.943 | +0.067 [+0.048, +0.090], supported |
+| `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.785 | 0.756 | −0.029 [−0.094, +0.036] |
+| `test` | AUC | 0.898 | 0.903 | 0.883 | 0.929 | +0.047 [+0.034, +0.061], supported |
+| `test` | Within-source AUC | 0.876 | 0.907 | 0.880 | 0.937 | +0.057 [+0.036, +0.081], supported |
+| `midas_test` | AUC | 0.698 | 0.750 | 0.713 | 0.723 | +0.010 [−0.051, +0.069] |
+| DDI | AUC | 0.657 | 0.650 | 0.664 | 0.626 | −0.037 [−0.085, +0.008] |
+| DermaCon-IN tumours | AUC | 0.841 | 0.818 | 0.836 | 0.867 | +0.031 [−0.115, +0.205] |
+
+- **Outcome:** a measurement, not a candidate. The bigger network alone does not help. ImageNet weights raise every home score by 0.05 to 0.07 and no outside score; checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. With this recipe the from-scratch rule costs nothing outside. The learning rate (1e-3 on every layer) was not tuned for an ImageNet start, so the same model at 1e-4 (`resnet18-imagenet-lr1e4`) is running as a third reference.
 
 ### K. ISIC 2019 in training
 

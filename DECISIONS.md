@@ -480,6 +480,23 @@ Decided by the team on 14 Nov, after ideas M and N (section 14) and before idea 
 - DDI is flat: 0.007 lower, well inside its interval. Under section 19's corrected step 3 (higher on every test set) that misses; under section 18's rule as first written (a supported gain on one, no supported loss) Q would be checkpoint 4.
 - **Team decision, 14 Nov: accepted. Idea Q is checkpoint 4 (`skinnet-c4`).** The miss on DDI is 0.007, well inside its interval, and nothing is lower by a supported amount anywhere; the team took it as the narrow miss section 14 leaves to the team. Config, runs, ledger rows and results were renamed to `skinnet-c4`; git tag `checkpoint-4`. New ideas are compared with checkpoint 4. Idea L, specified against checkpoint 3 before checkpoint 4 existed, is judged against checkpoint 3 as written in section 17, and its comparison with checkpoint 4 is reported alongside. By section 19, decision 3, idea K now goes ahead.
 
+**Outcome of idea P, the reference comparison (14 Nov 2026).** Both ResNet-18 models trained with checkpoint 3's recipe, three seeds each, test-time flips and the seed average, and were scored once on every set (ledger, 14 Nov). One ImageNet seed crashed at its second epoch with a GPU (cuDNN) error and was retrained from the start; nothing else differs.
+
+| Set | Score | Checkpoint 3 | Checkpoint 4 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
+| --- | --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.882 | 0.905 | 0.875 | 0.943 | +0.067 [+0.048, +0.090], supported |
+| `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.785 | 0.756 | −0.029 [−0.094, +0.036] |
+| `test` | AUC | 0.898 | 0.903 | 0.883 | 0.929 | +0.047 [+0.034, +0.061], supported |
+| `test` | Within-source AUC | 0.876 | 0.907 | 0.880 | 0.937 | +0.057 [+0.036, +0.081], supported |
+| `midas_test` | AUC | 0.698 | 0.750 | 0.713 | 0.723 | +0.010 [−0.051, +0.069] |
+| DDI | AUC | 0.657 | 0.650 | 0.664 | 0.626 | −0.037 [−0.085, +0.008] |
+| DermaCon-IN tumours | AUC | 0.841 | 0.818 | 0.836 | 0.867 | +0.031 [−0.115, +0.205] |
+
+- **The network is not the limit.** From random weights the ResNet-18, four times SkinNet's size, is no better than SkinNet anywhere: slightly lower at home (`test` AUC −0.015 against checkpoint 3, supported), within noise outside. This agrees with idea M.
+- **The ImageNet start helps at home only, at this learning rate.** Against the same network from random weights it raises every home score by 0.05 to 0.07 (supported), and no outside score: MIDAS validation −0.029, MIDAS test +0.010, DDI −0.037, none supported. Against checkpoint 4 it is lower on all three outside sets (MIDAS validation −0.063, supported).
+- So with checkpoint 3's recipe the from-scratch rule costs nothing outside: checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. That is not what published work leads one to expect.
+- **Follow-up, decided without the team (14 Nov) under the standing instruction to pick the recommended option and record it.** Section 19 named the untuned learning rate as the first thing to check if the ImageNet start did less than expected: 1e-3 on every layer for 60 epochs may overwrite most of what ImageNet taught and leave a model that has simply learned our home datasets well. `resnet18-imagenet-lr1e4` is the same model at 1e-4 (`configs/resnet18-imagenet-lr1e4.yaml`), a reference like the other two: scored once on every set, never a checkpoint. It uses the GPU lane freed by the two references, alongside idea K.
+
 ## 20. Idea K: ISIC 2019 dermoscopy in training (14 Nov 2026)
 
 Written before the images were downloaded and before anything was trained. K goes ahead because idea Q became checkpoint 4 with a supported gain on `midas_test` (section 19, decision 3).
