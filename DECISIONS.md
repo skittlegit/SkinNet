@@ -578,6 +578,7 @@ Written before the run. After idea R the team asked for a search for more biopsy
 - A fixed subsample of 2,500 cancers and 2,500 not cancer (seed 0), the same size as MILK10k and idea K, so Asan is about a fifth of the draws.
 - No lesion or patient ids are published, so each photo is its own group. Several photos of one lesion sit side by side on a sheet, so the 5,000 photos are fewer distinct lesions. It is training-only data, so this cannot leak into a score.
 - Near-duplicates of any validation or test image are dropped (`data/extra.py`, as for every extra set).
+- **Built 15 Nov:** 4,999 photos, 2,500 cancers (SCC and Bowen's disease 1,363, BCC 773, melanoma 364) and 2,499 not cancer (1,654 in the label map's benign tumours, 845 warts and haemangiomas). One photo near-duplicated a validation or test image and was dropped.
 
 **The risk.** The photos are 99 pixels square, less than half of what training crops to (224), so they are upscaled and blurred. The network may learn little from them, or learn that blur goes with a particular mix of lesions. Balanced drawing inside each dataset means blur cannot predict the class.
 
