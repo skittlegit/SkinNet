@@ -1,6 +1,6 @@
 # Data plan: what to add after the baseline
 
-Status (12 Nov 2026): Derm7pt was tried as training-only data in the third round and did not help ([RESULTS.md](RESULTS.md)); it is not in the training data. Nothing else here has been started.
+Status (15 Nov 2026): the plan below is the original one of 12 Nov and is kept as a record. What happened to each source is in [IDEAS.md](IDEAS.md): MIDAS (checkpoint 3) and MILK10k (checkpoint 4) helped outside; Derm7pt, SCIN and ISIC 2019 did not. The search of 15 Nov for more sources is in the last section.
 
 ## Why more data
 
@@ -40,3 +40,19 @@ Each step is one training run, compared with the run before it on the same test 
 ## Not covered here
 
 Skin tone. Almost all of these datasets are lighter skin, so none of them fixes the shortage of dark-skin cancers. Whether darker skin needs its own model or one combined model is the question for stage two ([DECISIONS.md](../DECISIONS.md), section 2).
+
+## Search of 15 Nov 2026: more biopsy-confirmed clinical photos
+
+Why: of every idea tried, only clinical photos from hospitals not yet in training (MIDAS, then MILK10k) raised an outside score. Dermoscopy (ISIC 2019, idea K) and a new mix of photos already used (idea R) did not.
+
+The ISIC archive was queried directly (15 Nov): it holds 9,316 clinical close-ups, of which 5,719 are MILK10k and 2,298 PAD-UFES-20, both in training already; 1,241 from Memorial Sloan Kettering are almost all benign by one clinician's judgement (6 melanomas); the rest are a handful. So the archive has nothing large left of this kind.
+
+| Source | What it is | Licence and access | Verdict |
+| --- | --- | --- | --- |
+| Asan and Hallym (Han et al. 2018; figshare 5406136) | Two Korean hospitals; 16,836 clinical photos in 12 diagnoses, 12,176 marked biopsied, of them 3,982 cancers | CC BY 4.0, open; but only 99 x 99 px thumbnails (full size on request to Asan's ethics committee) | **Tried as idea S** (DECISIONS.md, section 22) |
+| HIBA (Hospital Italiano de Buenos Aires; ISIC collection 175) | 349 clinical overview photos besides dermoscopy, biopsy-confirmed, Argentina | CC BY, open through ISIC | Small; worth adding together with another source |
+| MCR-SL (Univ. Hospital of North Norway, 2025; Zenodo 17306338) | 877 clinical photos of 240 lesions from 60 people; excised lesions confirmed by histopathology | Open download (4.4 GB); licence not stated on the record | Small; the licence must be confirmed first |
+| Dermofit (Edinburgh) | 1,300 clinical close-ups in 10 classes, every one with a confirmed diagnosis | £75 academic licence, requested from an institutional email, one research group | Good quality; needs the team or supervisor to apply |
+| MED-NODE (Groningen) | 170 clinical photos: 70 melanomas, 100 nevi | Free for research | Too small alone |
+| SLICE-3D (ISIC 2024) | 401,059 crops from 3-D total-body photography, 393 cancers, several centres | CC BY-NC (a CC BY subset exists) | A different kind of image with very few cancers; the same risk as idea K |
+| Asan full-size images | As above, at full resolution | Request to Asan's ethics committee | Worth asking for if idea S shows the thumbnails help |

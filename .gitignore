@@ -19,6 +19,8 @@ data/pilot/
 data/manifest.csv
 data/groups.csv
 data/extra/
+# outside pretrained weights (PanDerm is CC BY-NC-ND 4.0: never redistributed)
+data/weights/
 
 # contact sheets with patient images: never commit
 reports/

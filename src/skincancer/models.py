@@ -3,7 +3,8 @@ weights are used anywhere in the SkinNet classifier.
 
 The one exception is the reference comparison of idea P (DECISIONS.md, section 19): a
 torchvision ResNet-18, from ImageNet weights and from random weights, chosen with
-`model.arch: resnet18` and `model.weights: imagenet`. It is never a checkpoint."""
+`model.arch: resnet18` and `model.weights: imagenet`, and PanDerm's ViT-B/16 (`model.arch:
+panderm_base`, `model.weights: panderm`; section 23). They are never checkpoints."""
 from __future__ import annotations
 
 import torch.nn as nn
@@ -80,18 +81,51 @@ class ResNet18(nn.Module):
         return self.net(x)
 
 
+PANDERM_BASE_WEIGHTS = "data/weights/panderm_base.pth"   # PanDerm_Base, github.com/SiyuanYan1/PanDerm (CC BY-NC-ND 4.0)
+
+
+class PanDermBase(nn.Module):
+    """PanDerm's ViT-B/16 encoder (Yan et al., Nature Medicine 2025), built with timm's BEiT,
+    whose layout its checkpoint matches key for key: layer scale, q/v biases, fixed 2-D sin-cos
+    position embedding (kept frozen, as in PanDerm), no relative position bias. 224 px input,
+    ImageNet normalisation, the class token after the final norm: 768-d embedding. Only for
+    the reference comparison of DECISIONS.md, section 23. pretrained=False builds it with
+    random weights (used when a saved best.pt is loaded next)."""
+
+    def __init__(self, pretrained: bool = False, path: str = PANDERM_BASE_WEIGHTS):
+        super().__init__()
+        import timm
+        import torch
+        self.net = timm.create_model("beit_base_patch16_224", pretrained=False, num_classes=0, global_pool="token",
+                                     use_abs_pos_emb=True, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
+                                     init_values=0.1)
+        if pretrained:
+            sd = torch.load(path, map_location="cpu", weights_only=True)
+            missing, unexpected = self.net.load_state_dict(sd, strict=False)
+            if unexpected or [k for k in missing if not k.endswith("k_bias")]:
+                raise ValueError(f"PanDerm weights do not fit: missing {missing}, unexpected {unexpected}")
+        self.net.pos_embed.requires_grad_(False)
+        self.num_features = 768
+
+    def forward(self, x):
+        return self.net(x)
+
+
 class Classifier(nn.Module):
-    """Backbone (SkinNet unless arch says otherwise) + dropout + one linear layer."""
+    """Backbone (SkinNet unless arch says otherwise) + dropout + one linear layer.
+    pretrained loads the arch's outside weights: ImageNet for resnet18, PanDerm's for panderm_base."""
 
     def __init__(self, num_classes: int, width: int = 32, depths=(2, 2, 2, 2), drop: float = 0.3,
-                 arch: str = "skinnet", imagenet: bool = False):
+                 arch: str = "skinnet", pretrained: bool = False):
         super().__init__()
         if arch == "skinnet":
-            if imagenet:
-                raise ValueError("SkinNet has no ImageNet weights")
+            if pretrained:
+                raise ValueError("SkinNet has no outside weights")
             self.backbone = SkinNet(width, depths)
         elif arch == "resnet18":
-            self.backbone = ResNet18(imagenet)
+            self.backbone = ResNet18(pretrained)
+        elif arch == "panderm_base":
+            self.backbone = PanDermBase(pretrained)
         else:
             raise ValueError(f"unknown model.arch {arch!r}")
         self.dim = self.backbone.num_features
@@ -105,6 +139,8 @@ class Classifier(nn.Module):
 
 def target_layer(model: Classifier) -> nn.Module:
     """Last residual block, for Grad-CAM."""
+    if isinstance(model.backbone, PanDermBase):
+        raise ValueError("Grad-CAM is set up for convolutional networks only")
     if isinstance(model.backbone, ResNet18):
         return model.backbone.net.layer4[-1]
     return model.backbone.stages[-1][-1]

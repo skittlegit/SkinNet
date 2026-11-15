@@ -1,0 +1,6 @@
+# Idea S (DECISIONS.md, section 22): checkpoint 4's recipe with a 5,000-photo subsample of the
+# Asan and Hallym clinical photos (two Korean hospitals; 99 x 99 px thumbnails) added.
+extends: skinnet-c4.yaml
+name: skinnet-idea-s
+data:
+  extra_train: [milk10k, asan]

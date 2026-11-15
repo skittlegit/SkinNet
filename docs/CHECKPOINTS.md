@@ -188,9 +188,9 @@ Each idea has a letter, continuing from A to H above. The rule is the same for e
 
 **Setup step: done (13 Nov 2026).** MIDAS is split by patient into a training part (552 images), an outside validation part (414, never trained on, used to choose models) and a test part (414). DDI is untouched. Ideas are now chosen on the outside validation part as well as our own.
 
-Every idea on the list has now been run (15 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above. New ideas are chosen by the team. Data details are in [DATA_PLAN.md](DATA_PLAN.md).
+Every idea on the first list has been run (15 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above. Running now: S (Asan and Hallym clinical photos, DECISIONS.md section 22) and a PanDerm reference (section 23). Data details are in [DATA_PLAN.md](DATA_PLAN.md).
 
-**Order (15 Nov 2026):** N, M, L, K and R are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done, its lower learning rate included (table above). Nothing is running; the next idea is the team's to choose. From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
+**Order (15 Nov 2026):** N, M, L, K and R are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done, its lower learning rate included (table above). Running now: S and the PanDerm reference. From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 

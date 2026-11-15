@@ -98,10 +98,12 @@ def build_model(cfg: dict, init_weights: bool = True) -> Classifier:
     """init_weights=False skips downloading outside weights when a saved best.pt is loaded next."""
     m = cfg["model"]
     weights = m.get("weights", "none")
-    if weights not in ("none", "imagenet"):
-        raise ValueError(f"unknown model.weights {weights!r}")
+    arch = m.get("arch", "skinnet")
+    allowed = {"skinnet": ("none",), "resnet18": ("none", "imagenet"), "panderm_base": ("none", "panderm")}
+    if weights not in allowed.get(arch, ("none",)):
+        raise ValueError(f"model.weights {weights!r} does not go with model.arch {arch!r}")
     return Classifier(len(classes_of(cfg)), m["width"], m["depths"], m["drop"],
-                      arch=m.get("arch", "skinnet"), imagenet=init_weights and weights == "imagenet")
+                      arch=arch, pretrained=init_weights and weights != "none")
 
 
 def save_config(cfg: dict, path: Path) -> None:

@@ -565,3 +565,32 @@ Written before the run. Every idea on the team's list has been run (L, K, M, N d
 
 - Lower at home by a supported amount and flat outside: no rise on either set, so not a case for the team. R was not scored on any test set. Its config and runs are deleted; the sampling option (`train.dataset_weight`) stays in the code.
 - The reading: the second half of the expectation held. Doubling MILK10k took draws from Fitzpatrick17k and lost at home, and the same photos seen twice as often taught nothing more for MIDAS. What MILK10k gave came from having photos from new centres at all, not from how often they are drawn. The next gain outside needs new photos, not a new mix of the ones we have.
+
+## 22. Idea S: Asan and Hallym clinical photos in training (15 Nov 2026)
+
+Written before the run. After idea R the team asked for a search for more biopsy-confirmed clinical photos from places not yet in training, and left the choice to me ("do what's best"). The search and its candidates are recorded in docs/DATA_PLAN.md; this one was chosen because it is the largest that is open to download.
+
+**Source.** Han et al. (J Invest Dermatol 2018), figshare 5406136, CC BY 4.0: clinical photos from Asan Medical Center (Seoul) and Hallym University (Korea). A new country and a population mostly of Fitzpatrick types III to IV, which no training set has many of. The full-size images are only available on request to Asan's ethics committee; what is published are contact sheets, one per diagnosis and split, of 99 x 99 pixel thumbnails. `python -m skincancer.data.extra asan --download` fetches the archive (checksum checked) and cuts the sheets into 16,836 single photos.
+
+**What is used.**
+
+- Only photos the sheets mark as biopsied: 3,982 cancers (BCC 1,234, SCC 1,231, Bowen's disease 918, melanoma 599) and 8,194 benign growths (nevi, warts, dermatofibromas, haemangiomas, seborrhoeic keratoses, lentigines, pyogenic granulomas). Bowen's disease is SCC in situ, a cancer, as in the label map. Warts and haemangiomas are benign growths outside the label map, kept as not cancer as for MILK10k. Actinic keratoses and every photo not marked biopsied are left out.
+- A fixed subsample of 2,500 cancers and 2,500 not cancer (seed 0), the same size as MILK10k and idea K, so Asan is about a fifth of the draws.
+- No lesion or patient ids are published, so each photo is its own group. Several photos of one lesion sit side by side on a sheet, so the 5,000 photos are fewer distinct lesions. It is training-only data, so this cannot leak into a score.
+- Near-duplicates of any validation or test image are dropped (`data/extra.py`, as for every extra set).
+
+**The risk.** The photos are 99 pixels square, less than half of what training crops to (224), so they are upscaled and blurred. The network may learn little from them, or learn that blur goes with a particular mix of lesions. Balanced drawing inside each dataset means blur cannot predict the class.
+
+**Idea S** (`configs/skinnet-idea-s.yaml`): checkpoint 4's recipe with the Asan subsample added. Judged by section 19's rule against checkpoint 4. Step 1: higher on both `midas_val` (AUC) and `val` (within-source AUC), neither lower by a supported amount. Then scored once on the test sets: checkpoint 5 if higher on `test`, `midas_test` and DDI, at least one by a supported amount, none lower by a supported amount (DermaCon-IN only must not be lower by a supported amount).
+
+**Expectation recorded now.** Of the ideas so far only new clinical photos from new places helped outside, so this is the right kind of data. The thumbnails' size is the reason it may not work. A gain on DDI and DermaCon-IN, whose patients have darker skin than most of our training photos, is the most hoped-for result.
+
+## 23. A PanDerm reference (15 Nov 2026)
+
+Written before the run. The team asked to check PanDerm (Yan et al., Nature Medicine 2025), a network pretrained on about 2.1 million skin images. Like idea P it is a reference comparison only, never a checkpoint: it measures what a skin-specific pretrained network would add, where P measured ImageNet's.
+
+**The weights.** PanDerm_Base, a ViT-B/16 (86 million parameters), from the authors' GitHub (github.com/SiyuanYan1/PanDerm). Licence CC BY-NC-ND 4.0: non-commercial academic research, with attribution. The weights are kept in `data/weights/` (git-ignored) and never redistributed; a fine-tuned copy stays local. The checkpoint fits timm's BEiT ViT-B/16 key for key, so the model is built with timm (`models.PanDermBase`) and none of the authors' code is copied. A check before training: a logistic regression on PanDerm's features of 800 training photos reaches AUC 0.911 on 600 `val` photos, against 0.665 from the same network with random weights, so the weights load correctly.
+
+**What PanDerm was trained on, and the risk to our scores.** Its pretraining (paper, Methods) used 11 sources: in-house total-body photography, dermoscopy and clinical photos from Australian and New Zealand clinics; two in-house collections of educational clinical photos (Edu1, Edu2, about 149,000) whose sources are not named; 352,000 ISIC 2024 tiles; and pathology slides. None of our evaluation sets (DDI, MIDAS, DermaCon-IN) is named among them. The unnamed educational collections could include atlas photos, and Fitzpatrick17k, part of our `test` split, was built from online atlases. So a gain on `test` may partly be images PanDerm has seen; a gain on MIDAS, DDI or DermaCon-IN is much less exposed. The paper does not state that its evaluation sets were excluded from pretraining.
+
+**What is trained** (`configs/panderm-base.yaml`): checkpoint 4's data and sampling (MILK10k included, balanced drawing, test-time flips, three seeds and their average), every layer trained. Changed for a pretrained ViT: learning rate 5e-5 (AdamW, weight decay 0.05), 20 epochs with 2 of warm-up, the class token after the final norm feeding the same dropout and linear head. Scored once on every set and compared with checkpoint 4 and with the ImageNet ResNet-18 at 1e-4 (section 19).

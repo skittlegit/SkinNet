@@ -28,6 +28,8 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside, at either learning rate |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
+| S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 15 Nov | Running |
+| – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 15 Nov | Running, as a reference comparison only (never a checkpoint) |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
 
@@ -193,6 +195,16 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Compared on:** validation only, paired comparison with checkpoint 4.
 - **Result:** within-source AUC on our validation split 0.905 → 0.894, a supported loss; MIDAS validation 0.818 → 0.815, flat.
 - **Outcome:** discarded at the first step (15 Nov), not scored on test sets. MILK10k's gain came from having new centres' photos, not from how often they are drawn.
+### S. Asan and Hallym clinical photos
+
+- **What:** checkpoint 4's recipe with 5,000 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,500 benign growths), about a fifth of the draws. Published only as 99 x 99 pixel thumbnails, so they are blurred when scaled up to 224.
+- **Why:** chosen after a search for more biopsy-confirmed clinical photos from new places (15 Nov), the only kind of data that has raised an outside score. A new country, and mostly skin types III to IV.
+- **Status:** running (15 Nov), specified in DECISIONS.md, section 22.
+
+### PanDerm reference
+
+- **What:** PanDerm's ViT-B/16 (Nature Medicine 2025; pretrained on about 2.1 million skin images), trained on checkpoint 4's data at learning rate 5e-5 for 20 epochs. A reference like idea P, never a checkpoint.
+- **Status:** running (15 Nov), specified in DECISIONS.md, section 23. Its pretraining data includes unnamed educational photo collections, so its score on our `test` split may be inflated; MIDAS, DDI and DermaCon-IN are much less exposed.
 
 ## Keeping this file up to date
 

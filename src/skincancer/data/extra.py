@@ -26,6 +26,12 @@ ISIC 2019 (ISIC collection 65: HAM10000, BCN_20000, MSK; CC licences per image; 
 dermoscopy, a different kind of image from every evaluation set. A fixed subsample of 2,500
 cancers and 2,500 not cancer, one image per lesion, stored resized to 512 px on the short side.
     python -m skincancer.data.extra isic2019 --download && python -m skincancer.data.extra isic2019
+
+Asan and Hallym (Han et al., J Invest Dermatol 2018; figshare 5406136, CC BY 4.0; idea S):
+clinical photos from two Korean hospitals, published only as contact sheets of 99 x 99 px
+thumbnails, one sheet per diagnosis; the download cuts them into single photos. Only photos
+marked as biopsied are used, and a fixed subsample of 2,500 cancers and 2,500 not cancer.
+    python -m skincancer.data.extra asan --download && python -m skincancer.data.extra asan
 """
 from __future__ import annotations
 
@@ -297,6 +303,106 @@ def isic2019_download(root: Path, workers: int = 16) -> None:
                 print(f"{i}/{len(todo)} tried, {done} fetched", flush=True)
 
 
+ASAN_URL = "https://ndownloader.figshare.com/files/9318406"   # figshare 5406136, "Asan and Hallym (thumbnails).zip"
+ASAN_MD5 = "8d98bb2a7fd0d4a0d409c8625753d205"
+ASAN_PER_CLASS = 2500   # idea S (DECISIONS.md, section 22): same share of the draws as MILK10k and idea K
+# sheet class -> diagnosis in the label map's words; intraepithelial carcinoma is Bowen's disease (SCC in situ)
+ASAN_DIAGNOSIS = {"bcc": "basal cell carcinoma", "back-bcc": "basal cell carcinoma", "hallym-bcc": "basal cell carcinoma",
+                  "scc": "squamous cell carcinoma", "intraepithelial-carcinoma": "bowen disease", "melanoma": "melanoma",
+                  "nevus": "nevus", "sebk": "seborrheic keratosis", "dermatofibroma": "dermatofibroma",
+                  "lentigo": "lentigo", "pyogenic-granuloma": "pyogenic granuloma", "hemangioma": "hemangioma",
+                  "wart": "wart", "ak": "actinic keratosis", "actinickeratosis": "actinic keratosis"}
+ASAN_OTHER_BENIGN = {"hemangioma", "wart"}   # benign growths outside the label map, as MILK10k's
+
+
+def _runs(ix: np.ndarray) -> list[tuple[int, int]]:
+    out, start, prev = [], ix[0], ix[0]
+    for i in ix[1:]:
+        if i != prev + 1:
+            out.append((start, prev))
+            start = i
+        prev = i
+    out.append((start, prev))
+    return out
+
+
+def asan_download(root: Path) -> None:
+    """Fetch the thumbnail sheets and cut each into its 99 x 99 px photos:
+    asan_hallym/tiles/<sheet>/<row>_<col>.png."""
+    import hashlib
+    import urllib.request
+    import zipfile
+    from io import BytesIO
+    from PIL import Image
+    Image.MAX_IMAGE_PIXELS = None
+    d = root / "asan_hallym"
+    d.mkdir(parents=True, exist_ok=True)
+    zpath = d / "asan_hallym_thumbnails.zip"
+    if not zpath.exists():
+        urllib.request.urlretrieve(ASAN_URL, zpath)
+    if hashlib.md5(zpath.read_bytes()).hexdigest() != ASAN_MD5:
+        raise ValueError(f"{zpath}: checksum does not match figshare's")
+    z = zipfile.ZipFile(zpath)
+    for name in sorted(n for n in z.namelist() if n.endswith(".png")):
+        im = np.array(Image.open(BytesIO(z.read(name))).convert("RGBA"))
+        bg = (im[..., 3] < 10) | (im[..., :3].astype(int) > 245).all(-1)
+        rows = [r for r in _runs(np.where(~bg.all(1))[0]) if 80 <= r[1] - r[0] <= 130]
+        cols = [c for c in _runs(np.where(~bg.all(0))[0]) if 80 <= c[1] - c[0] <= 130]
+        out = d / "tiles" / name.split("/")[-1][:-4].replace("#", "_").replace(" ", "-")
+        out.mkdir(parents=True, exist_ok=True)
+        for i, (r0, r1) in enumerate(rows):
+            for j, (c0, c1) in enumerate(cols):
+                if bg[r0:r1 + 1, c0:c1 + 1].mean() > 0.5:   # empty cell at the end of the last row
+                    continue
+                tile = im[r0 + 1:r1 - 1, c0 + 1:c1 - 1, :3]   # without the drop-shadow edge
+                Image.fromarray(np.ascontiguousarray(tile)).save(out / f"{i:03d}_{j:02d}.png")
+        print(f"{name.split('/')[-1]}: {len(rows)} rows x {len(cols)} columns", flush=True)
+
+
+def asan_rows(root: Path) -> pd.DataFrame:
+    """Asan (train 90% and test 10% sheets) and Hallym, one dataset `asan`: two Korean hospitals.
+    Sheet names carry the split, whether the photo was biopsied and the diagnosis. Cancer: BCC,
+    SCC, Bowen's disease, melanoma. Not cancer: nevi, seborrhoeic keratoses, dermatofibromas,
+    lentigines, pyogenic granulomas, haemangiomas, warts. Actinic keratoses and every photo not
+    marked biopsied are left out. No lesion or patient ids are published, so each photo is its
+    own group; several photos of one lesion sit side by side on a sheet."""
+    recs = []
+    for sheet in sorted((root / "asan_hallym" / "tiles").iterdir()):
+        parts = sheet.name.split("_")   # L, 12dx, <split>, [biopsy | non-biopsy,] <class>
+        biopsied = parts[2] == "hallym" or parts[3] == "biopsy"   # Hallym's sheets are BCCs, all biopsied (Han et al.)
+        for tile in sorted(sheet.glob("*.png")):
+            recs.append({"sheet": sheet.name, "cls": parts[-1], "biopsied": biopsied,
+                         "path": f"asan_hallym/tiles/{sheet.name}/{tile.name}"})
+    t = pd.DataFrame(recs)
+    diag = t["cls"].map(ASAN_DIAGNOSIS)
+    if diag.isna().any():
+        raise ValueError(f"unknown Asan classes: {sorted(t.loc[diag.isna(), 'cls'].unique())}")
+    label = diag.map(lambda s: map_diagnosis(s)[0])
+    other = t["cls"].isin(ASAN_OTHER_BENIGN)
+    binary = np.where(~t["biopsied"] | (label == "ak"), np.nan,
+                      np.where(label.isin(CANCER_TYPES), 1.0, np.where(label.isin(TUMOUR) | other, 0.0, np.nan)))
+    iid = "asan_" + t["sheet"].str.replace("L_12dx_", "", regex=False) + "_" + t["path"].str[-10:-4]
+    df = pd.DataFrame({
+        "image_id": iid, "group_id": iid, "dataset": "asan", "path": t["path"],
+        "diagnosis": diag, "label_4class": label,
+        "label_fine": label.where(label.isin(TUMOUR), np.where(binary == 0.0, "other_benign_tumour", "unlabelled")),
+        "licence": "CC BY 4.0",
+    })
+    df["label_binary"] = binary
+    df["label_cancer"] = df["label_binary"].map({1.0: "cancer", 0.0: "not_cancer"})
+    df["fst"] = np.nan
+    df["fst_bucket"] = np.nan
+    df["site"] = np.nan
+    df["is_acral"] = False
+    df["patient_id"] = df["group_id"]
+    rng = np.random.default_rng(0)
+    picked = []
+    for _, cls in df[df["label_binary"].notna()].sort_values("image_id").groupby("label_binary"):
+        picked += list(cls["image_id"].to_numpy()[rng.permutation(len(cls))[:ASAN_PER_CLASS]])
+    df["in_subsample"] = df["image_id"].isin(picked)
+    return df
+
+
 def milk10k_rows(root: Path) -> pd.DataFrame:
     """MILK10k (ISIC collection 425; CC BY-NC 4.0, "MILK study team"): one clinical close-up
     per lesion from five centres, 95.7% of lesions biopsied or excised. Cancer when ISIC-DX
@@ -344,7 +450,8 @@ def drop_eval_duplicates(extra: pd.DataFrame, manifest: pd.DataFrame, root: Path
 
 def build(name: str, cfg: dict, check_duplicates: bool = True) -> pd.DataFrame:
     root = Path(cfg["data_root"])
-    df = {"derm7pt": derm7pt_rows, "scin": scin_rows, "milk10k": milk10k_rows, "isic2019": isic2019_rows}[name](root)
+    df = {"derm7pt": derm7pt_rows, "scin": scin_rows, "milk10k": milk10k_rows, "isic2019": isic2019_rows,
+          "asan": asan_rows}[name](root)
     df["exclude_reason"] = pd.Series(np.nan, index=df.index, dtype=object)
     df.loc[df["label_binary"].isna(), "exclude_reason"] = "no_cancer_label"
     if "in_subsample" in df:
@@ -367,13 +474,14 @@ def load_extra(names: list[str], label_col: str, classes: list[str], extra_dir: 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("name", choices=["derm7pt", "scin", "milk10k", "isic2019"])
-    ap.add_argument("--download", action="store_true", help="scin, milk10k, isic2019: fetch the tables and photos, then stop")
+    ap.add_argument("name", choices=["derm7pt", "scin", "milk10k", "isic2019", "asan"])
+    ap.add_argument("--download", action="store_true", help="scin, milk10k, isic2019, asan: fetch the tables and photos, then stop")
     ap.add_argument("--data-config", default="configs/data.yaml")
     args = ap.parse_args(argv)
     cfg = load_data_config(args.data_config)
     if args.download:
-        return {"scin": scin_download, "milk10k": milk10k_download, "isic2019": isic2019_download}[args.name](Path(cfg["data_root"]))
+        return {"scin": scin_download, "milk10k": milk10k_download, "isic2019": isic2019_download,
+                "asan": asan_download}[args.name](Path(cfg["data_root"]))
     df = build(args.name, cfg)
     EXTRA_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(EXTRA_DIR / f"{args.name}.csv", index=False)

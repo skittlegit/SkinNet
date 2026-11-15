@@ -342,10 +342,29 @@ def test_resnet18_reference_model_for_idea_p():
     assert m(torch.randn(2, 3, 64, 64)).shape == (2, 2)
     assert target_layer(m) is m.backbone.net.layer4[-1]
     with pytest.raises(ValueError):
-        Classifier(2, imagenet=True)                                    # SkinNet has no ImageNet weights
+        Classifier(2, pretrained=True)                                  # SkinNet has no outside weights
     cfg["model"]["weights"] = "something"
     with pytest.raises(ValueError):
         runs.build_model(cfg)
+    cfg["model"].update(arch="skinnet", weights="panderm")                # weights must fit the network
+    with pytest.raises(ValueError):
+        runs.build_model(cfg)
+
+
+def test_panderm_reference_model_builds_and_loads_its_weights():
+    from pathlib import Path
+    from skincancer import runs
+    from skincancer.models import PANDERM_BASE_WEIGHTS, PanDermBase
+    cfg = load_config("configs/skinnet.yaml")
+    cfg["model"].update(arch="panderm_base", weights="panderm")
+    m = runs.build_model(cfg, init_weights=False)
+    assert isinstance(m.backbone, PanDermBase) and m.dim == 768
+    assert not m.backbone.net.pos_embed.requires_grad                  # fixed sin-cos, as in PanDerm
+    assert m(torch.randn(2, 3, 224, 224)).shape == (2, 2)
+    if Path(PANDERM_BASE_WEIGHTS).exists():                             # weights are local, not in git
+        sd = torch.load(PANDERM_BASE_WEIGHTS, map_location="cpu", weights_only=True)
+        loaded = PanDermBase(pretrained=True).net.state_dict()
+        assert all(torch.equal(loaded[k], v) for k, v in sd.items())
 
 
 def test_isic2019_labels_and_one_image_per_lesion(tmp_path, monkeypatch):
