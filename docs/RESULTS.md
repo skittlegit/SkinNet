@@ -294,6 +294,34 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## PanDerm reference (16 Nov 2026)
+
+PanDerm's ViT-B/16, pretrained by its authors on about 2.1 million skin images, trained on checkpoint 4's data (learning rate 5e-5, 20 epochs). Three seeds, test-time flips and the seed average, scored once on every set. A reference like idea P, never a checkpoint. Against checkpoint 4:
+
+| Set | Score | Checkpoint 4 | PanDerm | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | AUC | 0.900 | 0.964 | +0.065 [+0.051, +0.079] | yes, a gain |
+| `val` | Within-source AUC | 0.905 | 0.967 | +0.062 [+0.045, +0.080] | yes, a gain |
+| `midas_val` | AUC | 0.818 | 0.835 | +0.016 [−0.030, +0.060] | no |
+| `test` | AUC | 0.903 | 0.968 | +0.065 [+0.051, +0.079] | yes, a gain |
+| `test` | Within-source AUC | 0.907 | 0.971 | +0.064 [+0.047, +0.083] | yes, a gain |
+| `midas_test` | AUC | 0.750 | 0.811 | +0.061 [+0.004, +0.113] | yes, a gain |
+| DDI | AUC | 0.650 | 0.650 | −0.000 [−0.045, +0.042] | no |
+| DermaCon-IN (65 photos) | AUC | 0.818 | 0.880 | +0.062 [−0.009, +0.154] | no |
+
+Against the ImageNet ResNet-18 at learning rate 1e-4:
+
+| Set | Score | ImageNet ResNet-18 (lr 1e-4) | PanDerm | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.961 | 0.967 | +0.006 [−0.002, +0.014] | no |
+| `midas_val` | AUC | 0.778 | 0.835 | +0.057 [+0.017, +0.098] | yes, a gain |
+| `test` | Within-source AUC | 0.964 | 0.971 | +0.007 [+0.000, +0.015] | yes, a gain |
+| `midas_test` | AUC | 0.737 | 0.811 | +0.074 [+0.033, +0.113] | yes, a gain |
+| DDI | AUC | 0.631 | 0.650 | +0.019 [−0.018, +0.055] | no |
+| DermaCon-IN (65 photos) | AUC | 0.804 | 0.880 | +0.076 [−0.087, +0.281] | no |
+
+**Reading.** PanDerm is the first pretrained network to be ahead of checkpoint 4 outside as well as at home: MIDAS test +0.061, supported, though the interval nearly reaches zero and MIDAS validation's gain (+0.016) is not supported. On DDI it is exactly level with checkpoint 4 (0.650): two million skin images in pretraining did nothing for the set with the darkest skin. Against the ImageNet ResNet-18 it is level at home and clearly better on MIDAS, so what skin pretraining adds over ImageNet is outside performance on clinic photos. The home gain (+0.06) is the one most exposed to PanDerm having seen atlas photos in pretraining (DECISIONS.md, section 23); MIDAS and DDI are not named among its data.
+
 ## Idea S: Asan and Hallym clinical photos in training (16 Nov 2026)
 
 Checkpoint 4's recipe with 4,999 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,499 not cancer), about a fifth of the draws. They are published only as 99 x 99 pixel thumbnails. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.

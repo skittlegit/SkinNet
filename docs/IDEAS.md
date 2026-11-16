@@ -29,7 +29,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
-| – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 15 Nov | Running, as a reference comparison only (never a checkpoint) |
+| – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
 
@@ -206,7 +206,9 @@ Letters were given when an idea was first listed, not when it was run, which is 
 ### PanDerm reference
 
 - **What:** PanDerm's ViT-B/16 (Nature Medicine 2025; pretrained on about 2.1 million skin images), trained on checkpoint 4's data at learning rate 5e-5 for 20 epochs. A reference like idea P, never a checkpoint.
-- **Status:** running (15 Nov), specified in DECISIONS.md, section 23. Its pretraining data includes unnamed educational photo collections, so its score on our `test` split may be inflated; MIDAS, DDI and DermaCon-IN are much less exposed.
+- **Result (16 Nov):** against checkpoint 4, within-source AUC on `test` 0.907 → 0.971 and MIDAS test 0.750 → 0.811, both supported gains; MIDAS validation 0.818 → 0.835 and DermaCon-IN 0.818 → 0.880, not supported; DDI 0.650 → 0.650, level. Against the ImageNet ResNet-18: level at home, +0.06 to +0.07 on MIDAS, supported.
+- **Outcome:** a measurement, recorded in DECISIONS.md, section 23. Skin pretraining helps on MIDAS where ImageNet's did not, and does nothing for DDI.
+- **Caution:** its pretraining data includes unnamed educational photo collections, so its score on our `test` split may be inflated; MIDAS, DDI and DermaCon-IN are much less exposed.
 
 ## Keeping this file up to date
 

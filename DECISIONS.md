@@ -606,3 +606,30 @@ Written before the run. The team asked to check PanDerm (Yan et al., Nature Medi
 **What PanDerm was trained on, and the risk to our scores.** Its pretraining (paper, Methods) used 11 sources: in-house total-body photography, dermoscopy and clinical photos from Australian and New Zealand clinics; two in-house collections of educational clinical photos (Edu1, Edu2, about 149,000) whose sources are not named; 352,000 ISIC 2024 tiles; and pathology slides. None of our evaluation sets (DDI, MIDAS, DermaCon-IN) is named among them. The unnamed educational collections could include atlas photos, and Fitzpatrick17k, part of our `test` split, was built from online atlases. So a gain on `test` may partly be images PanDerm has seen; a gain on MIDAS, DDI or DermaCon-IN is much less exposed. The paper does not state that its evaluation sets were excluded from pretraining.
 
 **What is trained** (`configs/panderm-base.yaml`): checkpoint 4's data and sampling (MILK10k included, balanced drawing, test-time flips, three seeds and their average), every layer trained. Changed for a pretrained ViT: learning rate 5e-5 (AdamW, weight decay 0.05), 20 epochs with 2 of warm-up, the class token after the final norm feeding the same dropout and linear head. Scored once on every set and compared with checkpoint 4 and with the ImageNet ResNet-18 at 1e-4 (section 19).
+
+**Outcome of the PanDerm reference (16 Nov 2026).** Three seeds, test-time flips and the seed average, scored once on every set (ledger, 16 Nov). The run was paused by the team on 15 Nov after the first seed; the other two trained from their starts on 16 Nov; nothing else differs. Against checkpoint 4:
+
+| Set | Score | Checkpoint 4 | PanDerm | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | AUC | 0.900 | 0.964 | +0.065 [+0.051, +0.079] | yes, a gain |
+| `val` | Within-source AUC | 0.905 | 0.967 | +0.062 [+0.045, +0.080] | yes, a gain |
+| `midas_val` | AUC | 0.818 | 0.835 | +0.016 [−0.030, +0.060] | no |
+| `test` | AUC | 0.903 | 0.968 | +0.065 [+0.051, +0.079] | yes, a gain |
+| `test` | Within-source AUC | 0.907 | 0.971 | +0.064 [+0.047, +0.083] | yes, a gain |
+| `midas_test` | AUC | 0.750 | 0.811 | +0.061 [+0.004, +0.113] | yes, a gain |
+| DDI | AUC | 0.650 | 0.650 | −0.000 [−0.045, +0.042] | no |
+| DermaCon-IN (65 photos) | AUC | 0.818 | 0.880 | +0.062 [−0.009, +0.154] | no |
+
+Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
+
+| Set | Score | ImageNet ResNet-18 (lr 1e-4) | PanDerm | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.961 | 0.967 | +0.006 [−0.002, +0.014] | no |
+| `midas_val` | AUC | 0.778 | 0.835 | +0.057 [+0.017, +0.098] | yes, a gain |
+| `test` | Within-source AUC | 0.964 | 0.971 | +0.007 [+0.000, +0.015] | yes, a gain |
+| `midas_test` | AUC | 0.737 | 0.811 | +0.074 [+0.033, +0.113] | yes, a gain |
+| DDI | AUC | 0.631 | 0.650 | +0.019 [−0.018, +0.055] | no |
+| DermaCon-IN (65 photos) | AUC | 0.804 | 0.880 | +0.076 [−0.087, +0.281] | no |
+
+- The reading: PanDerm is the first pretrained network to be ahead of checkpoint 4 outside as well as at home: MIDAS test +0.061, supported, though the interval nearly reaches zero and MIDAS validation's gain (+0.016) is not supported. On DDI it is exactly level with checkpoint 4 (0.650): two million skin images in pretraining did nothing for the set with the darkest skin. Against the ImageNet ResNet-18 it is level at home and clearly better on MIDAS, so what skin pretraining adds over ImageNet is outside performance on clinic photos. The home gain (+0.06) is the one most exposed to PanDerm having seen atlas photos in pretraining (DECISIONS.md, section 23); MIDAS and DDI are not named among its data.
+- It stays a reference. The from-scratch rule and the licence (CC BY-NC-ND, non-commercial, no redistribution) both rule it out as a checkpoint. What it measures: the from-scratch rule now has a cost outside, about 0.06 on MIDAS test, and none on DDI. Whether to change the rule is the team's decision.
