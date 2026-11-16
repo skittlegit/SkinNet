@@ -64,11 +64,46 @@ def selection_score(y: np.ndarray, p_cancer: np.ndarray, source: np.ndarray, met
     raise ValueError(f"unknown train.select_metric {metric!r}")
 
 
-def make_scheduler(opt, epochs: int, warmup: int = 0):
-    """Stepped once per epoch: linear warm-up over `warmup` epochs, then cosine decay to zero."""
-    rest = max(epochs - warmup, 1)
+def make_scheduler(opt, epochs: int, warmup: int = 0, head_epochs: int = 0, head_lr: float | None = None):
+    """Stepped once per epoch: linear warm-up over `warmup` epochs, then cosine decay to zero.
+    With head_epochs (PanDerm track, DECISIONS.md section 24) the first head_epochs train only
+    the parameter groups marked `head`, at the constant rate head_lr; every other group's rate
+    is zero until then, and the warm-up and cosine run over the epochs that remain."""
+    rest = max(epochs - head_epochs - warmup, 1)
+
+    def body(e):
+        e -= head_epochs
+        if e < 0:
+            return 0.0
+        return (e + 1) / warmup if e < warmup else 0.5 * (1 + math.cos(math.pi * (e - warmup) / rest))
+
+    def head(g):
+        base = g["lr"]   # read now: the scheduler changes g["lr"] as it steps
+        return lambda e: head_lr / base if e < head_epochs else body(e)
+
     return torch.optim.lr_scheduler.LambdaLR(
-        opt, lambda e: (e + 1) / warmup if e < warmup else 0.5 * (1 + math.cos(math.pi * (e - warmup) / rest)))
+        opt, [head(g) if g.get("head") and head_epochs else body for g in opt.param_groups])
+
+
+def param_groups(model, lr: float, layer_decay: float | None = None) -> list[dict]:
+    """Parameter groups for AdamW. The linear head is its own group, marked `head`. With
+    layer_decay (PanDerm's ViT only) each transformer block's rate is the one above it times
+    layer_decay: the final norm trains at lr, block 11 at lr * decay, ..., the patch embedding
+    and class token at lr * decay^13, so the early, general features move least."""
+    groups = [{"params": list(model.head.parameters()), "lr": lr, "head": True}]
+    if not layer_decay:
+        return groups + [{"params": [p for p in model.backbone.parameters() if p.requires_grad], "lr": lr}]
+    from .models import PanDermBase
+    if not isinstance(model.backbone, PanDermBase):
+        raise ValueError("train.layer_decay is set up for model.arch panderm_base only")
+    depth = len(model.backbone.net.blocks)
+    by_layer: dict[int, list] = {}
+    for name, p in model.backbone.net.named_parameters():
+        if not p.requires_grad:
+            continue
+        layer = int(name.split(".")[1]) + 1 if name.startswith("blocks.") else depth + 1 if name.startswith("norm.") else 0
+        by_layer.setdefault(layer, []).append(p)
+    return groups + [{"params": ps, "lr": lr * layer_decay ** (depth + 1 - layer)} for layer, ps in sorted(by_layer.items())]
 
 
 def train(cfg: dict) -> dict:
@@ -112,8 +147,9 @@ def train(cfg: dict) -> dict:
     val_loader = runs.make_loader(val_df, cfg, train=False)
     criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights, dtype=torch.float32, device=dev),
                                     label_smoothing=float(t["label_smoothing"]))
-    opt = torch.optim.AdamW(model.parameters(), lr=t["lr"], weight_decay=t["weight_decay"])
-    sched = make_scheduler(opt, t["epochs"], t["warmup_epochs"])
+    opt = torch.optim.AdamW(param_groups(model, t["lr"], t.get("layer_decay")), lr=t["lr"],
+                            weight_decay=t["weight_decay"])
+    sched = make_scheduler(opt, t["epochs"], t["warmup_epochs"], t.get("head_epochs", 0), t.get("head_lr"))
     use_amp = t["amp"] and dev.type == "cuda"
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
@@ -132,7 +168,7 @@ def train(cfg: dict) -> dict:
             scaler.update()
             tot += loss.item() * len(y)
             n += len(y)
-        lr = opt.param_groups[0]["lr"]
+        lr = opt.param_groups[-1]["lr"]   # the top of the backbone (the head's is the same after head_epochs)
         sched.step()
         model.eval()
         val_auc = selection_score(val_loader.dataset.labels, runs.infer(model, val_loader)[:, 1],

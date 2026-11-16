@@ -209,6 +209,16 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Result (16 Nov):** against checkpoint 4, within-source AUC on `test` 0.907 → 0.971 and MIDAS test 0.750 → 0.811, both supported gains; MIDAS validation 0.818 → 0.835 and DermaCon-IN 0.818 → 0.880, not supported; DDI 0.650 → 0.650, level. Against the ImageNet ResNet-18: level at home, +0.06 to +0.07 on MIDAS, supported.
 - **Outcome:** a measurement, recorded in DECISIONS.md, section 23. Skin pretraining helps on MIDAS where ImageNet's did not, and does nothing for DDI.
 - **Caution:** its pretraining data includes unnamed educational photo collections, so its score on our `test` split may be inflated; MIDAS, DDI and DermaCon-IN are much less exposed.
+### PanDerm track (from 17 Nov)
+
+The team made PanDerm a second track beside the from-scratch one (DECISIONS.md, section 24): both are kept, and one is picked at the end. Its ideas are judged by the same rule against `panderm-base`.
+
+| Idea | What | Status |
+| --- | --- | --- |
+| PA | Gentler fine-tuning: head alone for 3 epochs, then a learning rate that shrinks towards the early layers | Running (17 Nov) |
+| PB | 384 px input | Next |
+| PC | PanDerm Large (ViT-L) | After PB, if it fits the GPU |
+| PD | Colour augmentation aimed at skin tone | After PC |
 
 ## Keeping this file up to date
 

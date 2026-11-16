@@ -633,3 +633,21 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 
 - The reading: PanDerm is the first pretrained network to be ahead of checkpoint 4 outside as well as at home: MIDAS test +0.061, supported, though the interval nearly reaches zero and MIDAS validation's gain (+0.016) is not supported. On DDI it is exactly level with checkpoint 4 (0.650): two million skin images in pretraining did nothing for the set with the darkest skin. Against the ImageNet ResNet-18 it is level at home and clearly better on MIDAS, so what skin pretraining adds over ImageNet is outside performance on clinic photos. The home gain (+0.06) is the one most exposed to PanDerm having seen atlas photos in pretraining (DECISIONS.md, section 23); MIDAS and DDI are not named among its data.
 - It stays a reference. The from-scratch rule and the licence (CC BY-NC-ND, non-commercial, no redistribution) both rule it out as a checkpoint. What it measures: the from-scratch rule now has a cost outside, about 0.06 on MIDAS test, and none on DDI. Whether to change the rule is the team's decision.
+
+## 24. Two tracks: from scratch and PanDerm (17 Nov 2026)
+
+**Decided by the team (17 Nov), after the PanDerm reference:**
+
+- PanDerm becomes a second track that can produce a final model, beside the from-scratch one. Nothing of the from-scratch track is removed: checkpoint 4, its configs, runs and documents stay, so that either can be picked at the end.
+- The licence (CC BY-NC-ND 4.0: non-commercial, no redistribution) is accepted. The weights and every network fine-tuned from them stay local and out of git.
+- A downloaded network scored as it comes is not our work. The PanDerm track must carry work of our own: how it is fine-tuned, what it is trained on, and what is measured. Its weak point, DDI (0.650, level with checkpoint 4), is the first target.
+- I am to choose and run the experiments without stopping to ask, and report each result.
+
+**How the PanDerm track is judged.** The same rule as section 19, with `panderm-base` (section 23) as the track's starting point in place of checkpoint 4. Step 1 on validation only: higher on both `midas_val` (AUC) and `val` (within-source AUC), neither lower by a supported amount. Then scored once on the test sets: a new PanDerm checkpoint if higher on `test`, `midas_test` and DDI, at least one by a supported amount, none lower by a supported amount (DermaCon-IN only must not be lower by a supported amount). Narrow misses go to the team. There is no DDI validation set, so no idea is ever chosen by its DDI score: DDI is read once per idea that passes step 1. `EXP=panderm-<letter> REF=panderm-base bash scripts/run_idea.sh <letter>` runs step 1.
+
+**Ideas, in order** (PanDerm-track letters are separate from the from-scratch ones):
+
+- **PA, gentler fine-tuning** (`configs/panderm-a.yaml`, running). `panderm-base` trained every layer at 5e-5 from the first step, with a new random head; the first steps can damage the pretrained features that carry over to unseen clinics (Kumar et al. 2022). PA trains the head alone for 3 epochs (1e-3), then every layer for 20 with a rate that shrinks by 0.75 per block towards the input (1e-4 at the top, 2.4e-6 at the patch embedding). New options `train.head_epochs`, `train.head_lr`, `train.layer_decay`. Expectation: level at home, a small gain on MIDAS; DDI uncertain.
+- **PB, a larger input** (384 px): MIDAS and DDI photos are clinic photos where the lesion is a small part of the frame; a larger input raised outside scores for SkinNet in the third round. Needs the position embedding recomputed for the new grid. Built on PA's recipe if PA passes, else on `panderm-base`'s.
+- **PC, PanDerm Large**: the paper's main network (ViT-L), if it fits in 8 GB at batch 16 with mixed precision.
+- **PD, ideas that failed from scratch but may not on a pretrained network**: the Asan thumbnails (section 22) are not among them, their fault being blur; stronger colour augmentation aimed at skin tone is, and is the one most directed at DDI.

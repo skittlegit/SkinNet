@@ -8,7 +8,7 @@
 set -uo pipefail
 PY=${PY:-python}
 LETTER=${1:?usage: run_idea.sh <letter>}
-EXP=skinnet-idea-$LETTER
+EXP=${EXP:-skinnet-idea-$LETTER}   # EXP=panderm-a: a PanDerm-track idea (configs/panderm-a.yaml), with REF=panderm-base
 CFG=configs/$EXP.yaml
 REF=${REF:-skinnet-c4}
 SEEDS=${SEEDS:-"0 1 2"}

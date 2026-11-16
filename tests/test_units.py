@@ -351,6 +351,34 @@ def test_resnet18_reference_model_for_idea_p():
         runs.build_model(cfg)
 
 
+def test_layer_decay_and_head_only_epochs():
+    from skincancer import runs
+    from skincancer.train import make_scheduler, param_groups
+    cfg = load_config("configs/skinnet.yaml")
+    with pytest.raises(ValueError):
+        param_groups(runs.build_model(cfg), 1e-4, 0.75)                 # layer decay: PanDerm's ViT only
+    plain = param_groups(runs.build_model(cfg), 1e-3)
+    assert len(plain) == 2 and plain[0]["head"] and plain[1]["lr"] == 1e-3
+    cfg["model"].update(arch="panderm_base", weights="panderm")
+    m = runs.build_model(cfg, init_weights=False)
+    groups = param_groups(m, 1e-4, 0.75)
+    assert len(groups) == 15                                           # head, embedding, 12 blocks, final norm
+    assert groups[0]["head"] and groups[-1]["lr"] == pytest.approx(1e-4)
+    assert groups[1]["lr"] == pytest.approx(1e-4 * 0.75 ** 13) and groups[2]["lr"] == pytest.approx(1e-4 * 0.75 ** 12)
+    n = sum(p.numel() for g in groups for p in g["params"])
+    assert n == sum(p.numel() for p in m.parameters() if p.requires_grad)   # every trained parameter, once
+    opt = torch.optim.AdamW(groups, lr=1e-4)
+    sched = make_scheduler(opt, epochs=7, warmup=2, head_epochs=3, head_lr=1e-3)
+    seen = []
+    for _ in range(7):
+        seen.append((opt.param_groups[0]["lr"], opt.param_groups[-1]["lr"]))
+        opt.step()
+        sched.step()
+    assert seen[:3] == [pytest.approx((1e-3, 0.0))] * 3                # head alone first
+    assert seen[3] == pytest.approx((5e-5, 5e-5)) and seen[4] == pytest.approx((1e-4, 1e-4))
+    assert seen[5][1] == pytest.approx(1e-4) and 0 < seen[6][1] < 1e-4   # then the cosine, as without head epochs
+
+
 def test_panderm_reference_model_builds_and_loads_its_weights():
     from pathlib import Path
     from skincancer import runs
