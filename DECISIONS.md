@@ -586,6 +586,17 @@ Written before the run. After idea R the team asked for a search for more biopsy
 
 **Expectation recorded now.** Of the ideas so far only new clinical photos from new places helped outside, so this is the right kind of data. The thumbnails' size is the reason it may not work. A gain on DDI and DermaCon-IN, whose patients have darker skin than most of our training photos, is the most hoped-for result.
 
+**Outcome of idea S, step 1 (16 Nov 2026): failed, discarded.** 4,999 Asan photos were in training. The run was paused by the team after two seeds on 15 Nov and the third seed trained from its start on 16 Nov; nothing else differs. Paired comparison with checkpoint 4, both after test-time flips and the seed average:
+
+| Set | Score | Checkpoint 4 | Idea S | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.792 | −0.026 [−0.051, −0.003] | yes, a loss |
+| `val` | AUC | 0.900 | 0.911 | +0.011 [+0.003, +0.019] | yes, a gain |
+| `val` | Within-source AUC | 0.905 | 0.924 | +0.019 [+0.005, +0.034] | yes, a gain |
+
+- Lower on `midas_val` by a supported amount, so the rule fails outright; a supported loss outside is not a narrow miss, and S was not scored on any test set. Its config and runs are deleted; the Asan loader and `data/extra/asan.csv` stay.
+- The reading: a clear gain at home, and a loss outside as large as idea K's. The recorded risk is the likely cause: 99-pixel thumbnails scaled up to 224 are blurred, and a fifth of the draws were spent on them. Why they help on Fitzpatrick17k and PAD-UFES-20 is not established; atlas and phone photos are themselves often small or soft, which would fit. So this run says little about Korean clinical photos as such, and the full-size images remain untested. Asking Asan's ethics committee for them is the team's choice.
+
 ## 23. A PanDerm reference (15 Nov 2026)
 
 Written before the run. The team asked to check PanDerm (Yan et al., Nature Medicine 2025), a network pretrained on about 2.1 million skin images. Like idea P it is a reference comparison only, never a checkpoint: it measures what a skin-specific pretrained network would add, where P measured ImageNet's.

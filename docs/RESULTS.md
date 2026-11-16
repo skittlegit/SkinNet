@@ -294,6 +294,20 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## Idea S: Asan and Hallym clinical photos in training (16 Nov 2026)
+
+Checkpoint 4's recipe with 4,999 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,499 not cancer), about a fifth of the draws. They are published only as 99 x 99 pixel thumbnails. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.
+
+| Set | Score | Checkpoint 4 | Idea S | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.792 | −0.026 [−0.051, −0.003] | yes, a loss |
+| `val` | AUC | 0.900 | 0.911 | +0.011 [+0.003, +0.019] | yes, a gain |
+| `val` | Within-source AUC | 0.905 | 0.924 | +0.019 [+0.005, +0.034] | yes, a gain |
+
+**Outcome: discarded at the first step**, not scored on any test set.
+
+**Reading.** A clear gain at home, and a loss on MIDAS as large as idea K's. The likely cause is the size of the photos: scaled up from 99 to 224 pixels they are blurred. The full-size images, which Asan gives only on request, are untested.
+
 ## Idea R: MILK10k drawn twice as often (15 Nov 2026)
 
 Checkpoint 4's recipe with MILK10k's share of the draws raised from 27% to 43%. Paired comparison with checkpoint 4.

@@ -28,7 +28,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside, at either learning rate |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
-| S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 15 Nov | Running |
+| S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 15 Nov | Running, as a reference comparison only (never a checkpoint) |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
@@ -199,7 +199,9 @@ Letters were given when an idea was first listed, not when it was run, which is 
 
 - **What:** checkpoint 4's recipe with 5,000 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,500 benign growths), about a fifth of the draws. Published only as 99 x 99 pixel thumbnails, so they are blurred when scaled up to 224.
 - **Why:** chosen after a search for more biopsy-confirmed clinical photos from new places (15 Nov), the only kind of data that has raised an outside score. A new country, and mostly skin types III to IV.
-- **Status:** running (15 Nov), specified in DECISIONS.md, section 22.
+- **Compared on:** validation only, paired comparison with checkpoint 4.
+- **Result:** within-source AUC on our validation split 0.905 → 0.924, a supported gain; MIDAS validation 0.818 → 0.792, a supported loss.
+- **Outcome:** discarded at the first step (16 Nov), not scored on test sets (DECISIONS.md, section 22). The thumbnails' blur is the likely cause; the full-size images, available only on request to Asan, are untested.
 
 ### PanDerm reference
 
