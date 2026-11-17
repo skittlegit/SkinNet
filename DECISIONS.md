@@ -670,3 +670,23 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 - Until the team answers, later PanDerm ideas use PA's recipe and are compared with both `panderm-base` and `panderm-a`, so that neither answer makes a run useless.
 
 **Order changed (17 Nov): PD runs before PB and PC.** After PA, DDI is the one set no recipe has moved, and PD is the idea aimed at it. It also costs 3.5 hours where PB costs about 10 (three times the image tokens), and a larger input did not help from scratch (ideas E and F). **PD** (`configs/panderm-d.yaml`): PA's recipe with `data.colour_aug`: in training, each photo is also made darker or lighter by a gamma curve (0.7 to 1.7, half the time), its saturation and hue varied a little, and each colour channel shifted. Until now the only colour change in training was brightness and contrast. Written before the run. Expectation: level at home and on MIDAS; a small gain on DDI if its difficulty is partly skin tone and lighting, none if it is the rare diagnoses, which is the likelier half. Compared at step 1 with `panderm-a` and `panderm-base`.
+
+**Outcome of idea PD, step 1 (17 Nov 2026): failed, discarded.** Against `panderm-a`:
+
+| Set | Score | Idea PA | Idea PD | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` | AUC | 0.842 | 0.835 | −0.007 [−0.032, +0.018] | no |
+| `val` | AUC | 0.972 | 0.972 | +0.000 [−0.004, +0.005] | no |
+| `val` | Within-source AUC | 0.975 | 0.976 | +0.002 [−0.003, +0.007] | no |
+
+- Flat at home and lower on `midas_val`, so not higher on both: step 1 fails, and PD was not scored on any test set. Against `panderm-base` it is ahead at home by a supported amount and level on `midas_val` (+0.000), which is PA's gain and nothing of its own. Its config and runs are deleted; `data.colour_aug` stays in the code.
+- **A check made after it, on validation only:** AUC on `val` by Fitzpatrick skin type (the labels come with Fitzpatrick17k and PAD-UFES-20; 133 photos have none):
+
+| Model | Types I–III (1,801 photos, 377 cancers) | Type IV (419, 46) | Types V–VI (342, 35) |
+| --- | --- | --- | --- |
+| Checkpoint 4 | 0.901 | 0.888 | 0.895 |
+| PanDerm base | 0.965 | 0.952 | 0.963 |
+| Idea PA | 0.969 | 0.976 | 0.988 |
+| Idea PD | 0.971 | 0.970 | 0.982 |
+
+- No model here is worse on types V–VI than on I–III at home, and PD is not better than PA on V–VI (difference −0.006 [−0.018, +0.002]). With 35 cancers the V–VI figures are rough, but they do not show a skin-tone gap. So DDI's low score is not explained by dark skin alone: at home, dark-skin photos are scored as well as light ones. What differs in DDI is the rest: a hospital not in training, clinic photos, and its mix of diagnoses. That is why colour augmentation had nothing to fix, and it moves the weight of the remaining ideas towards data and away from recipes.

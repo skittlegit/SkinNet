@@ -294,6 +294,29 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## PanDerm track, idea PD: colour augmentation (17 Nov 2026)
+
+PA's recipe with skin tone and lighting colour varied in training. Against PA, validation only:
+
+| Set | Score | Idea PA | Idea PD | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` | AUC | 0.842 | 0.835 | −0.007 [−0.032, +0.018] | no |
+| `val` | AUC | 0.972 | 0.972 | +0.000 [−0.004, +0.005] | no |
+| `val` | Within-source AUC | 0.975 | 0.976 | +0.002 [−0.003, +0.007] | no |
+
+**Outcome: discarded at the first step**, not scored on any test set.
+
+AUC on `val` by Fitzpatrick skin type (validation only):
+
+| Model | Types I–III (1,801 photos, 377 cancers) | Type IV (419, 46) | Types V–VI (342, 35) |
+| --- | --- | --- | --- |
+| Checkpoint 4 | 0.901 | 0.888 | 0.895 |
+| PanDerm base | 0.965 | 0.952 | 0.963 |
+| Idea PA | 0.969 | 0.976 | 0.988 |
+| Idea PD | 0.971 | 0.970 | 0.982 |
+
+**Reading.** At home, no model is worse on types V–VI than on I–III (35 cancers, so the figures are rough). DDI's low score is therefore not a matter of dark skin alone; what differs there is the hospital, the kind of photo and the mix of diagnoses.
+
 ## PanDerm track, idea PA: gentler fine-tuning (17 Nov 2026)
 
 PanDerm's ViT-B/16 on checkpoint 4's data, the head trained alone for 3 epochs, then every layer for 20 with a learning rate that shrinks by 0.75 per block towards the input. Three seeds, test-time flips and the seed average, scored once on every set. Against the first PanDerm run (`panderm-base`, every layer at 5e-5 from the first step):
