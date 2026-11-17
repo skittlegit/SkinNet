@@ -1,0 +1,6 @@
+# PanDerm track, idea PE (DECISIONS.md, section 24): PanDerm checkpoint 1's recipe with stochastic
+# depth (drop path 0.2), the one regulariser of PanDerm's own fine-tuning that ours lacks.
+extends: panderm-c.yaml
+name: panderm-e
+model:
+  drop_path: 0.2

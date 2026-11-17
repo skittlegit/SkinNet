@@ -400,7 +400,10 @@ def test_panderm_reference_model_builds_and_loads_its_weights():
     cfg["model"]["arch"] = "panderm_large"                              # the paper's ViT-L/16
     big = runs.build_model(cfg, init_weights=False)
     assert big.dim == 1024 and len(big.backbone.net.blocks) == 24
-    cfg["model"]["arch"] = "panderm_base"
+    cfg["model"].update(arch="panderm_base", drop_path=0.2)             # stochastic depth, idea PE
+    dp = runs.build_model(cfg, init_weights=False)
+    assert dp.backbone.net.blocks[-1].drop_path1.drop_prob == pytest.approx(0.2)
+    del cfg["model"]["drop_path"]
     cfg["data"]["img_size"] = 96                                        # another input size: a 6 x 6 grid
     m96 = runs.build_model(cfg, init_weights=False)
     assert m96.backbone.net.pos_embed.shape == (1, 37, 768) and m96(torch.randn(1, 3, 96, 96)).shape == (1, 2)

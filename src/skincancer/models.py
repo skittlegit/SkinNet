@@ -96,15 +96,18 @@ class PanDermBase(nn.Module):
     grid of patches. DECISIONS.md, sections 23 and 24. pretrained=False builds it with
     random weights (used when a saved best.pt is loaded next)."""
 
-    def __init__(self, pretrained: bool = False, path: str | None = None, img_size: int = 224, large: bool = False):
-        """large=True: PanDerm's ViT-L/16 (24 blocks, 1024-d), idea PC."""
+    def __init__(self, pretrained: bool = False, path: str | None = None, img_size: int = 224, large: bool = False,
+                 drop_path: float = 0.0):
+        """large=True: PanDerm's ViT-L/16 (24 blocks, 1024-d), idea PC. drop_path: stochastic
+        depth, each block skipped at random in training with a rate rising to this at the last
+        block (idea PE; PanDerm's own fine-tuning uses 0.2)."""
         super().__init__()
         import timm
         import torch
         path = path or (PANDERM_LARGE_WEIGHTS if large else PANDERM_BASE_WEIGHTS)
         self.net = timm.create_model("beit_large_patch16_224" if large else "beit_base_patch16_224", pretrained=False, num_classes=0, global_pool="token",
                                      use_abs_pos_emb=True, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
-                                     init_values=0.1, img_size=img_size)
+                                     init_values=0.1, img_size=img_size, drop_path_rate=drop_path)
         if pretrained:
             sd = torch.load(path, map_location="cpu", weights_only=True)
             if img_size != 224:
@@ -126,7 +129,7 @@ class Classifier(nn.Module):
     pretrained loads the arch's outside weights: ImageNet for resnet18, PanDerm's for panderm_base."""
 
     def __init__(self, num_classes: int, width: int = 32, depths=(2, 2, 2, 2), drop: float = 0.3,
-                 arch: str = "skinnet", pretrained: bool = False, img_size: int = 224):
+                 arch: str = "skinnet", pretrained: bool = False, img_size: int = 224, drop_path: float = 0.0):
         super().__init__()
         if arch == "skinnet":
             if pretrained:
@@ -135,7 +138,8 @@ class Classifier(nn.Module):
         elif arch == "resnet18":
             self.backbone = ResNet18(pretrained)
         elif arch in ("panderm_base", "panderm_large"):
-            self.backbone = PanDermBase(pretrained, img_size=img_size, large=arch == "panderm_large")
+            self.backbone = PanDermBase(pretrained, img_size=img_size, large=arch == "panderm_large",
+                                        drop_path=drop_path)
         else:
             raise ValueError(f"unknown model.arch {arch!r}")
         self.dim = self.backbone.num_features
