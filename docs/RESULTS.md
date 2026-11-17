@@ -294,6 +294,31 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## PanDerm track, idea PC: PanDerm Large, PanDerm checkpoint 1 (17 Nov 2026)
+
+PA's recipe on PanDerm's ViT-L/16 (304 million parameters) in place of the ViT-B/16. Three seeds, test-time flips and the seed average, scored once on every set.
+
+| Set | Score | PanDerm base | Idea PA | PanDerm Large (PC) | PC − base [95% interval] | PC − PA [95% interval] |
+| --- | --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.967 | 0.975 | **0.983** | +0.016 [+0.008, +0.025] | +0.009 [+0.003, +0.015] |
+| `midas_val` | AUC | 0.835 | 0.842 | 0.856 | +0.022 [−0.007, +0.052] | +0.014 [−0.014, +0.045] |
+| `test` | AUC | 0.968 | 0.967 | **0.977** | +0.010 [+0.003, +0.016] | +0.011 [+0.003, +0.018] |
+| `test` | Within-source AUC | 0.971 | 0.970 | **0.982** | +0.010 [+0.004, +0.018] | +0.012 [+0.006, +0.020] |
+| `midas_test` | AUC | 0.811 | 0.848 | **0.874** | +0.063 [+0.032, +0.097] | +0.026 [−0.003, +0.057] |
+| DDI | AUC | 0.650 | 0.650 | **0.686** | +0.036 [+0.007, +0.064] | +0.035 [+0.011, +0.059] |
+| DermaCon-IN (65 photos) | AUC | 0.880 | 0.933 | 0.850 | −0.030 [−0.164, +0.062] | −0.082 [−0.220, +0.012] |
+
+Against checkpoint 4 (from scratch):
+
+| Set | Score | Checkpoint 4 (from scratch) | PanDerm checkpoint 1 | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `test` | Within-source AUC | 0.907 | 0.982 | +0.074 [+0.056, +0.096] | yes |
+| `midas_test` | AUC | 0.750 | 0.874 | +0.124 [+0.074, +0.174] | yes |
+| DDI | AUC | 0.650 | 0.686 | +0.036 [−0.010, +0.081] | no |
+| DermaCon-IN (65 photos) | AUC | 0.818 | 0.850 | +0.032 [−0.123, +0.181] | no |
+
+**Outcome: passes the rule against both earlier PanDerm runs; PanDerm checkpoint 1.** DDI rises for the first time (0.650 → 0.686, supported). DermaCon-IN is 0.082 lower than PA's, not supported on 65 photos.
+
 ## PanDerm track, idea PD: colour augmentation (17 Nov 2026)
 
 PA's recipe with skin tone and lighting colour varied in training. Against PA, validation only:

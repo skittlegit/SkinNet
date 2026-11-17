@@ -699,3 +699,29 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 **PC sped up after its first seed (17 Nov 2026, at the team's request).** Every PanDerm seed so far (PA's three, PC's first) picked its best epoch at epoch 6, and no epoch after 10 came within 0.006 of it. So seeds 1 and 2 of PC stop 4 epochs after their best (`train.patience: 4`): 11 epochs in place of 23, about 1.9 hours a seed in place of 3.8. The learning-rate schedule is unchanged (still planned over 23 epochs), so the network a seed keeps is the same as without stopping unless an epoch after the stop would have beaten it, which none of the four seeds shows. Seed 0 ran all 23 epochs; with patience 4 it would have kept the same network.
 
 **For later PanDerm ideas, not this one:** during the head-only epochs the whole backbone is still run backwards, only to be updated at rate zero. Freezing it then would make those epochs about three times faster, but it also changes the optimiser's state at the start of full training, so it is a change of recipe and is kept out of PC, whose seeds must match.
+
+**Outcome of idea PC (17 Nov 2026): passed; PanDerm checkpoint 1.** Three seeds (seed 0 all 23 epochs, seeds 1 and 2 stopped at epochs 9 and 8 by the patience above), test-time flips and the seed average; scored once on every test set (ledger, 17 Nov):
+
+| Set | Score | PanDerm base | Idea PA | PanDerm Large (PC) | PC − base [95% interval] | PC − PA [95% interval] |
+| --- | --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.967 | 0.975 | **0.983** | +0.016 [+0.008, +0.025] | +0.009 [+0.003, +0.015] |
+| `midas_val` | AUC | 0.835 | 0.842 | 0.856 | +0.022 [−0.007, +0.052] | +0.014 [−0.014, +0.045] |
+| `test` | AUC | 0.968 | 0.967 | **0.977** | +0.010 [+0.003, +0.016] | +0.011 [+0.003, +0.018] |
+| `test` | Within-source AUC | 0.971 | 0.970 | **0.982** | +0.010 [+0.004, +0.018] | +0.012 [+0.006, +0.020] |
+| `midas_test` | AUC | 0.811 | 0.848 | **0.874** | +0.063 [+0.032, +0.097] | +0.026 [−0.003, +0.057] |
+| DDI | AUC | 0.650 | 0.650 | **0.686** | +0.036 [+0.007, +0.064] | +0.035 [+0.011, +0.059] |
+| DermaCon-IN (65 photos) | AUC | 0.880 | 0.933 | 0.850 | −0.030 [−0.164, +0.062] | −0.082 [−0.220, +0.012] |
+
+- Against `panderm-base`, the track's reference: higher on `test`, `midas_test` and DDI, all three by a supported amount; DermaCon-IN lower by 0.030, not supported. The rule passes outright. It passes against PA as well (`test` and DDI supported gains, `midas_test` higher but not supported, DermaCon-IN not lower by a supported amount), so the open question on PA no longer matters: PC is built on PA's recipe and beats both.
+- **DDI moved for the first time.** 0.650 → 0.686, a supported gain over both earlier PanDerm runs. Every network and recipe before it sat at 0.63 to 0.65. The larger network learned more from the same pretraining, and that reached the hospital none of our models has seen. Against checkpoint 4 the DDI gain (+0.036) is not supported, as the from-scratch model's DDI score is noisier against this one.
+- **DermaCon-IN is the one to watch.** 0.933 with PA, 0.850 with PC: −0.082, not supported (65 photos, 19 cancers, interval −0.220 to +0.012). The rule lets it through; it is reported, not hidden.
+- **Against checkpoint 4**, the from-scratch track's best:
+
+| Set | Score | Checkpoint 4 (from scratch) | PanDerm checkpoint 1 | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `test` | Within-source AUC | 0.907 | 0.982 | +0.074 [+0.056, +0.096] | yes |
+| `midas_test` | AUC | 0.750 | 0.874 | +0.124 [+0.074, +0.174] | yes |
+| DDI | AUC | 0.650 | 0.686 | +0.036 [−0.010, +0.081] | no |
+| DermaCon-IN (65 photos) | AUC | 0.818 | 0.850 | +0.032 [−0.123, +0.181] | no |
+
+- `panderm-c` is PanDerm checkpoint 1. The run keeps its name (the ledger records it under `panderm-c`); its weights are copied to `checkpoints/panderm-1/` (local, git-ignored; 3.4 GB; licence as section 23) and the code is tagged `panderm-checkpoint-1`. Later PanDerm ideas are judged against it. The from-scratch track stays at checkpoint 4.
