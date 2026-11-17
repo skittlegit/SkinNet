@@ -15,9 +15,14 @@ from torch.utils.data import Dataset
 MEAN, STD = (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
 
 
-def train_transform(img_size: int) -> A.Compose:
+def train_transform(img_size: int, colour: bool = False) -> A.Compose:
     """Augmentation for training from random weights on a few thousand images, where it is
-    the main guard against memorising the training set."""
+    the main guard against memorising the training set. colour=True (`data.colour_aug`,
+    PanDerm-track idea PD) also varies skin tone and lighting colour: darker or lighter by a
+    gamma curve, saturation and a little hue, and a shift of each colour channel."""
+    tone = [A.RandomGamma(gamma_limit=(70, 170), p=0.5),
+            A.HueSaturationValue(hue_shift_limit=8, sat_shift_limit=30, val_shift_limit=0, p=0.7),
+            A.RGBShift(r_shift_limit=15, g_shift_limit=10, b_shift_limit=15, p=0.5)] if colour else []
     return A.Compose([
         A.RandomResizedCrop(size=(img_size, img_size), scale=(0.4, 1.0)),
         A.HorizontalFlip(),
@@ -25,6 +30,7 @@ def train_transform(img_size: int) -> A.Compose:
         A.RandomRotate90(),
         A.Rotate(limit=30, border_mode=cv2.BORDER_REFLECT_101),
         A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.7),
+        *tone,
         A.GaussianBlur(blur_limit=(3, 5), p=0.2),
         A.CoarseDropout(num_holes_range=(1, 3), hole_height_range=(0.1, 0.25),
                         hole_width_range=(0.1, 0.25), fill=0, p=0.5),

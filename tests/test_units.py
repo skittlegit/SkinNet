@@ -351,6 +351,14 @@ def test_resnet18_reference_model_for_idea_p():
         runs.build_model(cfg)
 
 
+def test_colour_augmentation_is_optional_and_changes_colour():
+    from skincancer.data.dataset import train_transform
+    assert len(train_transform(64, colour=True).transforms) == len(train_transform(64).transforms) + 3
+    img = np.full((80, 80, 3), (180, 130, 110), np.uint8)
+    out = train_transform(64, colour=True)(image=img)["image"]
+    assert out.shape == (3, 64, 64) and torch.isfinite(out).all()
+
+
 def test_layer_decay_and_head_only_epochs():
     from skincancer import runs
     from skincancer.train import make_scheduler, param_groups

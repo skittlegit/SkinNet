@@ -1,0 +1,6 @@
+# PanDerm track, idea PD (DECISIONS.md, section 24): PA's recipe with colour augmentation that
+# varies skin tone and lighting colour in training. Aimed at DDI, where no recipe has moved the score.
+extends: panderm-a.yaml
+name: panderm-d
+data:
+  colour_aug: true
