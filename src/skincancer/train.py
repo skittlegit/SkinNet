@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import gc
 import math
+import random
 import time
 
 import numpy as np
@@ -153,8 +154,25 @@ def train(cfg: dict) -> dict:
     use_amp = t["amp"] and dev.type == "cuda"
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
-    history, best, stale = [], {"val_auc": -math.inf}, 0
-    for ep in range(t["epochs"]):
+    history, best, stale, start = [], {"val_auc": -math.inf}, 0, 0
+    resume = rdir / "last.pt"   # written after every epoch, so a stopped run continues where it was
+    if resume.exists():
+        st = torch.load(resume, map_location="cpu", weights_only=False)   # RNG states must stay on the CPU
+        model.load_state_dict(st["model"])
+        opt.load_state_dict(st["opt"])
+        sched.load_state_dict(st["sched"])
+        scaler.load_state_dict(st["scaler"])
+        tr_loader.generator.set_state(st["loader_rng"])
+        torch.set_rng_state(st["torch_rng"])
+        if torch.cuda.is_available() and st.get("cuda_rng") is not None:
+            torch.cuda.set_rng_state_all(st["cuda_rng"])
+        np.random.set_state(st["np_rng"])
+        random.setstate(st["py_rng"])
+        history, best, stale, start = st["history"], st["best"], st["stale"], st["epoch"] + 1
+        print(f"[{cfg['name']} s{cfg['seed']}] resumed after epoch {st['epoch']}", flush=True)
+    for ep in range(start, t["epochs"]):
+        if t["patience"] and stale >= t["patience"]:
+            break
         t0 = time.time()
         model.train()
         tot, n = 0.0, 0
@@ -186,6 +204,14 @@ def train(cfg: dict) -> dict:
             stale = 0
         else:
             stale += 1
+        tmp = rdir / "last.pt.tmp"
+        torch.save({"epoch": ep, "model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(),
+                    "scaler": scaler.state_dict(), "loader_rng": tr_loader.generator.get_state(),
+                    "torch_rng": torch.get_rng_state(),
+                    "cuda_rng": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
+                    "np_rng": np.random.get_state(), "py_rng": random.getstate(),
+                    "history": history, "best": best, "stale": stale}, tmp)
+        tmp.replace(resume)
         if t["patience"] and stale >= t["patience"]:
             break
     if not (rdir / "best.pt").exists():
@@ -193,6 +219,7 @@ def train(cfg: dict) -> dict:
     runs.write_json({"best": best, "select_metric": select_metric, "epochs_run": len(history), "n_train": len(train_df), "n_val": len(val_df),
                      "n_params": n_params, "class_counts": dict(zip(classes, counts.tolist())),
                      "loss_weights": dict(zip(classes, weights.tolist()))}, rdir / "summary.json")
+    resume.unlink(missing_ok=True)   # finished: the resume state is no longer needed (several GB for PanDerm)
 
     # Shut down the training loaders' worker processes before predicting (15 GB machine).
     del tr_loader, val_loader

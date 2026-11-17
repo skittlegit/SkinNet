@@ -132,6 +132,31 @@ def test_pipeline(workdir, monkeypatch):
     train.main(["--config", "configs/tiny.yaml", "--seed", "0"])   # finished: skipped, not retrained
     assert len(pd.read_csv("runs/tiny/s0/history.csv")) == len(hist)
 
+    # a run killed during an epoch continues after the last finished one. (Not bit for bit like an
+    # uninterrupted run: albumentations draws from its own unseeded generator, so two whole runs
+    # with one seed already differ.)
+    from skincancer.config import load_config
+    cfg = load_config("configs/tiny.yaml", ["seed=0", "train.patience=0"])
+    real, calls = train.selection_score, {"n": 0}
+
+    def killed_in_epoch_2(*a, **k):
+        calls["n"] += 1
+        if calls["n"] == 3:
+            raise KeyboardInterrupt
+        return real(*a, **k)
+
+    monkeypatch.setattr(train, "selection_score", killed_in_epoch_2)
+    with pytest.raises(KeyboardInterrupt):
+        train.train(dict(cfg, name="tiny_cut"))
+    before = pd.read_csv("runs/tiny_cut/s0/history.csv")
+    assert Path("runs/tiny_cut/s0/last.pt").exists() and len(before) == 2
+    monkeypatch.setattr(train, "selection_score", real)
+    train.train(dict(cfg, name="tiny_cut"))
+    after = pd.read_csv("runs/tiny_cut/s0/history.csv")
+    assert list(after["epoch"]) == [0, 1, 2] and after.iloc[:2].equals(before)   # epochs 0-1 kept, not redone
+    assert after["lr"].iloc[2] == pytest.approx(5e-4)                              # the schedule went on too
+    assert not Path("runs/tiny_cut/s0/last.pt").exists() and Path("runs/tiny_cut/s0/summary.json").exists()
+
     with pytest.raises(SystemExit):
         predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_test"])  # needs --final
     for seed in (0, 1):
