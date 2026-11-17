@@ -397,7 +397,15 @@ def test_panderm_reference_model_builds_and_loads_its_weights():
     assert isinstance(m.backbone, PanDermBase) and m.dim == 768
     assert not m.backbone.net.pos_embed.requires_grad                  # fixed sin-cos, as in PanDerm
     assert m(torch.randn(2, 3, 224, 224)).shape == (2, 2)
+    cfg["model"]["arch"] = "panderm_large"                              # the paper's ViT-L/16
+    big = runs.build_model(cfg, init_weights=False)
+    assert big.dim == 1024 and len(big.backbone.net.blocks) == 24
+    cfg["model"]["arch"] = "panderm_base"
+    cfg["data"]["img_size"] = 96                                        # another input size: a 6 x 6 grid
+    m96 = runs.build_model(cfg, init_weights=False)
+    assert m96.backbone.net.pos_embed.shape == (1, 37, 768) and m96(torch.randn(1, 3, 96, 96)).shape == (1, 2)
     if Path(PANDERM_BASE_WEIGHTS).exists():                             # weights are local, not in git
+        assert PanDermBase(pretrained=True, img_size=96).net.pos_embed.shape == (1, 37, 768)
         sd = torch.load(PANDERM_BASE_WEIGHTS, map_location="cpu", weights_only=True)
         loaded = PanDermBase(pretrained=True).net.state_dict()
         assert all(torch.equal(loaded[k], v) for k, v in sd.items())

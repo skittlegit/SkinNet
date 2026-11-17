@@ -95,7 +95,7 @@ def param_groups(model, lr: float, layer_decay: float | None = None) -> list[dic
         return groups + [{"params": [p for p in model.backbone.parameters() if p.requires_grad], "lr": lr}]
     from .models import PanDermBase
     if not isinstance(model.backbone, PanDermBase):
-        raise ValueError("train.layer_decay is set up for model.arch panderm_base only")
+        raise ValueError("train.layer_decay is set up for PanDerm's ViTs only")
     depth = len(model.backbone.net.blocks)
     by_layer: dict[int, list] = {}
     for name, p in model.backbone.net.named_parameters():

@@ -216,8 +216,8 @@ The team made PanDerm a second track beside the from-scratch one (DECISIONS.md, 
 | Idea | What | Status |
 | --- | --- | --- |
 | PA | Gentler fine-tuning: head alone for 3 epochs, then a learning rate that shrinks towards the early layers | Passed step 1; on the test sets MIDAS test 0.811 → 0.848 (supported), DDI level, `test` −0.002 (not supported): a narrow miss, with the team (17 Nov) |
-| PB | 384 px input | After PD |
-| PC | PanDerm Large (ViT-L) | After PB, if it fits the GPU |
+| PB | 384 px input | Deferred (17 Nov): does not fit the 8 GB GPU at PA's batch size; about 13 hours at half the batch |
+| PC | PanDerm Large (ViT-L/16, the paper's network) on PA's recipe | Running (17 Nov), about 11 hours |
 | PD | PA's recipe with colour augmentation aimed at skin tone and lighting | Discarded at step 1 (17 Nov): flat at home, MIDAS validation 0.842 → 0.835 |
 
 ## Keeping this file up to date
