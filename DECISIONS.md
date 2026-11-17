@@ -651,3 +651,20 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 - **PB, a larger input** (384 px): MIDAS and DDI photos are clinic photos where the lesion is a small part of the frame; a larger input raised outside scores for SkinNet in the third round. Needs the position embedding recomputed for the new grid. Built on PA's recipe if PA passes, else on `panderm-base`'s.
 - **PC, PanDerm Large**: the paper's main network (ViT-L), if it fits in 8 GB at batch 16 with mixed precision.
 - **PD, ideas that failed from scratch but may not on a pretrained network**: the Asan thumbnails (section 22) are not among them, their fault being blur; stronger colour augmentation aimed at skin tone is, and is the one most directed at DDI.
+
+**Outcome of idea PA (17 Nov 2026): passed step 1; on the test sets a narrow miss, put to the team.** Three seeds, test-time flips and the seed average; scored once on every test set (ledger, 17 Nov). Against `panderm-base`:
+
+| Set | Score | PanDerm base | Idea PA | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.967 | 0.975 | +0.007 [+0.000, +0.015] | yes, a gain |
+| `midas_val` | AUC | 0.835 | 0.842 | +0.007 [−0.018, +0.034] | no |
+| `test` | AUC | 0.968 | 0.967 | −0.001 [−0.007, +0.005] | no |
+| `test` | Within-source AUC | 0.971 | 0.970 | −0.002 [−0.008, +0.004] | no |
+| `midas_test` | AUC | 0.811 | 0.848 | +0.037 [+0.008, +0.067] | yes, a gain |
+| DDI | AUC | 0.650 | 0.650 | +0.001 [−0.024, +0.026] | no |
+| DermaCon-IN (65 photos) | AUC | 0.880 | 0.933 | +0.053 [+0.000, +0.122] | no |
+
+- Step 1 passed: higher on both validation sets. On the test sets the rule asks for higher on `test`, `midas_test` and DDI. MIDAS test is higher by a supported amount; DDI is higher by 0.001, which is nothing; `test` is lower by 0.002, not supported. So the rule is missed by 0.002 on a set where both networks are at 0.97, and that is the team's to settle. My recommendation: adopt PA as the PanDerm track's starting point, since the only supported difference on any test set is a gain outside.
+- Against checkpoint 4 (from scratch): `test` within-source AUC +0.062, MIDAS test 0.750 → 0.848 (+0.098), DermaCon-IN 0.818 → 0.933 (+0.114), all supported; DDI 0.650 → 0.650, level.
+- DDI did not move. Gentler fine-tuning helped where PanDerm already helped (MIDAS), not where it did not. Three networks and five recipes now sit at 0.63 to 0.65 on DDI, which points at the training data rather than at how the network is trained.
+- Until the team answers, later PanDerm ideas use PA's recipe and are compared with both `panderm-base` and `panderm-a`, so that neither answer makes a run useless.

@@ -215,7 +215,7 @@ The team made PanDerm a second track beside the from-scratch one (DECISIONS.md, 
 
 | Idea | What | Status |
 | --- | --- | --- |
-| PA | Gentler fine-tuning: head alone for 3 epochs, then a learning rate that shrinks towards the early layers | Running (17 Nov) |
+| PA | Gentler fine-tuning: head alone for 3 epochs, then a learning rate that shrinks towards the early layers | Passed step 1; on the test sets MIDAS test 0.811 → 0.848 (supported), DDI level, `test` −0.002 (not supported): a narrow miss, with the team (17 Nov) |
 | PB | 384 px input | Next |
 | PC | PanDerm Large (ViT-L) | After PB, if it fits the GPU |
 | PD | Colour augmentation aimed at skin tone | After PC |

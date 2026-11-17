@@ -192,7 +192,7 @@ Each idea has a letter, continuing from A to H above. The rule is the same for e
 
 Every idea on the first list has been run (16 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above, S included. The PanDerm reference (DECISIONS.md, section 23) is done too. On 17 Nov the team made PanDerm a second track beside this one (section 24); its ideas are listed in [IDEAS.md](IDEAS.md). The from-scratch track stays at checkpoint 4. Data details are in [DATA_PLAN.md](DATA_PLAN.md).
 
-**Order (16 Nov 2026):** N, M, L, K, R and S are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done, its lower learning rate included (table above). The PanDerm reference is done (table above). Running now: PanDerm-track idea PA (section 24). From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
+**Order (16 Nov 2026):** N, M, L, K, R and S are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done, its lower learning rate included (table above). The PanDerm reference is done (table above). PanDerm-track idea PA is scored and with the team as a narrow miss (section 24). From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 

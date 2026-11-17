@@ -294,6 +294,24 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## PanDerm track, idea PA: gentler fine-tuning (17 Nov 2026)
+
+PanDerm's ViT-B/16 on checkpoint 4's data, the head trained alone for 3 epochs, then every layer for 20 with a learning rate that shrinks by 0.75 per block towards the input. Three seeds, test-time flips and the seed average, scored once on every set. Against the first PanDerm run (`panderm-base`, every layer at 5e-5 from the first step):
+
+| Set | Score | PanDerm base | Idea PA | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.967 | 0.975 | +0.007 [+0.000, +0.015] | yes, a gain |
+| `midas_val` | AUC | 0.835 | 0.842 | +0.007 [−0.018, +0.034] | no |
+| `test` | AUC | 0.968 | 0.967 | −0.001 [−0.007, +0.005] | no |
+| `test` | Within-source AUC | 0.971 | 0.970 | −0.002 [−0.008, +0.004] | no |
+| `midas_test` | AUC | 0.811 | 0.848 | +0.037 [+0.008, +0.067] | yes, a gain |
+| DDI | AUC | 0.650 | 0.650 | +0.001 [−0.024, +0.026] | no |
+| DermaCon-IN (65 photos) | AUC | 0.880 | 0.933 | +0.053 [+0.000, +0.122] | no |
+
+Against checkpoint 4 (from scratch): `test` within-source AUC +0.062, MIDAS test 0.750 → 0.848 (+0.098), DermaCon-IN 0.818 → 0.933 (+0.114), all supported; DDI 0.650 → 0.650, level.
+
+**Outcome: a narrow miss of the rule, with the team.** The only supported difference on a test set is the gain on MIDAS test; `test` is 0.002 lower, not supported; DDI did not move.
+
 ## PanDerm reference (16 Nov 2026)
 
 PanDerm's ViT-B/16, pretrained by its authors on about 2.1 million skin images, trained on checkpoint 4's data (learning rate 5e-5, 20 epochs). Three seeds, test-time flips and the seed average, scored once on every set. A reference like idea P, never a checkpoint. Against checkpoint 4:
