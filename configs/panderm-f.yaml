@@ -1,0 +1,7 @@
+# PanDerm track, idea PF (DECISIONS.md, section 24): PanDerm checkpoint 1's recipe, validated,
+# selected and kept as a running average of its weights rather than the weights of one moment.
+extends: panderm-c.yaml
+name: panderm-f
+train:
+  ema_decay: 0.999             # per step: about the last 1,000 steps (two epochs) carry most of the weight
+  ema_every: 4                 # averaged every 4 steps, in CPU memory: about 4% more time, no GPU memory

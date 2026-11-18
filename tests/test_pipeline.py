@@ -136,7 +136,8 @@ def test_pipeline(workdir, monkeypatch):
     # uninterrupted run: albumentations draws from its own unseeded generator, so two whole runs
     # with one seed already differ.)
     from skincancer.config import load_config
-    cfg = load_config("configs/tiny.yaml", ["seed=0", "train.patience=0"])
+    cfg = load_config("configs/tiny.yaml", ["seed=0", "train.patience=0",       # with a weight average,
+                                             "train.ema_decay=0.9", "train.ema_every=2"])   # which is resumed too
     real, calls = train.selection_score, {"n": 0}
 
     def killed_in_epoch_2(*a, **k):
@@ -150,6 +151,8 @@ def test_pipeline(workdir, monkeypatch):
         train.train(dict(cfg, name="tiny_cut"))
     before = pd.read_csv("runs/tiny_cut/s0/history.csv")
     assert Path("runs/tiny_cut/s0/last.pt").exists() and len(before) == 2
+    import torch
+    assert torch.load("runs/tiny_cut/s0/last.pt", weights_only=False)["ema"]["steps"] > 0
     monkeypatch.setattr(train, "selection_score", real)
     train.train(dict(cfg, name="tiny_cut"))
     after = pd.read_csv("runs/tiny_cut/s0/history.csv")

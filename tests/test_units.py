@@ -359,6 +359,28 @@ def test_colour_augmentation_is_optional_and_changes_colour():
     assert out.shape == (3, 64, 64) and torch.isfinite(out).all()
 
 
+def test_weight_average():
+    from skincancer.train import WeightAverage
+    m = torch.nn.Linear(3, 2)
+    w0 = [p.detach().clone() for p in m.parameters()]
+    ema = WeightAverage(m, decay=0.9, every=2)
+    with torch.no_grad():
+        for p in m.parameters():
+            p.add_(1.0)
+    ema.update()
+    assert all(torch.equal(a, w) for a, w in zip(ema.avg, w0))            # step 1 of 2: not yet
+    ema.update()
+    for a, w in zip(ema.avg, w0):
+        assert torch.allclose(a, w + (1 - 0.9 ** 2))                       # moved 19% of the way
+    ema.swap()
+    assert all(torch.allclose(p, w + 0.19) for p, w in zip(m.parameters(), w0))
+    ema.swap()
+    assert all(torch.allclose(p, w + 1) for p, w in zip(m.parameters(), w0))   # trained weights back
+    again = WeightAverage(m, decay=0.9, every=2)
+    again.load_state_dict(ema.state_dict())
+    assert again.steps == 2 and all(torch.equal(a, b) for a, b in zip(again.avg, ema.avg))
+
+
 def test_layer_decay_and_head_only_epochs():
     from skincancer import runs
     from skincancer.train import make_scheduler, param_groups

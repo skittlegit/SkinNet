@@ -86,6 +86,47 @@ def make_scheduler(opt, epochs: int, warmup: int = 0, head_epochs: int = 0, head
         opt, [head(g) if g.get("head") and head_epochs else body for g in opt.param_groups])
 
 
+class WeightAverage:
+    """A running average of the network's weights (idea PF, DECISIONS.md section 24): every
+    `every` training steps avg <- avg + (1 - decay**every) * (weights - avg), so `decay` is the
+    per-step rate and about 1 / (1 - decay) steps carry most of the weight. Kept in CPU memory: a
+    second copy of PanDerm Large on the GPU would not fit in 8 GB. swap() exchanges the network's
+    weights with the average, in place; a second swap() puts them back."""
+
+    def __init__(self, model, decay: float, every: int = 1):
+        self.params = list(model.parameters())
+        self.avg = [p.detach().to("cpu", copy=True) for p in self.params]
+        pin = self.params[0].is_cuda
+        self.buf = [torch.empty_like(a, pin_memory=pin) for a in self.avg]
+        self.weight, self.every, self.steps = 1 - decay ** every, every, 0
+
+    @torch.no_grad()
+    def update(self):
+        self.steps += 1
+        if self.steps % self.every:
+            return
+        for b, p in zip(self.buf, self.params):
+            b.copy_(p, non_blocking=True)
+        if self.params[0].is_cuda:
+            torch.cuda.synchronize()
+        torch._foreach_lerp_(self.avg, self.buf, self.weight)
+
+    @torch.no_grad()
+    def swap(self):
+        for b, a, p in zip(self.buf, self.avg, self.params):
+            b.copy_(p)
+            p.copy_(a)
+            a.copy_(b)
+
+    def state_dict(self) -> dict:
+        return {"avg": self.avg, "steps": self.steps}
+
+    def load_state_dict(self, st: dict):
+        for a, s in zip(self.avg, st["avg"]):
+            a.copy_(s)
+        self.steps = st["steps"]
+
+
 def param_groups(model, lr: float, layer_decay: float | None = None) -> list[dict]:
     """Parameter groups for AdamW. The linear head is its own group, marked `head`. With
     layer_decay (PanDerm's ViT only) each transformer block's rate is the one above it times
@@ -153,6 +194,7 @@ def train(cfg: dict) -> dict:
     sched = make_scheduler(opt, t["epochs"], t["warmup_epochs"], t.get("head_epochs", 0), t.get("head_lr"))
     use_amp = t["amp"] and dev.type == "cuda"
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
+    ema = WeightAverage(model, t["ema_decay"], t.get("ema_every", 1)) if t.get("ema_decay") else None
 
     history, best, stale, start = [], {"val_auc": -math.inf}, 0, 0
     resume = rdir / "last.pt"   # written after every epoch, so a stopped run continues where it was
@@ -168,6 +210,8 @@ def train(cfg: dict) -> dict:
             torch.cuda.set_rng_state_all(st["cuda_rng"])
         np.random.set_state(st["np_rng"])
         random.setstate(st["py_rng"])
+        if ema is not None:
+            ema.load_state_dict(st["ema"])
         history, best, stale, start = st["history"], st["best"], st["stale"], st["epoch"] + 1
         print(f"[{cfg['name']} s{cfg['seed']}] resumed after epoch {st['epoch']}", flush=True)
     for ep in range(start, t["epochs"]):
@@ -184,11 +228,15 @@ def train(cfg: dict) -> dict:
             scaler.scale(loss).backward()
             scaler.step(opt)
             scaler.update()
+            if ema is not None:
+                ema.update()
             tot += loss.item() * len(y)
             n += len(y)
         lr = opt.param_groups[-1]["lr"]   # the top of the backbone (the head's is the same after head_epochs)
         sched.step()
         model.eval()
+        if ema is not None:   # validate, select and keep the averaged weights
+            ema.swap()
         val_auc = selection_score(val_loader.dataset.labels, runs.infer(model, val_loader)[:, 1],
                                   val_source, select_metric)
         rec = {"epoch": ep, "lr": lr, "loss": tot / max(n, 1), "val_auc": val_auc,
@@ -204,13 +252,16 @@ def train(cfg: dict) -> dict:
             stale = 0
         else:
             stale += 1
+        if ema is not None:
+            ema.swap()        # back to the trained weights, which training continues from
         tmp = rdir / "last.pt.tmp"
         torch.save({"epoch": ep, "model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(),
                     "scaler": scaler.state_dict(), "loader_rng": tr_loader.generator.get_state(),
                     "torch_rng": torch.get_rng_state(),
                     "cuda_rng": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
                     "np_rng": np.random.get_state(), "py_rng": random.getstate(),
-                    "history": history, "best": best, "stale": stale}, tmp)
+                    "history": history, "best": best, "stale": stale,
+                    "ema": ema.state_dict() if ema is not None else None}, tmp)
         tmp.replace(resume)
         if t["patience"] and stale >= t["patience"]:
             break
