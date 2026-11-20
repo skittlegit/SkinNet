@@ -1,7 +1,0 @@
-# Idea T (DECISIONS.md, section 25): checkpoint 4's recipe with half of DDI (ddi_train, split by
-# near-duplicate group, stratified by cancer x skin type) added to training. DDI is then scored
-# on its other half, ddi_hold, only.
-extends: skinnet-c4.yaml
-name: skinnet-idea-t
-data:
-  train_splits: [train, midas_train, ddi_train]

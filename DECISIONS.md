@@ -788,3 +788,13 @@ Nothing else in the manifest changed (checked row by row). `ddi_hold` is test-on
 **What a gain would mean.** A model trained on half of DDI has seen DDI's hospital, so a gain on `ddi_hold` shows it learned that hospital's photos and lesions, as MIDAS's gain did after `midas_train`; it does not show the model travels to a hospital it has never seen. If either idea becomes a checkpoint, from then on its track reports DDI on `ddi_hold` only, and DermaCon-IN (65 tumour photos) is the only source no model has trained on. Reported as such, beside the results without DDI in training.
 
 **Expectation.** A gain on `ddi_hold` on both tracks, larger from scratch (it has more to gain), as MIDAS rose 0.64 → 0.75 with its own photos; home and MIDAS level. The half-size test set makes a supported DDI gain harder to show: about 85 cancers instead of 171.
+
+**Outcome of idea T (20 Nov 2026): failed step 1, discarded, not scored on any test set.** 18,350 training images (checkpoint 4's 18,022 + the 328 of `ddi_train`); the seeds' best epochs were 45, 39 and 53. Paired comparison with checkpoint 4, both after test-time flips and the seed average:
+
+| Set | Score | Checkpoint 4 | Idea T | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` (outside validation) | AUC | 0.818 | 0.803 | −0.015 [−0.035, +0.005] | no |
+| `val` | AUC | 0.900 | 0.893 | −0.006 [−0.012, −0.001] | yes |
+| `val` | Within-source AUC | 0.905 | 0.902 | −0.003 [−0.012, +0.006] | no |
+
+Lower on both validation sets, neither by a supported amount on the two that decide: a clear fail by sections 19 and 25. 328 DDI photos are about 2% of the draws, and they cost a little at home and on MIDAS. What they did on DDI is not known: there is no DDI validation set, so step 1 cannot see the gain this idea was aimed at, and `ddi_hold` was not looked at (it stays unseen for PG and any later idea). Its config and runs are deleted.

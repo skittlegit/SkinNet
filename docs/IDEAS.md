@@ -29,7 +29,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
-| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Running |
+| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Discarded at step 1: lower on `val` and `midas_val` |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
@@ -210,7 +210,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Why:** DDI has stayed near 0.65 on every from-scratch model; MIDAS rose only when its own photos were trained on (ideas J and O). Decided by the team, 20 Nov (DECISIONS.md, section 25).
 - **Compared on:** step 1 on validation, paired comparison with checkpoint 4; then the test sets with `ddi_hold` in place of DDI.
 - **Caution:** a gain on `ddi_hold` shows the model learned DDI's hospital, not that it travels to an unseen one.
-- **Status:** running (20 Nov).
+- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25).
 
 ### PanDerm reference
 
