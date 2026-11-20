@@ -359,6 +359,7 @@ One name per model, used for its config, its run folder and its result folder.
 - A run folder holds the seeds (`s0`, `s1`, `s2`) and, once built, their average (`avg`). There are no separate folders for steps on the way to a model: no `-train`, `-tta` or `-ens` names.
 - An idea that is kept is renamed to the next checkpoint name everywhere (config, runs, results, ledger, documents). An idea that is discarded is deleted.
 - Git tags stay `checkpoint-<number>`.
+- **Added 20 Nov 2026 (team):** a reference model, one that only measures something and is never a candidate (idea P's ResNet-18s), is named `ref-<what it is>`: `ref-resnet18-scratch`, `ref-resnet18-imagenet`, `ref-resnet18-imagenet-lr1e4` (until 20 Nov without the `ref-`). The PanDerm track (section 24) follows the same pattern as SkinNet: `panderm` (its starting point), `panderm-c<number>` (its checkpoints), `panderm-idea-<letter>` (its ideas). Its runs are renamed to it once idea PF's first step ends.
 - No model was retrained or re-scored for this change. `evaluate` and `compare` read `avg` when it exists, and the seeds otherwise. The pause on 13 Nov stopped ideas N and M before any seed finished; both start again from seed 0.
 - Logs sit inside the model's run folder (`runs/<name>/logs/s0.log`, `final.log`, `evaluate.log`). `runs/` holds only model folders and the test-set ledger; `results/` holds only one folder per kept model.
 
@@ -446,8 +447,8 @@ Decided by the team on 14 Nov, after ideas M and N (section 14) and before idea 
 **2. Idea P runs as a reference comparison, not as a candidate.** The from-scratch rule (section 1) stays for every checkpoint. P measures what that rule costs, so the team and the supervisor can decide with numbers in hand.
 
 - SkinNet has no ImageNet weights, so P uses torchvision's ResNet-18 (11.2 million parameters). Two models, so a difference can be put on the weights and not on the network:
-  - `resnet18-imagenet` (`configs/resnet18-imagenet.yaml`): starts from torchvision's ImageNet weights (IMAGENET1K_V1), every layer trained.
-  - `resnet18-scratch` (`configs/resnet18-scratch.yaml`): the same network from random weights.
+  - `ref-resnet18-imagenet` (`configs/ref-resnet18-imagenet.yaml`): starts from torchvision's ImageNet weights (IMAGENET1K_V1), every layer trained.
+  - `ref-resnet18-scratch` (`configs/ref-resnet18-scratch.yaml`): the same network from random weights.
 - Both use checkpoint 3's recipe unchanged (MIDAS training share, balanced drawing inside each dataset, AdamW at 1e-3 with warm-up and cosine decay, 60 epochs, test-time flips, three seeds and their average), so the only difference from checkpoint 3 is the network, and between the two only the starting weights. The learning rate is not tuned for the ImageNet start; if it is lower than expected, that is the first thing to check.
 - Both are scored once on every set, test sets included, whatever their validation scores: they are measurements, not candidates. They are reported next to checkpoint 3 with the paired comparison and are never renamed to a checkpoint. They are named after their network, not `skinnet-`, because they are not SkinNet.
 - The images are normalised with ImageNet's mean and spread already (`data/dataset.py`), so nothing else changes.
@@ -495,7 +496,7 @@ Decided by the team on 14 Nov, after ideas M and N (section 14) and before idea 
 - **The network is not the limit.** From random weights the ResNet-18, four times SkinNet's size, is no better than SkinNet anywhere: slightly lower at home (`test` AUC −0.015 against checkpoint 3, supported), within noise outside. This agrees with idea M.
 - **The ImageNet start helps at home only, at this learning rate.** Against the same network from random weights it raises every home score by 0.05 to 0.07 (supported), and no outside score: MIDAS validation −0.029, MIDAS test +0.010, DDI −0.037, none supported. Against checkpoint 4 it is lower on all three outside sets (MIDAS validation −0.063, supported).
 - So with checkpoint 3's recipe the from-scratch rule costs nothing outside: checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. That is not what published work leads one to expect.
-- **Follow-up, decided without the team (14 Nov) under the standing instruction to pick the recommended option and record it.** Section 19 named the untuned learning rate as the first thing to check if the ImageNet start did less than expected: 1e-3 on every layer for 60 epochs may overwrite most of what ImageNet taught and leave a model that has simply learned our home datasets well. `resnet18-imagenet-lr1e4` is the same model at 1e-4 (`configs/resnet18-imagenet-lr1e4.yaml`), a reference like the other two: scored once on every set, never a checkpoint. It uses the GPU lane freed by the two references, alongside idea K.
+- **Follow-up, decided without the team (14 Nov) under the standing instruction to pick the recommended option and record it.** Section 19 named the untuned learning rate as the first thing to check if the ImageNet start did less than expected: 1e-3 on every layer for 60 epochs may overwrite most of what ImageNet taught and leave a model that has simply learned our home datasets well. `ref-resnet18-imagenet-lr1e4` is the same model at 1e-4 (`configs/ref-resnet18-imagenet-lr1e4.yaml`), a reference like the other two: scored once on every set, never a checkpoint. It uses the GPU lane freed by the two references, alongside idea K.
 
 **Outcome of the follow-up (15 Nov 2026).** Scored once on every set (ledger, 15 Nov):
 

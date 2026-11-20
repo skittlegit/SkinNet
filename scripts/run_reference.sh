@@ -2,7 +2,7 @@
 # A reference model (DECISIONS.md, section 19): never a checkpoint, scored once on every set.
 # Trains three seeds and scores them on the test-only sets (scripts/run.sh), averages the seeds on
 # every set, then compares with checkpoint 3 everywhere.
-#   PY=.venv/Scripts/python bash scripts/run_reference.sh resnet18-imagenet
+#   PY=.venv/Scripts/python bash scripts/run_reference.sh ref-resnet18-imagenet
 set -uo pipefail
 EXP=${1:?usage: run_reference.sh <name>}
 PY=${PY:-python}
