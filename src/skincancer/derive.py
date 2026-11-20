@@ -6,6 +6,9 @@
     # test-time flips for a model trained without them: the same weights under a new name,
     # predicting on the image and its mirror images (this is how checkpoint 2 was made)
     python -m skincancer.derive tta --exp skinnet-c1 --name skinnet-c2
+    # a model scored on all of DDI before it was split (section 25): its predictions on the
+    # held-out half, cut from the ones it already has. Not a new look: no image is scored again.
+    python -m skincancer.derive subset --exp skinnet-c4 --source ddi_test --splits ddi_hold
 
 `tta` writes runs/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
 with `predict` as usual. A config with `eval.tta: true` needs no such step. `ensemble` writes
@@ -78,14 +81,41 @@ def make_ensemble(exp: str, name: str | None, splits: list[str], runs_dir: str =
     return dst
 
 
+def make_subset(exp: str, source: str, split: str, manifest_path: str = "data/manifest.csv",
+                runs_dir: str = "runs") -> list[Path]:
+    """preds/<split>.csv for every scored folder of `exp` (seeds and average), cut from its
+    preds/<source>.csv. Every image of `split` must already be in `source`'s predictions."""
+    manifest = pd.read_csv(manifest_path)
+    ids = set(manifest.loc[manifest["split"] == split, "image_id"])
+    if not ids:
+        raise SystemExit(f"no images in split {split!r}")
+    out = []
+    root = Path(runs_dir) / exp
+    for sdir in [*sorted(root.glob("s[0-9]*")), root / "avg"]:
+        src = sdir / "preds" / f"{source}.csv"
+        if not src.exists():
+            continue
+        df = pd.read_csv(src)
+        missing = ids - set(df["image_id"])
+        if missing:
+            raise SystemExit(f"{src}: {len(missing)} images of {split} were never scored here")
+        dst = sdir / "preds" / f"{split}.csv"
+        df[df["image_id"].isin(ids)].to_csv(dst, index=False)
+        out.append(dst)
+    if not out:
+        raise SystemExit(f"{exp}: no predictions on {source}")
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["tta", "ensemble"])
+    ap.add_argument("what", choices=["tta", "ensemble", "subset"])
     ap.add_argument("--exp", required=True, help="finished experiment to derive from")
     ap.add_argument("--name", help="name of the derived experiment (ensemble: defaults to --exp)")
     ap.add_argument("--splits", nargs="+", default=["val"], help="ensemble only")
     ap.add_argument("--final", action="store_true", help="ensemble only: required for test-only sets")
     ap.add_argument("--force", action="store_true", help="ensemble only: rebuild sets the ledger already lists")
+    ap.add_argument("--source", help="subset only: the split whose predictions are cut down to --splits")
     ap.add_argument("--runs-dir", default="runs")
     args = ap.parse_args(argv)
     if args.what == "tta":
@@ -93,6 +123,12 @@ def main(argv=None):
             ap.error("tta needs --name")
         for d in make_tta(args.exp, args.name, args.runs_dir):
             print(f"wrote {d}")
+    elif args.what == "subset":
+        if not args.source:
+            ap.error("subset needs --source")
+        for split in args.splits:
+            for d in make_subset(args.exp, args.source, split, runs_dir=args.runs_dir):
+                print(f"wrote {d}")
     else:
         print(f"wrote {make_ensemble(args.exp, args.name, args.splits, args.runs_dir, args.final, args.force)}")
 

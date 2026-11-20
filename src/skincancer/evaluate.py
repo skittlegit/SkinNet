@@ -22,7 +22,8 @@ from .labels import CLASSES
 EVAL_SETS = {
     "val": ("binary", ["dataset", "label_fine"]),
     "test": ("binary", ["dataset", "label_fine"]),
-    "ddi_test": ("binary", []),                   # biopsy-proven, Stanford
+    "ddi_test": ("binary", []),                   # biopsy-proven, Stanford (all of DDI; before 20 Nov)
+    "ddi_hold": ("binary", []),                   # DDI's held-out half once ddi_train exists (section 25)
     "midas_val": ("binary", ["label_fine"]),      # outside validation: never trained on, used to choose models
     "midas_test": ("binary", ["label_fine"]),     # biopsy-proven clinical photos, Stanford
     "dermacon_test": ("binary", ["label_fine"]),  # Indian tumours

@@ -762,3 +762,29 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 - By the team's instruction of 20 Nov, no new training is started until the team decides the next step.
 
 **PanDerm checkpoint 1's config stands alone (20 Nov 2026, team).** `configs/panderm-c1.yaml` now extends `panderm.yaml` with idea PA's settings written out, instead of extending `panderm-idea-a.yaml`; the resolved config is identical, so the checkpoint is unchanged. PA's config and runs no longer carry anything the checkpoint needs; they stay until the team decides on stored weights at the end of the PanDerm track.
+
+## 25. Half of DDI in training, on both tracks (20 Nov 2026)
+
+**Decided by the team (20 Nov), written before any training.** DDI has stayed near 0.65 on every from-scratch model and reached 0.686 only with PanDerm Large; tuning how either network trains (PE, PF, and N on the from-scratch track) has not moved it, and adding MIDAS's own photos is what raised MIDAS (ideas J and O). So both tracks now try the same thing with DDI: half of it in training, the other half kept for testing.
+
+**The split.** DDI has no patient IDs, so every image counts as its own patient and the unit is the near-duplicate group (650 groups for 656 images). `make_splits` (`splits.ddi` in `configs/data.yaml`) divides it in two, stratified by cancer and skin type (I–II, III–IV, V–VI), with the project's split seed:
+
+| | Cancers I–II | III–IV | V–VI | Not cancer I–II | III–IV | V–VI | All |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `ddi_train` (may be trained on) | 24 | 37 | 24 | 80 | 83 | 80 | 328 |
+| `ddi_hold` (test only) | 25 | 37 | 24 | 79 | 84 | 79 | 328 |
+
+Nothing else in the manifest changed (checked row by row). `ddi_hold` is test-only like `ddi_test` was: scored once per model through the ledger. There is no DDI validation set, so no model is chosen on DDI.
+
+**Earlier models on `ddi_hold`.** Every earlier model was scored once on all of DDI. Its score on `ddi_hold` is cut from those predictions (`derive subset --source ddi_test --splits ddi_hold`): no image is looked at again. On `ddi_hold`, checkpoint 4 scores 0.641 and PanDerm checkpoint 1 0.691 (0.650 and 0.686 on all of DDI).
+
+**The two ideas.** Each is its track's current checkpoint with `ddi_train` added to `data.train_splits`, nothing else changed. Drawn like every other dataset in training: cancer and not cancer equally often inside DDI, and DDI's share of the draws its share of the images (about 2%).
+
+- **T** (from scratch, `configs/skinnet-idea-t.yaml`): checkpoint 4's recipe + `ddi_train`. Compared with `skinnet-c4`.
+- **PG** (PanDerm, `configs/panderm-idea-g.yaml`): PanDerm checkpoint 1's recipe + `ddi_train`. Compared with `panderm-c1`.
+
+**How each is judged.** Sections 19 and 24 unchanged, with `ddi_hold` in place of DDI: step 1 on `val` (within-source AUC) and `midas_val`, higher on both and neither lower by a supported amount; then scored once on `test`, `midas_test`, `ddi_hold` and DermaCon-IN; a new checkpoint (`skinnet-c5`, `panderm-c2`) if higher on `test`, `midas_test` and `ddi_hold`, at least one by a supported amount, none lower by a supported amount, and DermaCon-IN not lower by a supported amount. Narrow misses go to the team. The two run one after the other, T first (about 2 hours), then PG (about 6).
+
+**What a gain would mean.** A model trained on half of DDI has seen DDI's hospital, so a gain on `ddi_hold` shows it learned that hospital's photos and lesions, as MIDAS's gain did after `midas_train`; it does not show the model travels to a hospital it has never seen. If either idea becomes a checkpoint, from then on its track reports DDI on `ddi_hold` only, and DermaCon-IN (65 tumour photos) is the only source no model has trained on. Reported as such, beside the results without DDI in training.
+
+**Expectation.** A gain on `ddi_hold` on both tracks, larger from scratch (it has more to gain), as MIDAS rose 0.64 → 0.75 with its own photos; home and MIDAS level. The half-size test set makes a supported DDI gain harder to show: about 85 cancers instead of 171.

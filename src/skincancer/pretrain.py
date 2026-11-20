@@ -37,7 +37,7 @@ from .data.dataset import MEAN, STD
 from .models import SkinNet
 from .train import make_scheduler
 
-EVAL_SPLITS_NEVER = {"val", "test", "midas_val", "midas_test", "ddi_test", "dermacon_test", "dermacon_other", "ak_side"}
+EVAL_SPLITS_NEVER = {"val", "test", "midas_val", "midas_test", "ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "ak_side"}
 
 
 def ssl_transform(img_size: int) -> A.Compose:

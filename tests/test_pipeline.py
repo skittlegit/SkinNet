@@ -111,7 +111,7 @@ def test_pipeline(workdir, monkeypatch):
     assert main["fst"].isna().any() and (main["fst"] >= 4).any()        # skin type plays no part in the split
     assert 0.6 < (main["split"] == "train").mean() < 0.8
     assert by_id.loc["f17k_dup1", "split"] == by_id.loc["f17k_h0001", "split"]   # duplicates stay together
-    assert set(m.loc[m["dataset"] == "ddi", "split"]) == {"ddi_test"}
+    assert set(m.loc[m["dataset"] == "ddi", "split"]) == {"ddi_train", "ddi_hold"}   # halves (section 25)
     assert set(m.loc[m["label_4class"] == "ak", "split"]) <= {"ak_side", "excluded"}
     make_splits.check_no_leakage(m)
     assert {p.stem for p in Path("data/splits").glob("*.csv")} == set(m["split"]) - {"excluded"}
@@ -128,7 +128,7 @@ def test_pipeline(workdir, monkeypatch):
     preds = pd.read_csv("runs/tiny/s0/preds/test.csv")
     assert [c for c in preds if c.startswith("p_")] == ["p_not_cancer", "p_cancer"]
     assert np.allclose(preds[["p_not_cancer", "p_cancer"]].sum(1), 1, atol=1e-5)
-    assert not Path("runs/tiny/s0/preds/ddi_test.csv").exists()  # test-only never automatic
+    assert not Path("runs/tiny/s0/preds/ddi_hold.csv").exists()  # test-only never automatic
     train.main(["--config", "configs/tiny.yaml", "--seed", "0"])   # finished: skipped, not retrained
     assert len(pd.read_csv("runs/tiny/s0/history.csv")) == len(hist)
 
@@ -161,17 +161,17 @@ def test_pipeline(workdir, monkeypatch):
     assert not Path("runs/tiny_cut/s0/last.pt").exists() and Path("runs/tiny_cut/s0/summary.json").exists()
 
     with pytest.raises(SystemExit):
-        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_test"])  # needs --final
+        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold"])  # needs --final
     for seed in (0, 1):
-        predict.main(["--run", f"runs/tiny/s{seed}", "--splits", "ddi_test", "--final"])
+        predict.main(["--run", f"runs/tiny/s{seed}", "--splits", "ddi_hold", "--final"])
     with pytest.raises(SystemExit):
-        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_test", "--final"])  # only once
+        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold", "--final"])  # only once
     ledger = pd.read_csv("runs/final_ledger.csv")
     assert set(ledger["run"]) == {"runs/tiny/s0", "runs/tiny/s1"}
 
     out = evaluate.evaluate("tiny", n_boot=50)
-    assert set(out["eval_set"]) >= {"val", "test", "ddi_test", "ak_side"}
-    assert set(out.loc[out["eval_set"] == "ddi_test", "metric"]) == {"binary_auc", "missed_cancer_rate", "false_alarm_rate",
+    assert set(out["eval_set"]) >= {"val", "test", "ddi_hold", "ak_side"}
+    assert set(out.loc[out["eval_set"] == "ddi_hold", "metric"]) == {"binary_auc", "missed_cancer_rate", "false_alarm_rate",
                                                                      "missed_cancer_rate_op90", "false_alarm_rate_op90"}
     test = out[out["eval_set"] == "test"]
     auc = test[(test["metric"] == "binary_auc") & (test["subgroup"] == "all")].iloc[0]
@@ -218,13 +218,13 @@ def test_pipeline(workdir, monkeypatch):
     parts = [pd.read_csv(f"runs/tiny/s{k}/preds/val.csv").set_index("image_id").loc[ens.index] for k in (0, 1)]
     assert np.allclose(ens["p_cancer"], (parts[0]["p_cancer"] + parts[1]["p_cancer"]) / 2)
     with pytest.raises(SystemExit):
-        derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_test"])   # needs --final
-    derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_test", "--final"])
+        derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold"])   # needs --final
+    derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold", "--final"])
     with pytest.raises(SystemExit):
-        derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_test", "--final"])   # once
+        derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold", "--final"])   # once
     n_rows = len(pd.read_csv("runs/final_ledger.csv"))
-    derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_test", "--final", "--force"])
-    predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_test", "--final", "--force"])
+    derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold", "--final", "--force"])
+    predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold", "--final", "--force"])
     assert len(pd.read_csv("runs/final_ledger.csv")) == n_rows            # reproductions add no ledger rows
     assert "runs/tiny_ens/avg" in set(pd.read_csv("runs/final_ledger.csv")["run"])
     assert set(compare.main(["--a", "tiny", "--b", "tiny_ens", "--splits", "val", "--n-boot", "50"])["b"]) == {"tiny_ens"}

@@ -6,8 +6,9 @@ Pools: main = every Fitzpatrick17k and PAD-UFES-20 image labelled cancer or not 
 split into train / val / test; ak_side = actinic keratoses; ddi_test / dermacon_test /
 dermacon_other = test-only datasets; MIDAS is split by patient into midas_train (may be
 added to training), midas_val (never trained on; used to choose between models) and
-midas_test. A near-duplicate group that touches a
-test-only set loses its trainable members.
+midas_test. DDI (since 20 Nov 2026, DECISIONS.md section 25) is split by near-duplicate group
+into ddi_train (may be added to training) and ddi_hold (test only), stratified by cancer x
+skin type. A near-duplicate group that touches a test-only set loses its trainable members.
 """
 from __future__ import annotations
 
@@ -108,10 +109,14 @@ def make(manifest: pd.DataFrame, cfg: dict, groups: pd.DataFrame | None = None):
     if midas.any() and sp.get("midas"):   # by patient, after the duplicate rules above treated all of it as a test set
         df.loc[midas, "split"] = grouped_split(df[midas], ["midas_train", "midas_val", "midas_test"], sp["midas"],
                                                sp["seed"], df.loc[midas, "label_fine"])
+    ddi = df["pool"] == "ddi_test"
+    if ddi.any() and sp.get("ddi"):       # DDI has no patient IDs: each image is its own patient, split by group
+        strata = df.loc[ddi, "label_cancer"].fillna("none") + " " + df.loc[ddi, "fst_bucket"].fillna("none")
+        df.loc[ddi, "split"] = grouped_split(df[ddi], ["ddi_train", "ddi_hold"], sp["ddi"], sp["seed"], strata)
     return df.drop(columns="pool")
 
 
-EXTERNAL_TEST = {"ddi_test", "dermacon_test", "dermacon_other", "midas_test"}
+EXTERNAL_TEST = {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test"}
 
 
 def check_no_leakage(df: pd.DataFrame) -> None:

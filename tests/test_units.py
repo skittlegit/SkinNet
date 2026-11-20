@@ -359,6 +359,25 @@ def test_colour_augmentation_is_optional_and_changes_colour():
     assert out.shape == (3, 64, 64) and torch.isfinite(out).all()
 
 
+def test_ddi_split_and_subset(tmp_path):
+    import pandas as pd
+    from skincancer.data.make_splits import grouped_split
+    from skincancer.derive import make_subset
+    df = pd.DataFrame({"group_id": [f"g{i}" for i in range(40)],
+                       "s": ["cancer I-II", "not V-VI"] * 20})
+    sp = grouped_split(df, ["ddi_train", "ddi_hold"], [0.5, 0.5], 0, df["s"])
+    assert (sp == "ddi_train").sum() == 20 and pd.crosstab(sp, df["s"]).values.min() == 10   # halves, balanced
+    man = pd.DataFrame({"image_id": ["a", "b", "c"], "split": ["ddi_hold", "ddi_train", "ddi_hold"]})
+    man.to_csv(tmp_path / "m.csv", index=False)
+    for d in ("s0", "avg"):
+        (tmp_path / "runs/e" / d / "preds").mkdir(parents=True)
+        (tmp_path / "runs/e" / d / "config.yaml").write_text("name: e\n")
+        pd.DataFrame({"image_id": ["a", "b", "c"], "p_cancer": [.1, .2, .3]}).to_csv(
+            tmp_path / "runs/e" / d / "preds/ddi_test.csv", index=False)
+    out = make_subset("e", "ddi_test", "ddi_hold", str(tmp_path / "m.csv"), str(tmp_path / "runs"))
+    assert len(out) == 2 and list(pd.read_csv(out[0])["image_id"]) == ["a", "c"]
+
+
 def test_weight_average():
     from skincancer.train import WeightAverage
     m = torch.nn.Linear(3, 2)

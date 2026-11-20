@@ -1,0 +1,6 @@
+# PanDerm track, idea PG (DECISIONS.md, section 25): PanDerm checkpoint 1's recipe with half of
+# DDI (ddi_train) added to training, as idea T on the from-scratch track. Scored on ddi_hold.
+extends: panderm-c1.yaml
+name: panderm-idea-g
+data:
+  train_splits: [train, midas_train, ddi_train]
