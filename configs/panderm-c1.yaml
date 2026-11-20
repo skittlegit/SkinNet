@@ -1,11 +1,17 @@
-# PanDerm track, idea PC (DECISIONS.md, section 24): PA's recipe on PanDerm's ViT-L/16, the
-# network of the paper (304 million parameters), in place of the smaller ViT-B/16.
+# PanDerm checkpoint 1 (DECISIONS.md, section 24; was idea PC): PanDerm's ViT-L/16, the network of
+# the paper (304 million parameters), fine-tuned with idea PA's recipe: the head trained alone first,
+# then every layer with a learning rate that shrinks towards the early layers.
+# PA's settings are written out here, so this config does not depend on panderm-idea-a.yaml.
 # Weights: data/weights/panderm_large.pth (not in git).
-extends: panderm-idea-a.yaml
+extends: panderm.yaml
 name: panderm-c1
 model:
   arch: panderm_large
   grad_checkpointing: true     # fits batch 32 in 8 GB (6.3 GB instead of 11.8)
 train:
-  layer_decay: 0.86            # 24 blocks: the same range of rates as 0.75 over 12 (2.3e-6 at the patch embedding)
+  epochs: 23                   # 3 for the head alone, then up to 20 (idea PA)
+  head_epochs: 3
+  head_lr: 1.0e-3
+  lr: 1.0e-4                   # the top of the network; each block below at 0.86 times the one above
+  layer_decay: 0.86            # 24 blocks: the same range of rates as PA's 0.75 over 12 (2.3e-6 at the patch embedding)
   patience: 4                  # added 17 Nov after seed 0 (DECISIONS.md, section 24): stop 4 epochs after the best
