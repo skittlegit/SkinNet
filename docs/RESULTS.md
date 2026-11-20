@@ -294,6 +294,22 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## PanDerm track, idea PF: a running average of the weights (20 Nov 2026)
+
+PanDerm checkpoint 1's recipe, validated, selected and kept as an exponential average of its weights (decay 0.999 per step). Three seeds, test-time flips and the seed average; passed step 1, then scored once on every set.
+
+| Set | Score | PanDerm checkpoint 1 | Idea PF | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.983 | 0.985 | +0.002 [−0.002, +0.006] | no |
+| `midas_val` | AUC | 0.856 | 0.872 | +0.016 [−0.002, +0.032] | no |
+| `test` | AUC | 0.977 | 0.978 | +0.001 [−0.002, +0.005] | no |
+| `test` | Within-source AUC | 0.982 | 0.982 | +0.000 [−0.004, +0.003] | no |
+| `midas_test` | AUC | 0.874 | 0.874 | −0.000 [−0.016, +0.018] | no |
+| DDI | AUC | 0.686 | 0.668 | −0.018 [−0.031, −0.006] | **yes, lower** |
+| DermaCon-IN (65 photos) | AUC | 0.850 | 0.857 | +0.007 [−0.011, +0.036] | no |
+
+**Outcome: discarded.** Level at home and on MIDAS test, lower on DDI by a supported amount (DECISIONS.md, section 24).
+
 ## PanDerm track, idea PC: PanDerm Large, PanDerm checkpoint 1 (17 Nov 2026)
 
 PA's recipe on PanDerm's ViT-L/16 (304 million parameters) in place of the ViT-B/16. Three seeds, test-time flips and the seed average, scored once on every set.

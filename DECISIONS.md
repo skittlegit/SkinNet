@@ -743,3 +743,20 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 - The same trade as ideas I and O on the from-scratch track: a little lost at home for a little gained on MIDAS, neither supported.
 
 **Idea PF: an average of the weights (18 Nov 2026).** Written before the run. Every PanDerm seed peaks one to three epochs into full training and declines after, and PE shows that regularising each step does not move that peak. PF keeps PanDerm checkpoint 1's recipe and changes only which weights are validated, selected and kept: a running average of the weights along the way (`train.ema_decay` 0.999 per step, so about the last 1,000 steps, two epochs, carry most of the weight), not the weights at the end of one epoch. Averaging weights along a training run is a standard way to land in a flatter region that holds up better on unseen hospitals (SWAD, Cha et al., NeurIPS 2021, built for exactly that; an exponential average is its simplest form). The average is kept in CPU memory and updated every 4 steps (`train.ema_every`; measured: 0.17 s an update, about 4% more time): a second copy of PanDerm Large on the GPU needs 8.2 GB of the 8 GB. Early stopping follows the average's validation score; everything else is unchanged (`configs/panderm-idea-f.yaml`). Judged by section 24's rule against `panderm-c1`. Expectation: a later, slightly higher peak at home; on DDI and MIDAS, if anything, a small gain.
+
+**Outcome of idea PF (20 Nov 2026): passed step 1, failed on the test sets; discarded.** Three seeds, test-time flips and the seed average. The seeds peaked at epochs 7, 6 and 7 (PanDerm checkpoint 1's at 6, 5 and 4), with single-seed within-source AUC on `val` of 0.981, 0.983 and 0.983 against 0.976, 0.973 and 0.974: the averaged weights peaked later and higher, as expected. Step 1 passed (higher on both validation sets, neither by a supported amount), so it was scored once on the test sets (ledger, 20 Nov). Against `panderm-c1`:
+
+| Set | Score | PanDerm checkpoint 1 | Idea PF | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.983 | 0.985 | +0.002 [−0.002, +0.006] | no |
+| `midas_val` | AUC | 0.856 | 0.872 | +0.016 [−0.002, +0.032] | no |
+| `test` | AUC | 0.977 | 0.978 | +0.001 [−0.002, +0.005] | no |
+| `test` | Within-source AUC | 0.982 | 0.982 | +0.000 [−0.004, +0.003] | no |
+| `midas_test` | AUC | 0.874 | 0.874 | −0.000 [−0.016, +0.018] | no |
+| DDI | AUC | 0.686 | 0.668 | −0.018 [−0.031, −0.006] | **yes, lower** |
+| DermaCon-IN (65 photos) | AUC | 0.850 | 0.857 | +0.007 [−0.011, +0.036] | no |
+
+- Level at home and on MIDAS test, and lower on DDI by a supported amount, so the rule fails outright. A supported loss on DDI is not a narrow miss (as with idea S), so it is not put to the team. Its config and runs are deleted; the ledger keeps its rows, and `train.ema_decay` stays in the code.
+- Against `panderm` (the track's start) it is ahead on `test` and `midas_test` by supported amounts and on DDI by +0.018, not supported, so most of what it has is checkpoint 1's.
+- The reading: averaging the weights made a smoother fit to our training sources, which showed on `val`, and cost a little on the one hospital no model has seen, like idea N's longer schedule on the from-scratch track (DDI 0.657 → 0.592). On both tracks, more fitting to our own photos has not reached DDI. The two regularisers tried on PanDerm (PE, PF) both raised `midas_val` without a supported gain and neither moved DDI up.
+- By the team's instruction of 20 Nov, no new training is started until the team decides the next step.
