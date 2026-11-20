@@ -798,3 +798,14 @@ Nothing else in the manifest changed (checked row by row). `ddi_hold` is test-on
 | `val` | Within-source AUC | 0.905 | 0.902 | −0.003 [−0.012, +0.006] | no |
 
 Lower on both validation sets, neither by a supported amount on the two that decide: a clear fail by sections 19 and 25. 328 DDI photos are about 2% of the draws, and they cost a little at home and on MIDAS. What they did on DDI is not known: there is no DDI validation set, so step 1 cannot see the gain this idea was aimed at, and `ddi_hold` was not looked at (it stays unseen for PG and any later idea). Its config and runs are deleted.
+
+**Outcome of idea PG (21 Nov 2026): failed step 1, discarded, not scored on any test set.** 18,350 training images, as T; the seeds peaked at epochs 5, 3 and 3 (PanDerm checkpoint 1's at 6, 5 and 4). Against `panderm-c1`, after test-time flips and the seed average:
+
+| Set | Score | PanDerm checkpoint 1 | Idea PG | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `midas_val` | AUC | 0.856 | 0.869 | +0.013 [−0.009, +0.035] | no |
+| `val` | AUC | 0.979 | 0.974 | −0.006 [−0.010, −0.001] | yes |
+| `val` | Within-source AUC | 0.983 | 0.980 | −0.003 [−0.006, +0.001] | no |
+
+- Lower at home, so not higher on both validation sets: step 1 fails, as PE's identical pattern did (18 Nov). Its config and runs are deleted; `ddi_hold` was not looked at.
+- **Section 25 as a whole:** neither track passed step 1, so neither was scored on `ddi_hold`, and whether half of DDI in training helps on DDI is still unknown. Both ideas cost a little at home; on MIDAS the from-scratch model lost a little and PanDerm gained a little, none of it supported. Step 1 has no DDI validation set, so it can only see what DDI in training does to the other sources, not what it does to DDI. Testing that would need a DDI validation set cut from DDI and a rule that weighs it; that is for the team. `skinnet-c4` and `panderm-c1` stay the current checkpoints, and `ddi_hold` is still unseen by any trained model.
