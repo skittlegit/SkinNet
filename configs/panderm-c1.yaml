@@ -1,8 +1,8 @@
 # PanDerm track, idea PC (DECISIONS.md, section 24): PA's recipe on PanDerm's ViT-L/16, the
 # network of the paper (304 million parameters), in place of the smaller ViT-B/16.
 # Weights: data/weights/panderm_large.pth (not in git).
-extends: panderm-a.yaml
-name: panderm-c
+extends: panderm-idea-a.yaml
+name: panderm-c1
 model:
   arch: panderm_large
   grad_checkpointing: true     # fits batch 32 in 8 GB (6.3 GB instead of 11.8)

@@ -2,7 +2,7 @@
 # ViT-B/16, pretrained on about 2 million skin images. Never a checkpoint: it measures what a
 # skin-specific pretrained network would add. Weights: data/weights/panderm_base.pth (not in git).
 extends: skinnet-c4.yaml
-name: panderm-base
+name: panderm
 model:
   arch: panderm_base
   weights: panderm

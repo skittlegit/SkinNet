@@ -344,7 +344,7 @@ AUC on `val` by Fitzpatrick skin type (validation only):
 
 ## PanDerm track, idea PA: gentler fine-tuning (17 Nov 2026)
 
-PanDerm's ViT-B/16 on checkpoint 4's data, the head trained alone for 3 epochs, then every layer for 20 with a learning rate that shrinks by 0.75 per block towards the input. Three seeds, test-time flips and the seed average, scored once on every set. Against the first PanDerm run (`panderm-base`, every layer at 5e-5 from the first step):
+PanDerm's ViT-B/16 on checkpoint 4's data, the head trained alone for 3 epochs, then every layer for 20 with a learning rate that shrinks by 0.75 per block towards the input. Three seeds, test-time flips and the seed average, scored once on every set. Against the first PanDerm run (`panderm`, every layer at 5e-5 from the first step):
 
 | Set | Score | PanDerm base | Idea PA | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |

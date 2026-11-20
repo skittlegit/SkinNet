@@ -1,7 +1,7 @@
-# Idea P, control (DECISIONS.md, section 19): the same ResNet-18 as ref-resnet18-imagenet, from random
+# Idea P, control (DECISIONS.md, section 19): the same ResNet-18 as ref-resnet18-r2, from random
 # weights, so the only difference between the two is where the weights start.
 extends: skinnet-c3.yaml
-name: ref-resnet18-scratch
+name: ref-resnet18-r1
 model:
   arch: resnet18
   weights: none

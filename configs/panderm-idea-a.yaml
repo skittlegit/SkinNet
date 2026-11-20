@@ -1,10 +1,10 @@
 # PanDerm track, idea A (DECISIONS.md, section 24): gentler fine-tuning. The head is trained
 # alone first, then every layer with a learning rate that shrinks towards the early layers.
-# Compared with panderm-base, which trained every layer at 5e-5 from the first step.
-extends: panderm-base.yaml
-name: panderm-a
+# Compared with panderm, which trained every layer at 5e-5 from the first step.
+extends: panderm.yaml
+name: panderm-idea-a
 train:
-  epochs: 23                   # 3 for the head alone, then 20 as in panderm-base
+  epochs: 23                   # 3 for the head alone, then 20 as in panderm
   head_epochs: 3
   head_lr: 1.0e-3
   lr: 1.0e-4                   # the top of the network; each block below at 0.75 times the one above

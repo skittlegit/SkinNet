@@ -15,7 +15,7 @@ Scores are the mean of three seeds. Details and confidence intervals are in [RES
 | Checkpoint 2 | `skinnet-c2` | `skinnet-c1`'s three seeds, predicting with test-time flips, and their average |
 | Checkpoint 3 | `skinnet-c3` | `configs/skinnet-c3.yaml` |
 | Checkpoint 4 | `skinnet-c4` | `configs/skinnet-c4.yaml` (was idea Q, `skinnet-idea-q`) |
-| PanDerm checkpoint 1 | `panderm-c` | `configs/panderm-c.yaml` (PanDerm track, idea PC; DECISIONS.md, section 24) |
+| PanDerm checkpoint 1 | `panderm-c1` | `configs/panderm-c1.yaml` (PanDerm track, idea PC; DECISIONS.md, section 24) |
 
 One name per model, the same for its config, run folder and result folder. A run folder `runs/<name>/` holds the seeds (`s0`, `s1`, `s2`) and their average (`avg`); `results/<name>/metrics.csv` is the model's full score table. An idea being tested is `skinnet-idea-<letter>`; if kept it is renamed to the next checkpoint, `skinnet-c5`, and if discarded it is deleted. The rule is in [DECISIONS.md](../DECISIONS.md), section 15.
 
@@ -29,9 +29,9 @@ PanDerm's ViT-L/16, the network of its paper, fine-tuned on checkpoint 4's train
 | --- | --- |
 | Training data | The 18,022 images of checkpoint 4 |
 | Training | 3 epochs head only, then up to 20; about 10 minutes an epoch with gradient checkpointing, about 2 hours a seed |
-| Config | `configs/panderm-c.yaml` (weights `data/weights/panderm_large.pth`, local) |
-| Run folder | `runs/panderm-c`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
-| Weights | `checkpoints/panderm-1/` (local, git-ignored) |
+| Config | `configs/panderm-c1.yaml` (weights `data/weights/panderm_large.pth`, local) |
+| Run folder | `runs/panderm-c1`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/panderm-c1/` (local, git-ignored) |
 | Git tag | `panderm-checkpoint-1` |
 
 | Set | Score | PanDerm base | Idea PA | PanDerm Large (PC) | PC − base [95% interval] | PC − PA [95% interval] |
