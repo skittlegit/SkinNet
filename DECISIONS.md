@@ -813,3 +813,16 @@ Lower on both validation sets, neither by a supported amount on the two that dec
 **An exploratory look at T and PG on the test sets (21 Nov 2026), asked for by the user, written before the runs.** Both failed step 1, so by the rule neither is scored on a test set. The question they were built for, whether DDI photos in training lift DDI, is still unanswered, and the user asked to see their DDI scores. Their runs had been deleted, so both are trained again from their restored configs with the same seeds (T, then PG; close to the first runs, not identical, since GPU training is not exactly repeatable). Each is then scored once, through the ledger, on `test`, `midas_test`, `ddi_hold` and DermaCon-IN, and compared with its checkpoint and the other track's.
 - **Outside the rule.** Step 1 stands as failed: neither becomes a checkpoint from this look, whatever it shows. If `ddi_hold` shows a large gain, the team decides what follows (most likely the three-way DDI split, so a DDI validation set can count at step 1).
 - **What it costs.** `ddi_hold` will have been seen by models trained on DDI, and what it shows will inform the next DDI idea. It is still never used to choose epochs or seeds, but from here on it is a test set that has been looked at once for this question; reported as such.
+
+**Exploratory look, idea T retrained (21 Nov 2026): DDI up by a supported amount; decision with the user.** Seeds' best epochs 54, 59 and 58. Step 1 again failed, but closer than the first run: within-source AUC on `val` 0.905 → 0.906 (+0.000), `midas_val` 0.818 → 0.811 (−0.007), neither supported (the first run had −0.003 and −0.015: the run-to-run spread is about as large as the differences being judged). Scored once on the test sets (ledger, 21 Nov). Against checkpoint 4, after test-time flips and the seed average:
+
+| Set | Score | Checkpoint 4 | Idea T | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `test` | AUC | 0.903 | 0.902 | −0.001 [−0.005, +0.004] | no |
+| `test` | Within-source AUC | 0.907 | 0.907 | −0.000 [−0.008, +0.007] | no |
+| `midas_test` | AUC | 0.750 | 0.736 | −0.014 [−0.033, +0.004] | no |
+| `ddi_hold` | AUC | 0.641 | **0.684** | **+0.043 [+0.016, +0.071]** | **yes** |
+| DermaCon-IN | AUC | 0.818 | 0.834 | +0.016 [−0.035, +0.068] | no |
+
+- 328 DDI photos (about 2% of the draws) lift DDI's other half by 0.043, the first supported DDI gain on the from-scratch track, and bring it level with PanDerm checkpoint 1 there (0.691; −0.007 [−0.072, +0.061], not supported). Home is level, DermaCon-IN a little up, MIDAS test a little down, none supported.
+- Under the rule it is not a checkpoint: step 1 failed, and on the test sets `test` and `midas_test` are not higher. The gain is on a hospital the model has now seen, so it says DDI's hospital can be learned from a few hundred photos, not that the model travels further. Kept (config, runs, weights) until the user decides (21 Nov).
