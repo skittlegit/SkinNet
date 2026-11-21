@@ -868,3 +868,23 @@ Step 1 adds `ddi_val` to `val` and `midas_val` (higher on all three, none lower 
 **What it costs.** `ddi_hold` is looked at once more per track, to choose between two designs. Two candidates chosen by a fixed rule is a small bias; reported as such.
 
 **Expectation.** U and PH a little below T and PG on `ddi_hold`, by less than a supported amount (half the DDI photos still carry most of the hospital's look), so the three-way split is kept on both tracks; step 1 with `ddi_val` passed by PH, not by U.
+
+**Outcome of idea U (22 Nov 2026): by section 26's rule the three-way split is kept on the from-scratch track; the user decides what follows.** 18,186 training images (checkpoint 4's 18,022 + 164 of `ddi_train`); seeds' best epochs 46, 55 and 49. Step 1 against checkpoint 4:
+
+| Set | Score | Checkpoint 4 | Idea U | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.905 | 0.903 | −0.003 [−0.012, +0.006] | no |
+| `midas_val` | AUC | 0.818 | 0.808 | −0.010 [−0.030, +0.010] | no |
+| `ddi_val` | AUC | 0.701 | 0.749 | **+0.048 [+0.015, +0.087]** | **yes** |
+
+Step 1 fails (`val` and `midas_val` a little lower), but `ddi_val` sees the DDI gain, which T's step 1 could not. Scored once on the test sets (ledger, 22 Nov):
+
+| Set | Checkpoint 4 | Idea T (half) | Idea U (quarter + `ddi_val`) | U − checkpoint 4 | U − T |
+| --- | --- | --- | --- | --- | --- |
+| `test` | 0.903 | 0.902 | 0.901 | −0.002 [−0.007, +0.003] | −0.001 [−0.006, +0.004] |
+| `midas_test` | 0.750 | 0.736 | 0.744 | −0.006 [−0.026, +0.012] | +0.008 [−0.008, +0.023] |
+| `ddi_hold` | 0.641 | 0.684 | 0.670 | **+0.029 [+0.007, +0.052]** | −0.014 [−0.040, +0.011] |
+| DermaCon-IN | 0.818 | 0.834 | 0.847 | +0.029 [−0.014, +0.084] | +0.013 [−0.039, +0.060] |
+
+- **The design rule:** U is lower than T on `ddi_hold` by −0.014, not a supported amount, so the three-way split is kept on this track: 164 DDI photos give most of the gain of 328 (+0.029 of +0.043), and `ddi_val` agrees with `ddi_hold` on the direction and size of the gain.
+- As written, which model (if any) becomes a checkpoint, and what is deleted, waits for the user. T and U are both kept.
