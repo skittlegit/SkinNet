@@ -5,7 +5,8 @@ label_cancer    cancer  no label  not_cancer    All
 split                                              
 ak_side              0       703           0    703
 ddi_hold            86         0         242    328
-ddi_train           85         0         243    328
+ddi_train           43         0         121    164
+ddi_val             42         0         122    164
 dermacon_other       0         0        5379   5379
 dermacon_test       19         0          46     65
 excluded             5       922          19    946
@@ -25,7 +26,8 @@ label_fine        ak   bcc  benign  mel  non_tumour  other_benign_tumour  rare_c
 split                                                                                                         
 ak_side          703     0       0    0           0                    0            0     0           0    703
 ddi_hold           3    25     133   14           0                    0           17    26         110    328
-ddi_train          1    24     122    7           0                    0           23    27         124    328
+ddi_train          1    11      66    6           0                    0           11    14          55    164
+ddi_val            0    13      56    1           0                    0           12    13          69    164
 dermacon_other     0     0       0    0           0                    0            0     0        5379   5379
 dermacon_test      0    10      46    2           0                    0            0     7           0     65
 excluded         329     0       2    0          13                    2            4     1         595    946

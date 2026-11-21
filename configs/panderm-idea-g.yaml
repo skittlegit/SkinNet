@@ -3,4 +3,4 @@
 extends: panderm-c1.yaml
 name: panderm-idea-g
 data:
-  train_splits: [train, midas_train, ddi_train]
+  train_splits: [train, midas_train, ddi_train, ddi_val]   # all of DDI's trainable half (ddi_val split off 22 Nov, section 26)

@@ -24,6 +24,7 @@ EVAL_SETS = {
     "test": ("binary", ["dataset", "label_fine"]),
     "ddi_test": ("binary", []),                   # biopsy-proven, Stanford (all of DDI; before 20 Nov)
     "ddi_hold": ("binary", []),                   # DDI's held-out half once ddi_train exists (section 25)
+    "ddi_val": ("binary", []),                    # DDI validation, a quarter of DDI (section 26)
     "midas_val": ("binary", ["label_fine"]),      # outside validation: never trained on, used to choose models
     "midas_test": ("binary", ["label_fine"]),     # biopsy-proven clinical photos, Stanford
     "dermacon_test": ("binary", ["label_fine"]),  # Indian tumours

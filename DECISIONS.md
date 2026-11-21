@@ -839,3 +839,32 @@ Lower on both validation sets, neither by a supported amount on the two that dec
 
 - The largest DDI gain of the project: 0.691 → 0.785 on DDI's held-out half, twice T's gain on the from-scratch track (+0.043, to 0.684). Against checkpoint 4 it is higher everywhere, by a supported amount on `test`, `midas_test` and `ddi_hold`.
 - Under the rule it is not a checkpoint: step 1 failed, and `test` and `midas_test` are a little lower (neither supported). As with T, the gain is on a hospital the model has now seen. Kept (config, runs, weights) until the user decides (21 Nov).
+
+## 26. A DDI validation set: three-way split against the half in training (22 Nov 2026)
+
+**Decided by the user (22 Nov), written before any training.** T and PG show that DDI photos in training lift DDI's held-out half (+0.043 and +0.094, both supported), but both failed step 1, which had no DDI validation set and so could not see the gain they were aimed at. Before choosing how DDI is used from now on, the same ideas are run once more with a DDI validation set, and the two designs are compared.
+
+**The split.** `ddi_hold` is unchanged (328 images, test only, the same images as in section 25). DDI's trainable half is split again, the same way (by near-duplicate group, stratified by cancer and skin type, `splits.ddi_val` in `configs/data.yaml`); nothing else in the manifest changed (checked row by row):
+
+| | Cancers I–II | III–IV | V–VI | Not cancer I–II | III–IV | V–VI | All |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `ddi_train` (may be trained on) | 12 | 19 | 12 | 40 | 41 | 40 | 164 |
+| `ddi_val` (step 1; never trained on by U or PH) | 12 | 18 | 12 | 40 | 42 | 40 | 164 |
+| `ddi_hold` (test only, unchanged) | 25 | 37 | 24 | 79 | 84 | 79 | 328 |
+
+T and PG trained on all 328 trainable images, now `ddi_train` + `ddi_val`; their configs say so (their runs are unchanged). Checkpoint 4 and PanDerm checkpoint 1 never trained on DDI, so `ddi_val` is unseen for them; their `ddi_val` predictions are cut from their DDI predictions (`derive subset`): 0.701 and 0.677 (42 cancers, so about ±0.1).
+
+**The two ideas.** Each is its track's current checkpoint with `ddi_train` (164) added to `data.train_splits`, nothing else changed:
+- **U** (from scratch, `configs/skinnet-idea-u.yaml`), against `skinnet-c4`, then T.
+- **PH** (PanDerm, `configs/panderm-idea-h.yaml`), against `panderm-c1`, then PG.
+
+Step 1 adds `ddi_val` to `val` and `midas_val` (higher on all three, none lower by a supported amount). Epochs and seeds are still chosen on `val` alone: 42 cancers are too few to choose an epoch on. Whatever step 1 shows, both are scored once on the test sets, because the comparison below needs their `ddi_hold` scores; step 1's outcome is reported, and it is what a future idea with a DDI validation set would be judged on.
+
+**How the design is chosen (per track, fixed now).** The three-way split trains on half as many DDI photos, so it is expected to score a little lower on `ddi_hold`; what it buys is a DDI validation set every later idea can be checked on. So:
+- **The three-way split is kept** if U (PH) is *not lower than T (PG) on `ddi_hold` by a supported amount* (paired bootstrap, as everywhere). Later ideas on that track then train on `ddi_train` and add `ddi_val` to step 1.
+- **The half in training is kept** if U (PH) is lower than T (PG) on `ddi_hold` by a supported amount: the extra 164 photos matter more than a DDI validation set.
+- Either way, which model becomes a checkpoint (if any) is the user's decision; nothing is deleted before it (user, 21 and 22 Nov).
+
+**What it costs.** `ddi_hold` is looked at once more per track, to choose between two designs. Two candidates chosen by a fixed rule is a small bias; reported as such.
+
+**Expectation.** U and PH a little below T and PG on `ddi_hold`, by less than a supported amount (half the DDI photos still carry most of the hospital's look), so the three-way split is kept on both tracks; step 1 with `ddi_val` passed by PH, not by U.

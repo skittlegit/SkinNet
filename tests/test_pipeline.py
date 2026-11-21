@@ -111,7 +111,7 @@ def test_pipeline(workdir, monkeypatch):
     assert main["fst"].isna().any() and (main["fst"] >= 4).any()        # skin type plays no part in the split
     assert 0.6 < (main["split"] == "train").mean() < 0.8
     assert by_id.loc["f17k_dup1", "split"] == by_id.loc["f17k_h0001", "split"]   # duplicates stay together
-    assert set(m.loc[m["dataset"] == "ddi", "split"]) == {"ddi_train", "ddi_hold"}   # halves (section 25)
+    assert set(m.loc[m["dataset"] == "ddi", "split"]) == {"ddi_train", "ddi_val", "ddi_hold"}   # quarter, quarter, half (sections 25, 26)
     assert set(m.loc[m["label_4class"] == "ak", "split"]) <= {"ak_side", "excluded"}
     make_splits.check_no_leakage(m)
     assert {p.stem for p in Path("data/splits").glob("*.csv")} == set(m["split"]) - {"excluded"}

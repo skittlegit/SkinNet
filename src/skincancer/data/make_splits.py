@@ -8,7 +8,8 @@ dermacon_other = test-only datasets; MIDAS is split by patient into midas_train 
 added to training), midas_val (never trained on; used to choose between models) and
 midas_test. DDI (since 20 Nov 2026, DECISIONS.md section 25) is split by near-duplicate group
 into ddi_train (may be added to training) and ddi_hold (test only), stratified by cancer x
-skin type. A near-duplicate group that touches a test-only set loses its trainable members.
+skin type; since 22 Nov (section 26) ddi_train is split again, the same way, into ddi_train and
+ddi_val (never trained on by the ideas that use it; step 1), and ddi_hold is unchanged. A near-duplicate group that touches a test-only set loses its trainable members.
 """
 from __future__ import annotations
 
@@ -113,6 +114,10 @@ def make(manifest: pd.DataFrame, cfg: dict, groups: pd.DataFrame | None = None):
     if ddi.any() and sp.get("ddi"):       # DDI has no patient IDs: each image is its own patient, split by group
         strata = df.loc[ddi, "label_cancer"].fillna("none") + " " + df.loc[ddi, "fst_bucket"].fillna("none")
         df.loc[ddi, "split"] = grouped_split(df[ddi], ["ddi_train", "ddi_hold"], sp["ddi"], sp["seed"], strata)
+        half = df["split"] == "ddi_train"
+        if sp.get("ddi_val"):             # section 26: the trainable half split again; ddi_hold is not touched
+            strata = df.loc[half, "label_cancer"].fillna("none") + " " + df.loc[half, "fst_bucket"].fillna("none")
+            df.loc[half, "split"] = grouped_split(df[half], ["ddi_train", "ddi_val"], sp["ddi_val"], sp["seed"], strata)
     return df.drop(columns="pool")
 
 

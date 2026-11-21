@@ -12,7 +12,7 @@ EXP=${EXP:-skinnet-idea-$LETTER}   # EXP=panderm-idea-a: a PanDerm-track idea (c
 CFG=configs/$EXP.yaml
 REF=${REF:-skinnet-c4}
 SEEDS=${SEEDS:-"0 1 2"}
-VAL="val midas_val"
+VAL=${VAL:-"val midas_val"}   # VAL="val midas_val ddi_val": DDI validation in step 1 (section 26)
 LOGS=runs/$EXP/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1
@@ -24,6 +24,6 @@ for s in $SEEDS; do
     || { echo "  FAILED: see $LOGS/s$s.log"; exit 1; }
   echo "[$(date +%H:%M)] $EXP seed $s done: $(tail -n 1 "$LOGS/s$s.log")"
 done
-$PY -m skincancer.derive ensemble --exp "$EXP" --splits val test ak_side midas_val > "$LOGS/derive.log" 2>&1
+$PY -m skincancer.derive ensemble --exp "$EXP" --splits test ak_side $VAL > "$LOGS/derive.log" 2>&1
 $PY -m skincancer.compare --a "$REF" --b "$EXP" --splits $VAL | tee "$LOGS/compare_val.log"
 echo "[$(date +%H:%M)] $EXP step 1 done"

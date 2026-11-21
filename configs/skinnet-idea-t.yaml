@@ -4,4 +4,4 @@
 extends: skinnet-c4.yaml
 name: skinnet-idea-t
 data:
-  train_splits: [train, midas_train, ddi_train]
+  train_splits: [train, midas_train, ddi_train, ddi_val]   # all of DDI's trainable half (ddi_val split off 22 Nov, section 26)
