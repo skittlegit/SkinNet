@@ -826,3 +826,16 @@ Lower on both validation sets, neither by a supported amount on the two that dec
 
 - 328 DDI photos (about 2% of the draws) lift DDI's other half by 0.043, the first supported DDI gain on the from-scratch track, and bring it level with PanDerm checkpoint 1 there (0.691; −0.007 [−0.072, +0.061], not supported). Home is level, DermaCon-IN a little up, MIDAS test a little down, none supported.
 - Under the rule it is not a checkpoint: step 1 failed, and on the test sets `test` and `midas_test` are not higher. The gain is on a hospital the model has now seen, so it says DDI's hospital can be learned from a few hundred photos, not that the model travels further. Kept (config, runs, weights) until the user decides (21 Nov).
+
+**Exploratory look, idea PG retrained (21 Nov 2026): DDI up by a supported amount; decision with the user.** Seeds' best epochs 7, 3 and 7 (12, 8 and 12 run; seed 0 lost about 20 minutes to the laptop's standby, no effect on the numbers). Step 1 again failed, by the narrowest margin yet: within-source AUC on `val` 0.983 → 0.983 (−0.000), `midas_val` 0.856 → 0.862 (+0.006), neither supported (the first run: −0.003 and +0.013). Scored once on the test sets (ledger, 21 Nov). Against PanDerm checkpoint 1, after test-time flips and the seed average:
+
+| Set | Score | PanDerm checkpoint 1 | Idea PG | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `test` | AUC | 0.977 | 0.974 | −0.003 [−0.011, +0.004] | no |
+| `test` | Within-source AUC | 0.982 | 0.978 | −0.004 [−0.013, +0.003] | no |
+| `midas_test` | AUC | 0.874 | 0.865 | −0.009 [−0.031, +0.015] | no |
+| `ddi_hold` | AUC | 0.691 | **0.785** | **+0.094 [+0.035, +0.153]** | **yes** |
+| DermaCon-IN | AUC | 0.850 | 0.862 | +0.011 [−0.018, +0.058] | no |
+
+- The largest DDI gain of the project: 0.691 → 0.785 on DDI's held-out half, twice T's gain on the from-scratch track (+0.043, to 0.684). Against checkpoint 4 it is higher everywhere, by a supported amount on `test`, `midas_test` and `ddi_hold`.
+- Under the rule it is not a checkpoint: step 1 failed, and `test` and `midas_test` are a little lower (neither supported). As with T, the gain is on a hospital the model has now seen. Kept (config, runs, weights) until the user decides (21 Nov).
