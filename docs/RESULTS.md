@@ -320,6 +320,16 @@ By skin type (AUC on `ddi_hold`; 25, 37 and 24 cancers in I–II, III–IV and V
 
 PanDerm without DDI is worse than chance on the darkest skin (0.396), and nearly all of its DDI gain is there: 0.396 → 0.595 with 164 photos and → 0.726 with 328. The from-scratch network is flatter across skin types. Computed on 22 Nov from the saved predictions.
 
+**Why PanDerm fails on the darkest skin: mycosis fungoides.**
+
+27 of DDI's 48 cancers on skin types V–VI are mycosis fungoides, a skin lymphoma that looks like a rash (often pale patches on dark skin). Across all of DDI, with no DDI in training:
+- **PanDerm checkpoint 1 ranks mycosis fungoides below DDI's benign lesions** (AUC 0.377 against them). Checkpoint 4 is near chance (0.558).
+- **With mycosis fungoides left out,** the two are level on V–VI (0.665 and 0.657).
+
+Our training has 123 mycosis fungoides photos, all from Fitzpatrick17k and only 10 of them on V–VI, against about 8,400 non-tumour photos (mostly rashes) labelled not cancer. PanDerm learns "rash → not cancer" much better than SkinNet does: it calls 1.8% of DermaCon-IN's everyday conditions cancer, against SkinNet's 6.6%. So it confidently calls a cancer that looks like a rash not cancer.
+
+DDI's own mycosis fungoides photos fix this quickly. On `ddi_hold` (10 such photos on V–VI), PanDerm's mycosis fungoides-vs-benign AUC goes 0.222 → 0.576 with 11 in training (PanDerm checkpoint 2) and → 0.876 with 22 (PG). Without mycosis fungoides, PanDerm's lead on lighter skin (+0.08 to +0.12) is gone on V–VI, but there are only 14 to 22 such cancers.
+
 No run is lower than its checkpoint by a supported amount on `test`, `midas_test` or DermaCon-IN. Full tables are in DECISIONS.md, section 26, and CHECKPOINTS.md.
 
 **Reading.**
