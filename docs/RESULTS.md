@@ -307,6 +307,19 @@ AUC on `ddi_hold`; each difference is against the track's checkpoint without DDI
 | From scratch | 0.641 (checkpoint 4) | 0.670, +0.029, supported | 0.684, +0.043, supported |
 | PanDerm | 0.691 (PanDerm checkpoint 1) | 0.733, +0.042, supported | 0.785, +0.094, supported |
 
+By skin type (AUC on `ddi_hold`; 25, 37 and 24 cancers in I–II, III–IV and V–VI, so each figure is about ±0.1):
+
+| Model | I–II | III–IV | V–VI |
+| --- | --- | --- | --- |
+| Checkpoint 4 (no DDI) | 0.621 | 0.687 | 0.637 |
+| Checkpoint 5 (U, 164 DDI photos) | 0.627 | 0.725 | 0.681 |
+| T (328 DDI photos) | 0.660 | 0.710 | 0.693 |
+| PanDerm checkpoint 1 (no DDI) | 0.768 | 0.833 | **0.396** |
+| PanDerm checkpoint 2 (PH, 164 DDI photos) | 0.730 | 0.823 | 0.595 |
+| PG (328 DDI photos) | 0.749 | 0.845 | 0.726 |
+
+PanDerm without DDI is worse than chance on the darkest skin (0.396), and nearly all of its DDI gain is there: 0.396 → 0.595 with 164 photos and → 0.726 with 328. The from-scratch network is flatter across skin types. Computed on 22 Nov from the saved predictions.
+
 No run is lower than its checkpoint by a supported amount on `test`, `midas_test` or DermaCon-IN. Full tables are in DECISIONS.md, section 26, and CHECKPOINTS.md.
 
 **Reading.**
