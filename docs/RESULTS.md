@@ -311,6 +311,21 @@ Five sets no model trains on or is chosen by (DECISIONS.md, section 27), scored 
 - **PanDerm is ahead outside by about 0.10**, supported on every set but HIBA. Part of this may be pretraining that saw some of these photos.
 - **DDI in training did not hurt elsewhere** for PanDerm, and on SkinNet cost MED-NODE (small) and, for T, ISIC 2019 by 0.015. All models and paired tables: DECISIONS.md, section 27, and `results/compare_ext_22nov.txt`.
 
+## Leave-one-dataset-out, PanDerm (23 Nov 2026)
+
+PG's recipe retrained with one source removed from training and validation, 1 seed, compared (paired) with PG on that source's own test images.
+
+| Left out | PG | Without it | Difference | SkinNet's difference |
+| --- | --- | --- | --- | --- |
+| PAD-UFES-20 (236) | 0.985 | 0.967 | −0.018 [−0.047, +0.003] | −0.095 |
+| MIDAS (`midas_test`, 414) | 0.865 | 0.776 | −0.090 [−0.133, −0.045] | −0.028 |
+| Fitzpatrick17k (2,459) | 0.971 | 0.642 | −0.329 [−0.364, −0.295] | −0.287 |
+| Fitzpatrick17k, tumours only (400) | 0.892 | 0.804 | about −0.09 | about −0.09 |
+
+- PanDerm keeps its score at an unseen phone-photo source; SkinNet does not.
+- MIDAS is hard for both without training on it, PanDerm more so relative to its trained score.
+- Neither track knows a rash from a cancer without Fitzpatrick17k (PanDerm: median score for rashes 0.54, against 0.08).
+
 ## Leave-one-dataset-out, SkinNet (22 Nov 2026)
 
 T's recipe retrained with one source removed from training and validation, 3 seeds, compared (paired) with T on that source's own test images (DECISIONS.md, section 27).

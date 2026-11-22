@@ -1021,3 +1021,16 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 
 - **A source never trained on costs SkinNet about 0.09** where the comparison is clean (PAD-UFES-20; Fitzpatrick17k tumours). The expectation that leaving out MIDAS costs a supported amount on `midas_test` held, though it is small (−0.03): MIDAS was already hard for SkinNet with it in training.
 - **Leaving out Fitzpatrick17k is not a clean measure.** It removes 60% of the training photos, leaves PAD-UFES-20's 236 photos as the only validation set, and takes away every rash: three quarters of Fitzpatrick17k's test photos are non-tumour conditions that no other source has, and the model left without it scores them a median 0.60 (T: 0.21).
+
+**Leave-one-dataset-out, PanDerm (23 Nov; 1 seed each, against PG's 3 seeds on the same images).**
+
+| Left out | Its own test images: PG → left out | SkinNet, same comparison | Elsewhere for PanDerm (supported only) |
+| --- | --- | --- | --- |
+| PAD-UFES-20 | 0.985 → 0.967, −0.018 [−0.047, +0.003] (236), not supported | −0.095, supported | ISIC 2019 −0.051, `ddi_hold` −0.050, Derm7pt −0.030, Asan −0.018 |
+| MIDAS | `midas_test` 0.865 → 0.776, −0.090 [−0.133, −0.045] (414) | −0.028 | Derm7pt −0.046, Asan −0.020 |
+| Fitzpatrick17k | 0.971 → 0.642, −0.329 [−0.364, −0.295] (2,459); tumours only 0.892 → 0.804 (400) | −0.287; tumours −0.09 | MED-NODE −0.134, Derm7pt −0.089, `ddi_hold` −0.084, Asan −0.046 |
+
+- **PanDerm carries over to an unseen phone-photo source almost untouched** (PAD-UFES-20), where SkinNet loses 0.09. The expectation that leaving out PAD-UFES-20 costs SkinNet more than PanDerm held.
+- **MIDAS is the reverse.** Training on MIDAS is worth 0.09 to PanDerm on `midas_test` and only 0.03 to SkinNet: PanDerm learns the new site's photos better, SkinNet was poor at MIDAS either way. The expectation for MIDAS held on both.
+- **Rashes are learned only from Fitzpatrick17k, on both tracks.** Without it, PanDerm scores rashes a median 0.54 (PG: 0.08); 2.1 million pretraining images did not teach that a rash is not cancer. Its validation set was then PAD-UFES-20 alone, on which validation AUC was 0.99 by the second epoch, so early stopping had little to go on.
+- **Overall:** a source never trained on costs SkinNet about 0.09 AUC and PanDerm between nothing (PAD-UFES-20) and 0.09 (MIDAS). Every gain SkinNet made at MIDAS, MILK10k and DDI was adaptation to those sites, not general skill. These are measurements, not checkpoints.
