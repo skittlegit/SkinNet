@@ -949,3 +949,45 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **What it matters for.** PG is ahead of PanDerm checkpoint 2 on `ddi_hold` by a supported amount (0.785 against 0.733), most of it on skin types V–VI (0.726 against 0.595). T and checkpoint 5 are level (0.684 against 0.670, not supported).
 - **A caution to report with them.** `ddi_hold` was used once to choose between the two designs (above), so T's and PG's `ddi_hold` scores are a little optimistic. Neither can be checked on `ddi_val`, which they trained on. Their recipes are unchanged from checkpoints that were.
 - **When the recipe changes,** a new checkpoint gets its own all-DDI version the same way: its config with `ddi_val` added to `data.train_splits`. That retrain needs the user's approval like any training.
+
+## 27. Outside test sets never trained on, and leave-one-dataset-out (22 Nov 2026)
+
+**Decided by the user (22 Nov), written before any outside score was seen.** Every gain outside so far came from training on photos from that same hospital (MIDAS, MILK10k, DDI). That measures whether a model can learn a new hospital, not whether it works at one it has never seen. The only outside set never trained on was DermaCon-IN, with 19 cancers.
+
+**The rule from now on.**
+- MIDAS and DDI stay as they are (user).
+- A new outside set is test only. It is never trained on, never used to choose a model, and is scored once per model (runs/final_ledger.csv).
+- Adding a hospital's photos to training is a separate step ("adapt to a site"), reported on its own.
+
+**The outside sets** (`data/external.csv`, splits `ext_<name>`):
+- Each photo was checked against all 18,350 training images, plus MILK10k, by the manifest's near-duplicate tests; 39 duplicates were excluded.
+- MCR-SL (Norway) is added when its download finishes.
+
+| Split | Source | Photos (cancers) | Notes |
+| --- | --- | --- | --- |
+| `ext_hiba` | Hospital Italiano de Buenos Aires (ISIC 175, CC BY) | 279 (227) | Clinical overview photos; cancers and most benign lesions biopsied; skin types mostly II |
+| `ext_mednode` | University Medical Center Groningen | 169 (70) | Melanomas and nevi only |
+| `ext_derm7pt` | Derm7pt atlas, clinical photos | 958 (294) | Mostly melanomas and nevi |
+| `ext_asan` | Asan and Hallym hospitals, Korea (CC BY 4.0) | 12,144 (3,982) | Biopsied photos only; published only as 99 px thumbnails |
+| `ext_isic2019` | ISIC 2019 subsample on disk | 4,995 (2,498) | **Dermoscopy**, a different kind of image. Its benign labels include follow-up and consensus |
+
+**Cautions.**
+- PanDerm's pretraining (about 2.1 million images, sources not all named) may include some of these photos, ISIC above all, so PanDerm's scores on them may flatter it.
+- Derm7pt and Asan are not all biopsy-confirmed in the same way as DDI and MIDAS.
+
+**Scored once on them:** checkpoints 4 and 5, T, and PanDerm checkpoints 1 and 2, PG. This is evaluation only (`runs/lane_ext.sh`).
+
+**Leave-one-dataset-out (approved by the user, 22 Nov).**
+- **What:** the all-DDI recipes (T and PG) retrained with one source left out of training *and* validation (`data.exclude_datasets`). The sources are Fitzpatrick17k, PAD-UFES-20 and MIDAS. SkinNet runs 3 seeds, PanDerm 1 seed (time).
+- **What is not run:** leaving out DDI would rebuild checkpoint 4 and PanDerm checkpoint 1 exactly, so those stand in. MILK10k has no held-out part to test on, so it is not left out.
+- **Names:** `skinnet-lodo-<f17k|pad|midas>`, `panderm-lodo-<…>`. They are measurements, never checkpoints.
+- **How it is read:** each is scored on every test set. The number that matters is the left-out source's own test images, compared (paired) with the full model (T or PG) on the same images. That difference is how much the score on that source depends on having trained on it, which is the honest measure of how well the model carries over.
+
+**Expectation.**
+- On sources never trained on, scores well below what the same models reach on their own test sets: SkinNet lower than PanDerm, and dermoscopy (ISIC 2019) lowest.
+- Leaving out MIDAS costs both models a supported amount on `midas_test`. Leaving out PAD-UFES-20 costs SkinNet more than PanDerm.
+
+**The professor's suggestion (22 Nov), recorded, not run.** Train PanDerm's network with no pretrained weights (`weights=None`) for up to 250 epochs with early stopping, use a 60/20/20 split, and plot training and validation accuracy against epochs.
+- **Done:** the plots. Every run now logs training and validation accuracy and loss (`python -m skincancer.plot_history`).
+- **Not run yet, the user's call:** a ViT-L from scratch on 18,350 photos throws away the 2.1 million pretraining images that make PanDerm what it is. Large ViTs trained from scratch do poorly even on 1.3 million ImageNet photos. It would take about 1–2 days for one seed.
+- **Split:** changing it would mean rebuilding every split and retraining every model to stay comparable.
