@@ -888,3 +888,24 @@ Step 1 fails (`val` and `midas_val` a little lower), but `ddi_val` sees the DDI 
 
 - **The design rule:** U is lower than T on `ddi_hold` by −0.014, not a supported amount, so the three-way split is kept on this track: 164 DDI photos give most of the gain of 328 (+0.029 of +0.043), and `ddi_val` agrees with `ddi_hold` on the direction and size of the gain.
 - As written, which model (if any) becomes a checkpoint, and what is deleted, waits for the user. T and U are both kept.
+
+**Outcome of idea PH (22 Nov 2026): by section 26's rule the half in training is kept on the PanDerm track; the user decides what follows.** Seeds' best epochs 3, 7 and 5 (8, 12 and 10 run). Step 1 against PanDerm checkpoint 1:
+
+| Set | Score | PanDerm checkpoint 1 | Idea PH | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- | --- |
+| `val` | Within-source AUC | 0.983 | 0.980 | −0.003 [−0.007, +0.001] | no |
+| `midas_val` | AUC | 0.856 | 0.870 | +0.013 [−0.003, +0.030] | no |
+| `ddi_val` | AUC | 0.677 | 0.764 | **+0.086 [+0.033, +0.147]** | **yes** |
+
+Step 1 fails on `val` alone (a little lower, not supported). Scored once on the test sets (ledger, 22 Nov):
+
+| Set | PanDerm checkpoint 1 | Idea PG (half) | Idea PH (quarter + `ddi_val`) | PH − checkpoint 1 | PH − PG |
+| --- | --- | --- | --- | --- | --- |
+| `test` | 0.977 | 0.974 | 0.976 | −0.001 [−0.006, +0.004] | +0.002 [−0.003, +0.008] |
+| `midas_test` | 0.874 | 0.865 | 0.874 | −0.001 [−0.017, +0.017] | +0.009 [−0.012, +0.028] |
+| `ddi_hold` | 0.691 | 0.785 | 0.733 | **+0.042 [+0.003, +0.082]** | **−0.052 [−0.088, −0.017]** |
+| DermaCon-IN | 0.850 | 0.862 | 0.882 | +0.032 [−0.006, +0.104] | +0.021 [−0.023, +0.091] |
+
+- **The design rule:** PH is lower than PG on `ddi_hold` by a supported amount (−0.052), so on the PanDerm track the half in training is kept: PanDerm keeps gaining from the second 164 DDI photos (+0.042 with 164, +0.094 with 328), where SkinNet gained most of its gain from the first 164 (section 26, idea U). The two tracks come out differently.
+- `ddi_val` again saw the gain that `ddi_hold` then confirmed (+0.086 and +0.042), as with U.
+- As written, which model (if any) becomes a checkpoint, and what is deleted, waits for the user. PG and PH are both kept.
