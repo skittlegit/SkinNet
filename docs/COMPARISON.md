@@ -14,6 +14,7 @@ Five sets no model trains on or is chosen by (DECISIONS.md, section 27), scored 
 | `ext_isic2019` | 4,995 (2,498) | 0.733 | 44% / 22% | 0.831 | 27% / 21% | +0.097 [+0.084, +0.111] |
 | `ext_derm7pt` | 958 (294) | 0.714 | 20% / 49% | 0.814 | 14% / 44% | +0.100 [+0.064, +0.137] |
 | `ddi_hold` | 328 | 0.684 | 31% / 43% | 0.785 | 30% / 27% | +0.101 [+0.045, +0.158] |
+| `ext_mcrsl` (23 Nov) | 663 (80) | 0.791 | | 0.849 | | +0.057 [−0.050, +0.150] |
 
 - **Both tracks lose ground away from home** (`test`: T 0.902, PanDerm about 0.977). SkinNet loses more: 0.03–0.19 against PanDerm's 0.06–0.19, from a lower start.
 - **PanDerm is ahead outside by about 0.10**, supported on every set but HIBA. Part of this may be pretraining that saw some of these photos.

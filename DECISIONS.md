@@ -1043,3 +1043,11 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **Not moved:** `runs/` and `results/`. They are local and not in git, every name already starts with its track, and the ledger records each run by its path.
 - **Removed (user, 22 Nov):** the ResNet-18 reference of idea P: its three configs, its trained runs, the `resnet18` option in the code and its test. Its written results stay in the SkinNet ideas and results, and its score tables in `results/ref-resnet18-*`. Everything before this change is at git tag `pre-restructure`.
 
+**MCR-SL, the sixth outside set (23 Nov; `ext_mcrsl`, scored once).** Norway, clinical photos of 22 histopathology-confirmed cancers (80 photos) and 179 benign lesions (583 photos) from 59 people; 20 cancers diagnosed by a dermatologist alone, actinic keratoses and unknown diagnoses are left out, and 4 photos that near-duplicate training images are excluded. Added with `python -m skincancer.data.external --add mcrsl`, which leaves the other five sets' rows exactly as they were scored (checked).
+
+| Model | Ckpt 4 | Ckpt 5 | T | PanDerm ckpt 1 | PanDerm ckpt 2 | PG |
+| --- | --- | --- | --- | --- | --- | --- |
+| AUC | 0.794 | 0.804 | 0.791 | 0.883 | 0.906 | 0.849 |
+
+- PG − T +0.057 [−0.050, +0.150] and PanDerm checkpoint 2 − 1 +0.023 [+0.003, +0.047], the only supported difference among the main models. With 22 cancer lesions, the intervals are wide.
+- Leave-one-dataset-out on MCR-SL: only SkinNet without PAD-UFES-20 is lower by a supported amount (−0.036 [−0.068, −0.006]), as on the other close-up sets.

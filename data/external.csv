@@ -18583,3 +18583,670 @@ isic2019_ISIC_0072887,isic2019_IL_6696292,isic2019,isic2019/images/ISIC_0072887.
 isic2019_ISIC_0073082,isic2019_IL_4559622,isic2019,isic2019/images/ISIC_0073082.jpg,Basal cell carcinoma,bcc,bcc,1.0,cancer,,,Trunk,False,isic2019_IL_4559622,,ext_isic2019
 isic2019_ISIC_0073113,isic2019_IL_7095810,isic2019,isic2019/images/ISIC_0073113.jpg,Basal cell carcinoma,bcc,bcc,1.0,cancer,,,Head and neck,False,isic2019_IL_7095810,,ext_isic2019
 isic2019_ISIC_0073215,isic2019_IL_5363787,isic2019,isic2019/images/ISIC_0073215.jpg,Basal cell carcinoma,bcc,bcc,1.0,cancer,,,Head and neck,False,isic2019_IL_5363787,,ext_isic2019
+mcrsl_I_C00000,mcrsl_L0001,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00000.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0001,,ext_mcrsl
+mcrsl_I_C00001,mcrsl_L0001,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00001.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0001,,ext_mcrsl
+mcrsl_I_C00002,mcrsl_L0002,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00002.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0001,,ext_mcrsl
+mcrsl_I_C00003,mcrsl_L0002,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00003.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0001,,ext_mcrsl
+mcrsl_I_C00004,mcrsl_L0003,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00004.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0001,,ext_mcrsl
+mcrsl_I_C00005,mcrsl_L0004,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00005.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0002,,ext_mcrsl
+mcrsl_I_C00006,mcrsl_L0004,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00006.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0002,,ext_mcrsl
+mcrsl_I_C00007,mcrsl_L0005,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00007.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0002,,ext_mcrsl
+mcrsl_I_C00008,mcrsl_L0006,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00008.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00009,mcrsl_L0006,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00009.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00014,mcrsl_L0007,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00014.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00015,mcrsl_L0007,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00015.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00017,mcrsl_L0009,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00017.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00010,mcrsl_L0010,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00010.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00016,mcrsl_L0011,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00016.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0003,,ext_mcrsl
+mcrsl_I_C00019,mcrsl_L0014,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00019.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00021,mcrsl_L0016,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00021.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00020,mcrsl_L0017,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00020.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00022,mcrsl_L0018,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00022.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00023,mcrsl_L0019,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00023.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00018,mcrsl_L0021,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00018.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00024,mcrsl_L0022,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00024.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0004,,ext_mcrsl
+mcrsl_I_C00027,mcrsl_L0023,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00027.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00028,mcrsl_L0023,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00028.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00029,mcrsl_L0024,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00029.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00030,mcrsl_L0024,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00030.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00025,mcrsl_L0025,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00025.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00026,mcrsl_L0025,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00026.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0005,,ext_mcrsl
+mcrsl_I_C00035,mcrsl_L0027,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00035.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0006,,ext_mcrsl
+mcrsl_I_C00034,mcrsl_L0028,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00034.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0006,,ext_mcrsl
+mcrsl_I_C00031,mcrsl_L0029,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00031.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0006,,ext_mcrsl
+mcrsl_I_C00032,mcrsl_L0030,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00032.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0006,,ext_mcrsl
+mcrsl_I_C00033,mcrsl_L0031,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00033.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0006,,ext_mcrsl
+mcrsl_I_C00036,mcrsl_L0033,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00036.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00037,mcrsl_L0033,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00037.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00038,mcrsl_L0033,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00038.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00039,mcrsl_L0033,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00039.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Chest,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00040,mcrsl_L0034,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00040.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00041,mcrsl_L0034,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00041.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00042,mcrsl_L0034,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00042.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00043,mcrsl_L0034,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00043.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0007,,ext_mcrsl
+mcrsl_I_C00048,mcrsl_L0039,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00048.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0009,,ext_mcrsl
+mcrsl_I_C00049,mcrsl_L0039,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00049.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0009,,ext_mcrsl
+mcrsl_I_C00050,mcrsl_L0040,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00050.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0009,,ext_mcrsl
+mcrsl_I_C00051,mcrsl_L0040,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00051.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0009,,ext_mcrsl
+mcrsl_I_C00052,mcrsl_L0042,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00052.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00053,mcrsl_L0042,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00053.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00054,mcrsl_L0042,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00054.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00055,mcrsl_L0042,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00055.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00056,mcrsl_L0042,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00056.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00063,mcrsl_L0043,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00063.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00064,mcrsl_L0043,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00064.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00065,mcrsl_L0043,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00065.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00066,mcrsl_L0044,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00066.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00067,mcrsl_L0044,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00067.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00068,mcrsl_L0044,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00068.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00069,mcrsl_L0045,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00069.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00070,mcrsl_L0045,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00070.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00071,mcrsl_L0045,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00071.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00072,mcrsl_L0045,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00072.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00057,mcrsl_L0046,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00057.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00058,mcrsl_L0046,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00058.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00059,mcrsl_L0046,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00059.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00060,mcrsl_L0046,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00060.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0010,,ext_mcrsl
+mcrsl_I_C00073,mcrsl_L0048,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00073.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0011,,ext_mcrsl
+mcrsl_I_C00074,mcrsl_L0048,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00074.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0011,,ext_mcrsl
+mcrsl_I_C00075,mcrsl_L0048,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00075.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0011,,ext_mcrsl
+mcrsl_I_C00081,mcrsl_L0050,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00081.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0012,,ext_mcrsl
+mcrsl_I_C00082,mcrsl_L0050,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00082.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0012,,ext_mcrsl
+mcrsl_I_C00078,mcrsl_L0051,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00078.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0012,,ext_mcrsl
+mcrsl_I_C00079,mcrsl_L0051,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00079.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0012,,ext_mcrsl
+mcrsl_I_C00080,mcrsl_L0051,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00080.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0012,,ext_mcrsl
+mcrsl_I_C00083,mcrsl_L0052,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00083.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00084,mcrsl_L0052,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00084.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00085,mcrsl_L0052,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00085.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00087,mcrsl_L0053,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00087.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00086,mcrsl_L0054,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00086.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00088,mcrsl_L0055,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00088.png,nevus,benign,benign,0.0,not_cancer,,,Temple,False,mcrsl_S0013,,ext_mcrsl
+mcrsl_I_C00095,mcrsl_L0056,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00095.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00096,mcrsl_L0056,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00096.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00089,mcrsl_L0058,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00089.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00090,mcrsl_L0058,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00090.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00093,mcrsl_L0060,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00093.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00094,mcrsl_L0060,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00094.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0014,,ext_mcrsl
+mcrsl_I_C00111,mcrsl_L0062,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00111.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00108,mcrsl_L0063,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00108.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00109,mcrsl_L0063,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00109.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00110,mcrsl_L0063,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00110.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00104,mcrsl_L0064,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00104.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00105,mcrsl_L0064,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00105.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00106,mcrsl_L0064,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00106.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00107,mcrsl_L0064,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00107.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0015,,ext_mcrsl
+mcrsl_I_C00112,mcrsl_L0066,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00112.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00113,mcrsl_L0066,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00113.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00114,mcrsl_L0066,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00114.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00115,mcrsl_L0066,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00115.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00116,mcrsl_L0066,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00116.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00117,mcrsl_L0067,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00117.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00118,mcrsl_L0067,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00118.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0016,,ext_mcrsl
+mcrsl_I_C00119,mcrsl_L0069,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00119.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0017,,ext_mcrsl
+mcrsl_I_C00120,mcrsl_L0069,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00120.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0017,,ext_mcrsl
+mcrsl_I_C00121,mcrsl_L0070,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00121.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0017,,ext_mcrsl
+mcrsl_I_C00122,mcrsl_L0070,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00122.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0017,,ext_mcrsl
+mcrsl_I_C00125,mcrsl_L0071,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00125.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0018,,ext_mcrsl
+mcrsl_I_C00126,mcrsl_L0071,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00126.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0018,,ext_mcrsl
+mcrsl_I_C00127,mcrsl_L0072,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00127.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back / left shoulder,False,mcrsl_S0018,,ext_mcrsl
+mcrsl_I_C00128,mcrsl_L0072,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00128.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back / left shoulder,False,mcrsl_S0018,,ext_mcrsl
+mcrsl_I_C00129,mcrsl_L0072,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00129.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back / left shoulder,False,mcrsl_S0018,,ext_mcrsl
+mcrsl_I_C00130,mcrsl_L0073,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00130.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00131,mcrsl_L0073,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00131.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00132,mcrsl_L0073,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00132.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00133,mcrsl_L0074,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00133.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00134,mcrsl_L0074,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00134.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00135,mcrsl_L0074,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00135.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00136,mcrsl_L0075,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00136.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00137,mcrsl_L0075,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00137.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00138,mcrsl_L0075,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00138.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0019,,ext_mcrsl
+mcrsl_I_C00148,mcrsl_L0077,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00148.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00149,mcrsl_L0077,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00149.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00144,mcrsl_L0078,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00144.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00145,mcrsl_L0078,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00145.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00146,mcrsl_L0078,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00146.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00147,mcrsl_L0078,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00147.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00150,mcrsl_L0079,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00150.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00151,mcrsl_L0079,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00151.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00152,mcrsl_L0079,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00152.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00142,mcrsl_L0080,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00142.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00143,mcrsl_L0080,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00143.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0020,,ext_mcrsl
+mcrsl_I_C00158,mcrsl_L0081,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00158.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00159,mcrsl_L0081,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00159.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00160,mcrsl_L0081,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00160.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00161,mcrsl_L0081,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00161.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00162,mcrsl_L0082,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00162.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00163,mcrsl_L0082,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00163.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00164,mcrsl_L0082,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00164.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00165,mcrsl_L0082,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00165.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00153,mcrsl_L0083,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00153.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00154,mcrsl_L0083,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00154.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00155,mcrsl_L0083,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00155.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00156,mcrsl_L0083,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00156.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00157,mcrsl_L0083,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00157.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0021,,ext_mcrsl
+mcrsl_I_C00176,mcrsl_L0084,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00176.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00177,mcrsl_L0084,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00177.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00178,mcrsl_L0084,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00178.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00179,mcrsl_L0084,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00179.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Abdomen,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00166,mcrsl_L0085,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00166.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00167,mcrsl_L0085,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00167.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00168,mcrsl_L0085,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00168.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00174,mcrsl_L0085,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00174.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00169,mcrsl_L0086,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00169.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00170,mcrsl_L0086,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00170.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00175,mcrsl_L0086,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00175.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00171,mcrsl_L0087,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00171.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00172,mcrsl_L0087,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00172.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00173,mcrsl_L0087,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00173.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0022,,ext_mcrsl
+mcrsl_I_C00192,mcrsl_L0090,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00192.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00193,mcrsl_L0092,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00193.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00194,mcrsl_L0092,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00194.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00195,mcrsl_L0092,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00195.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00196,mcrsl_L0092,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00196.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00187,mcrsl_L0093,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00187.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Head (behind the ear),False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00188,mcrsl_L0093,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00188.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Head (behind the ear),False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00189,mcrsl_L0093,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00189.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Head (behind the ear),False,mcrsl_S0023,,ext_mcrsl
+mcrsl_I_C00209,mcrsl_L0095,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00209.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00210,mcrsl_L0095,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00210.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00211,mcrsl_L0095,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00211.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00212,mcrsl_L0095,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00212.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00201,mcrsl_L0096,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00201.png,nevus,benign,benign,0.0,not_cancer,,,Shoulder,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00202,mcrsl_L0096,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00202.png,nevus,benign,benign,0.0,not_cancer,,,Shoulder,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00203,mcrsl_L0096,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00203.png,nevus,benign,benign,0.0,not_cancer,,,Shoulder,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00204,mcrsl_L0096,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00204.png,nevus,benign,benign,0.0,not_cancer,,,Shoulder,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00205,mcrsl_L0097,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00205.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00206,mcrsl_L0097,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00206.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00207,mcrsl_L0097,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00207.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00208,mcrsl_L0097,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00208.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00213,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00213.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00214,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00214.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00215,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00215.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00216,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00216.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00217,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00217.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00218,mcrsl_L0098,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00218.png,melanoma,mel,mel,1.0,cancer,,,Face,False,mcrsl_S0024,,ext_mcrsl
+mcrsl_I_C00223,mcrsl_L0100,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00223.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00224,mcrsl_L0100,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00224.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00225,mcrsl_L0100,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00225.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00226,mcrsl_L0100,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00226.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00227,mcrsl_L0100,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00227.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00232,mcrsl_L0101,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00232.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00233,mcrsl_L0101,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00233.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00234,mcrsl_L0101,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00234.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00228,mcrsl_L0102,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00228.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00229,mcrsl_L0102,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00229.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00230,mcrsl_L0102,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00230.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00231,mcrsl_L0102,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00231.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0025,,ext_mcrsl
+mcrsl_I_C00241,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00241.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00243,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00243.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00245,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00245.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00247,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00247.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00249,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00249.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00251,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00251.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00252,mcrsl_L0104,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00252.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00240,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00240.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00242,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00242.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00244,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00244.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00246,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00246.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00248,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00248.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00250,mcrsl_L0105,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00250.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00253,mcrsl_L0106,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00253.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0026,,ext_mcrsl
+mcrsl_I_C00262,mcrsl_L0108,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00262.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0027,,ext_mcrsl
+mcrsl_I_C00263,mcrsl_L0108,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00263.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0027,,ext_mcrsl
+mcrsl_I_C00264,mcrsl_L0111,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00264.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00265,mcrsl_L0111,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00265.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00266,mcrsl_L0111,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00266.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00267,mcrsl_L0112,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00267.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00268,mcrsl_L0112,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00268.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00269,mcrsl_L0112,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00269.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00270,mcrsl_L0112,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00270.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0028,,ext_mcrsl
+mcrsl_I_C00271,mcrsl_L0113,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00271.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00272,mcrsl_L0113,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00272.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00273,mcrsl_L0114,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00273.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00274,mcrsl_L0114,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00274.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00275,mcrsl_L0114,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00275.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00276,mcrsl_L0117,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00276.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00278,mcrsl_L0117,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00278.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00277,mcrsl_L0118,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00277.png,melanoma,mel,mel,1.0,cancer,,,Left cheek,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00279,mcrsl_L0118,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00279.png,melanoma,mel,mel,1.0,cancer,,,Left cheek,False,mcrsl_S0029,,ext_mcrsl
+mcrsl_I_C00287,mcrsl_L0119,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00287.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00288,mcrsl_L0119,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00288.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00289,mcrsl_L0119,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00289.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Temple,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00280,mcrsl_L0122,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00280.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00281,mcrsl_L0122,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00281.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00282,mcrsl_L0122,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00282.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00283,mcrsl_L0122,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00283.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0030,,ext_mcrsl
+mcrsl_I_C00294,mcrsl_L0125,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00294.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Temple,False,mcrsl_S0031,,ext_mcrsl
+mcrsl_I_C00296,mcrsl_L0125,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00296.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Temple,False,mcrsl_S0031,,ext_mcrsl
+mcrsl_I_C00298,mcrsl_L0125,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00298.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Temple,False,mcrsl_S0031,,ext_mcrsl
+mcrsl_I_C00299,mcrsl_L0127,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00299.png,nevus,benign,benign,0.0,not_cancer,,,Foot ,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00301,mcrsl_L0127,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00301.png,nevus,benign,benign,0.0,not_cancer,,,Foot ,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00303,mcrsl_L0127,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00303.png,nevus,benign,benign,0.0,not_cancer,,,Foot ,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00307,mcrsl_L0128,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00307.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00308,mcrsl_L0128,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00308.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00305,mcrsl_L0129,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00305.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00306,mcrsl_L0129,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00306.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0032,,ext_mcrsl
+mcrsl_I_C00312,mcrsl_L0131,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00312.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00313,mcrsl_L0131,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00313.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00314,mcrsl_L0131,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00314.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00315,mcrsl_L0132,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00315.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00316,mcrsl_L0132,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00316.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00317,mcrsl_L0132,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00317.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00318,mcrsl_L0132,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00318.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00319,mcrsl_L0133,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00319.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00320,mcrsl_L0133,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00320.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00321,mcrsl_L0133,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00321.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0033,,ext_mcrsl
+mcrsl_I_C00322,mcrsl_L0135,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00322.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00323,mcrsl_L0135,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00323.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00324,mcrsl_L0135,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00324.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00325,mcrsl_L0136,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00325.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00326,mcrsl_L0136,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00326.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00327,mcrsl_L0136,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00327.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00328,mcrsl_L0136,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00328.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0034,,ext_mcrsl
+mcrsl_I_C00341,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00341.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00342,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00342.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00343,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00343.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00344,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00344.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00345,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00345.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00346,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00346.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00347,mcrsl_L0137,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00347.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Nose,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00333,mcrsl_L0138,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00333.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00334,mcrsl_L0138,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00334.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00335,mcrsl_L0138,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00335.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00336,mcrsl_L0138,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00336.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00337,mcrsl_L0139,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00337.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00338,mcrsl_L0139,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00338.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00339,mcrsl_L0139,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00339.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00340,mcrsl_L0139,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00340.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00348,mcrsl_L0139,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00348.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0035,,ext_mcrsl
+mcrsl_I_C00349,mcrsl_L0141,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00349.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00350,mcrsl_L0141,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00350.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00351,mcrsl_L0141,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00351.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00352,mcrsl_L0141,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00352.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00353,mcrsl_L0141,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00353.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00354,mcrsl_L0142,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00354.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00355,mcrsl_L0142,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00355.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00356,mcrsl_L0142,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00356.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00357,mcrsl_L0142,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00357.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00358,mcrsl_L0142,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00358.png,dermatofibroma,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0036,,ext_mcrsl
+mcrsl_I_C00380,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00380.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00381,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00381.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00382,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00382.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00383,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00383.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00384,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00384.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00385,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00385.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00386,mcrsl_L0144,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00386.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Head,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00371,mcrsl_L0145,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00371.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00372,mcrsl_L0145,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00372.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00373,mcrsl_L0145,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00373.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00374,mcrsl_L0145,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00374.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00375,mcrsl_L0145,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00375.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00368,mcrsl_L0146,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00368.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00369,mcrsl_L0146,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00369.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00370,mcrsl_L0146,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00370.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00376,mcrsl_L0147,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00376.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00377,mcrsl_L0147,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00377.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00378,mcrsl_L0147,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00378.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00379,mcrsl_L0147,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00379.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00387,mcrsl_L0148,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00387.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00388,mcrsl_L0148,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00388.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00389,mcrsl_L0148,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00389.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00390,mcrsl_L0148,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00390.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00391,mcrsl_L0148,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00391.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00364,mcrsl_L0149,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00364.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00365,mcrsl_L0149,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00365.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00366,mcrsl_L0149,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00366.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00367,mcrsl_L0149,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00367.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0038,,ext_mcrsl
+mcrsl_I_C00392,mcrsl_L0150,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00392.png,melanoma,mel,mel,1.0,cancer,,,Left leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00393,mcrsl_L0150,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00393.png,melanoma,mel,mel,1.0,cancer,,,Left leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00394,mcrsl_L0150,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00394.png,melanoma,mel,mel,1.0,cancer,,,Left leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00395,mcrsl_L0150,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00395.png,melanoma,mel,mel,1.0,cancer,,,Left leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00396,mcrsl_L0151,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00396.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00397,mcrsl_L0151,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00397.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00398,mcrsl_L0151,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00398.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00399,mcrsl_L0151,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00399.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00400,mcrsl_L0152,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00400.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00401,mcrsl_L0152,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00401.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00402,mcrsl_L0152,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00402.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0039,,ext_mcrsl
+mcrsl_I_C00403,mcrsl_L0153,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00403.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00404,mcrsl_L0153,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00404.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00405,mcrsl_L0153,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00405.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00406,mcrsl_L0153,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00406.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00414,mcrsl_L0154,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00414.png,nevus,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00415,mcrsl_L0154,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00415.png,nevus,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00416,mcrsl_L0154,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00416.png,nevus,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00412,mcrsl_L0155,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00412.png,nevus,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00413,mcrsl_L0155,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00413.png,nevus,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00407,mcrsl_L0156,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00407.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00408,mcrsl_L0156,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00408.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00409,mcrsl_L0156,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00409.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00410,mcrsl_L0156,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00410.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00411,mcrsl_L0156,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00411.png,nevus,benign,benign,0.0,not_cancer,,,Scalp,False,mcrsl_S0040,,ext_mcrsl
+mcrsl_I_C00429,mcrsl_L0157,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00429.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00430,mcrsl_L0157,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00430.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00431,mcrsl_L0157,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00431.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00432,mcrsl_L0157,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00432.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00433,mcrsl_L0158,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00433.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00434,mcrsl_L0158,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00434.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00435,mcrsl_L0159,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00435.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00436,mcrsl_L0159,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00436.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00437,mcrsl_L0159,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00437.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00438,mcrsl_L0159,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00438.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00439,mcrsl_L0159,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00439.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00426,mcrsl_L0160,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00426.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00427,mcrsl_L0160,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00427.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00428,mcrsl_L0160,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00428.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00422,mcrsl_L0161,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00422.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00423,mcrsl_L0161,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00423.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00424,mcrsl_L0161,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00424.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00425,mcrsl_L0161,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00425.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00440,mcrsl_L0161,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00440.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00417,mcrsl_L0162,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00417.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00418,mcrsl_L0162,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00418.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00419,mcrsl_L0162,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00419.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00420,mcrsl_L0162,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00420.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00421,mcrsl_L0162,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00421.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0041,,ext_mcrsl
+mcrsl_I_C00469,mcrsl_L0163,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00469.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00470,mcrsl_L0163,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00470.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00473,mcrsl_L0163,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00473.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00471,mcrsl_L0164,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00471.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00472,mcrsl_L0164,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00472.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00441,mcrsl_L0166,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00441.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00442,mcrsl_L0166,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00442.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00443,mcrsl_L0166,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00443.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00459,mcrsl_L0167,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00459.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00460,mcrsl_L0167,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00460.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00461,mcrsl_L0167,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00461.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00462,mcrsl_L0167,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00462.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,dup_of_train,excluded
+mcrsl_I_C00463,mcrsl_L0168,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00463.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00464,mcrsl_L0168,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00464.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00465,mcrsl_L0168,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00465.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00444,mcrsl_L0169,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00444.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00445,mcrsl_L0169,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00445.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,dup_of_train,excluded
+mcrsl_I_C00446,mcrsl_L0169,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00446.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00447,mcrsl_L0169,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00447.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00468,mcrsl_L0169,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00468.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00453,mcrsl_L0170,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00453.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00454,mcrsl_L0170,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00454.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00455,mcrsl_L0171,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00455.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00456,mcrsl_L0171,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00456.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00457,mcrsl_L0171,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00457.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00458,mcrsl_L0171,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00458.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00466,mcrsl_L0172,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00466.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00467,mcrsl_L0172,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00467.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00448,mcrsl_L0261,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00448.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,dup_of_train,excluded
+mcrsl_I_C00449,mcrsl_L0261,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00449.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00450,mcrsl_L0261,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00450.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00451,mcrsl_L0261,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00451.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00452,mcrsl_L0261,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00452.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0042,,ext_mcrsl
+mcrsl_I_C00478,mcrsl_L0174,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00478.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0043,,ext_mcrsl
+mcrsl_I_C00479,mcrsl_L0174,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00479.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0043,,ext_mcrsl
+mcrsl_I_C00480,mcrsl_L0174,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00480.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0043,,ext_mcrsl
+mcrsl_I_C00481,mcrsl_L0174,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00481.png,nevus,benign,benign,0.0,not_cancer,,,Right leg,False,mcrsl_S0043,,ext_mcrsl
+mcrsl_I_C00484,mcrsl_L0176,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00484.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00485,mcrsl_L0176,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00485.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00486,mcrsl_L0176,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00486.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00506,mcrsl_L0176,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00506.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00499,mcrsl_L0177,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00499.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00500,mcrsl_L0177,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00500.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00501,mcrsl_L0177,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00501.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00495,mcrsl_L0178,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00495.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00496,mcrsl_L0178,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00496.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00497,mcrsl_L0178,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00497.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00498,mcrsl_L0178,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00498.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00489,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00489.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00490,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00490.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00491,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00491.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00492,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00492.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00493,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00493.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00494,mcrsl_L0179,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00494.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00502,mcrsl_L0180,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00502.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00503,mcrsl_L0180,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00503.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00504,mcrsl_L0180,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00504.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00505,mcrsl_L0180,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00505.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00513,mcrsl_L0181,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00513.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00514,mcrsl_L0181,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00514.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00515,mcrsl_L0181,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00515.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00516,mcrsl_L0181,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00516.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00508,mcrsl_L0182,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00508.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00509,mcrsl_L0182,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00509.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00510,mcrsl_L0182,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00510.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00511,mcrsl_L0182,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00511.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00512,mcrsl_L0182,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00512.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0044,,ext_mcrsl
+mcrsl_I_C00517,mcrsl_L0183,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00517.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00518,mcrsl_L0183,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00518.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00519,mcrsl_L0183,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00519.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00520,mcrsl_L0183,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00520.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00525,mcrsl_L0184,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00525.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00526,mcrsl_L0184,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00526.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00527,mcrsl_L0184,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00527.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00528,mcrsl_L0184,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00528.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00529,mcrsl_L0185,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00529.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left side,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00530,mcrsl_L0185,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00530.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left side,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00531,mcrsl_L0185,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00531.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left side,False,mcrsl_S0045,dup_of_train,excluded
+mcrsl_I_C00532,mcrsl_L0185,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00532.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Left side,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00521,mcrsl_L0186,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00521.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00522,mcrsl_L0186,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00522.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00523,mcrsl_L0186,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00523.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00524,mcrsl_L0186,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00524.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0045,,ext_mcrsl
+mcrsl_I_C00537,mcrsl_L0187,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00537.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00538,mcrsl_L0187,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00538.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00539,mcrsl_L0188,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00539.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Back,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00540,mcrsl_L0188,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00540.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Back,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00541,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00541.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00542,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00542.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00543,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00543.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00544,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00544.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00545,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00545.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00546,mcrsl_L0189,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00546.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00547,mcrsl_L0191,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00547.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Temple,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00548,mcrsl_L0191,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00548.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Temple,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00549,mcrsl_L0191,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00549.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Temple,False,mcrsl_S0046,,ext_mcrsl
+mcrsl_I_C00554,mcrsl_L0192,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00554.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00555,mcrsl_L0192,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00555.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00550,mcrsl_L0194,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00550.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00551,mcrsl_L0194,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00551.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00556,mcrsl_L0195,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00556.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00557,mcrsl_L0195,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00557.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0047,,ext_mcrsl
+mcrsl_I_C00570,mcrsl_L0198,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00570.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00571,mcrsl_L0198,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00571.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00572,mcrsl_L0198,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00572.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00573,mcrsl_L0198,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00573.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00574,mcrsl_L0199,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00574.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00575,mcrsl_L0199,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00575.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00576,mcrsl_L0199,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00576.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00577,mcrsl_L0199,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00577.png,atypical nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00578,mcrsl_L0200,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00578.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00579,mcrsl_L0200,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00579.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00580,mcrsl_L0200,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00580.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00581,mcrsl_L0200,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00581.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0048,,ext_mcrsl
+mcrsl_I_C00586,mcrsl_L0202,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00586.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00587,mcrsl_L0202,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00587.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00588,mcrsl_L0202,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00588.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00589,mcrsl_L0203,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00589.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00590,mcrsl_L0203,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00590.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00591,mcrsl_L0203,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00591.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00592,mcrsl_L0203,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00592.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00597,mcrsl_L0204,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00597.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00598,mcrsl_L0204,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00598.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00599,mcrsl_L0204,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00599.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00600,mcrsl_L0204,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00600.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00601,mcrsl_L0204,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00601.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00593,mcrsl_L0205,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00593.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00594,mcrsl_L0205,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00594.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00595,mcrsl_L0205,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00595.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00596,mcrsl_L0205,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00596.png,angioma,exclude,other_benign_tumour,0.0,not_cancer,,,Chest,False,mcrsl_S0049,,ext_mcrsl
+mcrsl_I_C00607,mcrsl_L0207,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00607.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00608,mcrsl_L0207,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00608.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00609,mcrsl_L0207,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00609.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00610,mcrsl_L0207,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00610.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00611,mcrsl_L0207,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00611.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00612,mcrsl_L0208,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00612.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00613,mcrsl_L0208,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00613.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00614,mcrsl_L0208,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00614.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00615,mcrsl_L0208,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00615.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0050,,ext_mcrsl
+mcrsl_I_C00631,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00631.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00632,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00632.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00633,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00633.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00634,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00634.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00635,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00635.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00636,mcrsl_L0212,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00636.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Back,False,mcrsl_S0051,,ext_mcrsl
+mcrsl_I_C00649,mcrsl_L0215,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00649.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00650,mcrsl_L0215,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00650.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00651,mcrsl_L0215,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00651.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00652,mcrsl_L0215,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00652.png,nevus,benign,benign,0.0,not_cancer,,,Left leg,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00655,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00655.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00656,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00656.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00657,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00657.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00658,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00658.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00659,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00659.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00660,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00660.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00665,mcrsl_L0216,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00665.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00661,mcrsl_L0217,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00661.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00662,mcrsl_L0217,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00662.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00663,mcrsl_L0217,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00663.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00664,mcrsl_L0217,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00664.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0052,,ext_mcrsl
+mcrsl_I_C00692,mcrsl_L0219,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00692.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00693,mcrsl_L0219,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00693.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00694,mcrsl_L0219,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00694.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00679,mcrsl_L0221,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00679.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00680,mcrsl_L0221,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00680.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00681,mcrsl_L0221,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00681.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00682,mcrsl_L0221,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00682.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00683,mcrsl_L0222,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00683.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00684,mcrsl_L0222,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00684.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00685,mcrsl_L0222,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00685.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00686,mcrsl_L0222,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00686.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00695,mcrsl_L0224,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00695.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00696,mcrsl_L0224,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00696.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00697,mcrsl_L0224,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00697.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00698,mcrsl_L0224,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00698.png,nevus,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0053,,ext_mcrsl
+mcrsl_I_C00699,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00699.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00700,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00700.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00701,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00701.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00702,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00702.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00703,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00703.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00704,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00704.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00705,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00705.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00714,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00714.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00715,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00715.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00716,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00716.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00717,mcrsl_L0226,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00717.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00706,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00706.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00707,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00707.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00708,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00708.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00709,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00709.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00710,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00710.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00711,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00711.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00712,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00712.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00713,mcrsl_L0227,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00713.png,nevus,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00718,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00718.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00719,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00719.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00720,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00720.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00721,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00721.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00722,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00722.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00723,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00723.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00724,mcrsl_L0228,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00724.png,nevus,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00725,mcrsl_L0229,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00725.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00726,mcrsl_L0229,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00726.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00727,mcrsl_L0229,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00727.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00728,mcrsl_L0229,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00728.png,nevus,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0054,,ext_mcrsl
+mcrsl_I_C00739,mcrsl_L0231,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00739.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00741,mcrsl_L0231,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00741.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00743,mcrsl_L0231,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00743.png,nevus,benign,benign,0.0,not_cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00738,mcrsl_L0232,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00738.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00740,mcrsl_L0232,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00740.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00742,mcrsl_L0232,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00742.png,basal cell carcinoma,bcc,bcc,1.0,cancer,,,Face,False,mcrsl_S0055,,ext_mcrsl
+mcrsl_I_C00748,mcrsl_L0235,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00748.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00749,mcrsl_L0235,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00749.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00750,mcrsl_L0235,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00750.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Chest,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00755,mcrsl_L0237,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00755.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00756,mcrsl_L0237,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00756.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00757,mcrsl_L0238,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00757.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00758,mcrsl_L0238,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00758.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00759,mcrsl_L0238,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00759.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00760,mcrsl_L0238,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00760.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00761,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00761.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00762,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00762.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00763,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00763.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00764,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00764.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00765,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00765.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00766,mcrsl_L0239,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00766.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right cheek,False,mcrsl_S0056,,ext_mcrsl
+mcrsl_I_C00767,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00767.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00769,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00769.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00771,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00771.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00773,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00773.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00775,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00775.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00776,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00776.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00779,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00779.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00781,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00781.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00783,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00783.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00785,mcrsl_L0241,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00785.png,atypical nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00797,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00797.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00798,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00798.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00799,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00799.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00800,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00800.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00801,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00801.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00802,mcrsl_L0242,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00802.png,nevus,benign,benign,0.0,not_cancer,,,Left arm,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00787,mcrsl_L0243,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00787.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Neck,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00788,mcrsl_L0243,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00788.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Neck,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00789,mcrsl_L0243,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00789.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Neck,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00790,mcrsl_L0243,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00790.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Neck,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00791,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00791.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00792,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00792.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00793,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00793.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00794,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00794.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00795,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00795.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00796,mcrsl_L0244,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00796.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Abdomen,False,mcrsl_S0057,,ext_mcrsl
+mcrsl_I_C00808,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00808.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00809,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00809.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00810,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00810.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00811,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00811.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00812,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00812.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00813,mcrsl_L0246,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00813.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00819,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00819.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00820,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00820.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00821,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00821.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00822,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00822.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00823,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00823.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00824,mcrsl_L0247,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00824.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00814,mcrsl_L0248,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00814.png,nevus,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00815,mcrsl_L0248,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00815.png,nevus,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00816,mcrsl_L0248,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00816.png,nevus,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00817,mcrsl_L0248,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00817.png,nevus,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00818,mcrsl_L0248,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00818.png,nevus,benign,benign,0.0,not_cancer,,,unknown,False,mcrsl_S0058,,ext_mcrsl
+mcrsl_I_C00840,mcrsl_L0252,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00840.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00842,mcrsl_L0252,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00842.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00844,mcrsl_L0252,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00844.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00845,mcrsl_L0252,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00845.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00848,mcrsl_L0252,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00848.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00839,mcrsl_L0253,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00839.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00841,mcrsl_L0253,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00841.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00843,mcrsl_L0253,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00843.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00846,mcrsl_L0253,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00846.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00847,mcrsl_L0253,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00847.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00849,mcrsl_L0254,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00849.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00850,mcrsl_L0254,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00850.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00851,mcrsl_L0254,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00851.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00852,mcrsl_L0254,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00852.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00853,mcrsl_L0255,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00853.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00854,mcrsl_L0255,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00854.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00855,mcrsl_L0255,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00855.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00832,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00832.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00833,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00833.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00834,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00834.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00835,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00835.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00836,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00836.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00837,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00837.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00838,mcrsl_L0256,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00838.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Right arm,False,mcrsl_S0059,,ext_mcrsl
+mcrsl_I_C00856,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00856.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00857,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00857.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00858,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00858.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00859,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00859.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00860,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00860.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00861,mcrsl_L0259,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00861.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00862,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00862.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00863,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00863.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00864,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00864.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00865,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00865.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00866,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00866.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
+mcrsl_I_C00867,mcrsl_L0260,mcrsl,mcrsl/MCR-SL_dataset/clinical/I_C00867.png,seborrheic keratosis,benign,benign,0.0,not_cancer,,,Back,False,mcrsl_S0060,,ext_mcrsl
