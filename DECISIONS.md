@@ -915,7 +915,7 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **On the PanDerm track this overrides the rule above.** PH is below PG on `ddi_hold` by a supported amount (−0.052), so the rule kept the half in training. The user chose the DDI validation set over the extra 164 photos, so that every later idea on both tracks can be checked on DDI before a test set is looked at.
 - **Neither model meets the written rules for a checkpoint.** Neither passed step 1, and neither is higher on every test set (section 19). Both are level on `test` and `midas_test` (no difference supported) and higher on `ddi_hold` by a supported amount. They are checkpoints by the user's decision, as checkpoint 4 was by the team's.
 - **Renamed.** Configs, runs, results and ledger rows: `skinnet-idea-u` → `skinnet-c5`, `panderm-idea-h` → `panderm-c2`. The logs inside the run folders keep the old names. Weights are copied to `checkpoints/skinnet-c5/` and `checkpoints/panderm-c2/`. Git tags: `checkpoint-5` and `panderm-checkpoint-2`.
-- **T and PG are kept** (configs, runs, weights) and marked not adopted (user, 22 Nov).
+- **T and PG are kept** (configs, runs, weights) and marked not adopted (user, 22 Nov). *Changed later the same day, below.*
 - **From now on, on both tracks:**
   - Training uses `ddi_train` (164 images).
   - Step 1 adds `ddi_val` to `val` and `midas_val`: higher on all three, none lower by a supported amount.
@@ -932,3 +932,20 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
   | DermaCon-IN | +0.036 | no |
 
 - **Left open.** A final retrain with `ddi_val` added to training, once a track's recipe is settled. Like any training, it needs the user's approval first.
+
+**User decision (22 Nov 2026, later): T and PG are kept as the all-DDI versions of checkpoint 5 and PanDerm checkpoint 2.**
+
+- **Why no retrain.** Checkpoint 5 (PanDerm checkpoint 2) with `ddi_val` added to training is exactly T's (PG's) config: the same recipe, the same 328 DDI photos, the same seeds. So T and PG already are the final retrain of the current recipes, and retraining them would only reproduce them.
+- **Two models per track, two jobs:**
+
+  | | Development checkpoint | All-DDI version |
+  | --- | --- | --- |
+  | From scratch | `skinnet-c5` | `skinnet-idea-t` (T) |
+  | PanDerm | `panderm-c2` | `panderm-idea-g` (PG) |
+  | DDI in training | 164 (`ddi_train`) | 328 (`ddi_train` + `ddi_val`) |
+  | Used for | New ideas are compared with it, `ddi_val` in step 1 | The figures reported as each track's best for now |
+
+- **The names stay** (`skinnet-idea-t`, `panderm-idea-g`) so the ledger and logs still match. Weights are copied to `checkpoints/skinnet-idea-t/` and `checkpoints/panderm-idea-g/`. Git tags: `checkpoint-5-all-ddi` and `panderm-checkpoint-2-all-ddi`.
+- **What it matters for.** PG is ahead of PanDerm checkpoint 2 on `ddi_hold` by a supported amount (0.785 against 0.733), most of it on skin types V–VI (0.726 against 0.595). T and checkpoint 5 are level (0.684 against 0.670, not supported).
+- **A caution to report with them.** `ddi_hold` was used once to choose between the two designs (above), so T's and PG's `ddi_hold` scores are a little optimistic. Neither can be checked on `ddi_val`, which they trained on. Their recipes are unchanged from checkpoints that were.
+- **When the recipe changes,** a new checkpoint gets its own all-DDI version the same way: its config with `ddi_val` added to `data.train_splits`. That retrain needs the user's approval like any training.

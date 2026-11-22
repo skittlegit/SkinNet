@@ -18,6 +18,8 @@ Scores are the mean of three seeds. Details and confidence intervals are in [RES
 | PanDerm checkpoint 1 | `panderm-c1` | `configs/panderm-c1.yaml` (PanDerm track, idea PC; DECISIONS.md, section 24) |
 | Checkpoint 5 | `skinnet-c5` | `configs/skinnet-c5.yaml` (was idea U, `skinnet-idea-u`; DECISIONS.md, section 26) |
 | PanDerm checkpoint 2 | `panderm-c2` | `configs/panderm-c2.yaml` (was idea PH, `panderm-idea-h`; section 26) |
+| Checkpoint 5, all-DDI version | `skinnet-idea-t` | `configs/skinnet-idea-t.yaml`: checkpoint 5 with `ddi_val` also in training (section 26) |
+| PanDerm checkpoint 2, all-DDI version | `panderm-idea-g` | `configs/panderm-idea-g.yaml`: PanDerm checkpoint 2 with `ddi_val` also in training (section 26) |
 
 One name per model, the same for its config, run folder and result folder. A run folder `runs/<name>/` holds the seeds (`s0`, `s1`, `s2`) and their average (`avg`); `results/<name>/metrics.csv` is the model's full score table. An idea being tested is `skinnet-idea-<letter>`; if kept it is renamed to the next checkpoint (`skinnet-c6`, `panderm-c3`), and if discarded it is deleted. The rule is in [DECISIONS.md](../DECISIONS.md), section 15.
 
@@ -48,7 +50,7 @@ Scores are AUC; `val` is within-source AUC. Bold marks a supported difference.
 | `ddi_hold` | 0.641 | 0.670 | **+0.029 [+0.007, +0.052]** | 0.691 | 0.733 | **+0.042 [+0.003, +0.082]** |
 | DermaCon-IN (65 photos) | 0.818 | 0.847 | +0.029 [−0.014, +0.084] | 0.850 | 0.882 | +0.032 [−0.006, +0.104] |
 
-**Against the half-in-training runs** (ideas T and PG, not adopted, kept), on `ddi_hold`:
+**The all-DDI versions** (ideas T and PG). They are each checkpoint's recipe with `ddi_val` added to training (328 DDI photos), kept by the user on 22 Nov as the figures reported for each track for now. New ideas are still compared with checkpoint 5 and PanDerm checkpoint 2. Weights are in `checkpoints/skinnet-idea-t/` and `checkpoints/panderm-idea-g/`; git tags `checkpoint-5-all-ddi` and `panderm-checkpoint-2-all-ddi`. Their `ddi_hold` scores are a little optimistic, since `ddi_hold` chose the design. On `ddi_hold`:
 - T scored 0.684: checkpoint 5 − T = −0.014, not supported.
 - PG scored 0.785: PanDerm checkpoint 2 − PG = −0.052 [−0.088, −0.017], supported.
 

@@ -29,7 +29,7 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
-| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); kept, not adopted: the user chose the three-way split (U), 22 Nov |
+| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 5's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 5 |
 | U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
@@ -211,7 +211,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Why:** DDI has stayed near 0.65 on every from-scratch model; MIDAS rose only when its own photos were trained on (ideas J and O). Decided by the team, 20 Nov (DECISIONS.md, section 25).
 - **Compared on:** step 1 on validation, paired comparison with checkpoint 4; then the test sets with `ddi_hold` in place of DDI.
 - **Caution:** a gain on `ddi_hold` shows the model learned DDI's hospital, not that it travels to an unseen one.
-- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept, not adopted: the user chose U's three-way split (22 Nov).
+- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept as checkpoint 5's all-DDI version (user, 22 Nov): the same config as checkpoint 5 with `ddi_val` also in training, so it is the final retrain of the current recipe (DECISIONS.md, section 26).
 
 ### U. A quarter of DDI in training, a quarter for validation
 
@@ -240,7 +240,7 @@ The team made PanDerm a second track beside the from-scratch one (DECISIONS.md, 
 | PB | 384 px input | Deferred (17 Nov): does not fit the 8 GB GPU at PA's batch size; about 13 hours at half the batch |
 | PC | PanDerm Large (ViT-L/16, the paper's network) on PA's recipe | **PanDerm checkpoint 1** (17 Nov): higher on every set but DermaCon-IN; DDI 0.650 → 0.686, the first supported DDI gain |
 | PH | PanDerm checkpoint 1's recipe with a quarter of DDI in training and `ddi_val` in step 1, as idea U; compared with PG on `ddi_hold` | **PanDerm checkpoint 2** (`panderm-c2`, the user's decision, 22 Nov): step 1 failed on `val` alone; `ddi_val` +0.086, `ddi_hold` 0.691 → 0.733 (both supported); below PG (0.785) by a supported amount, where section 26's rule would have kept PG; the user chose the three-way split |
-| PG | PanDerm checkpoint 1's recipe with half of DDI (`ddi_train`) in training, as idea T; DDI scored on `ddi_hold` | Failed step 1 (21 Nov); retrained for a look: `ddi_hold` 0.691 → 0.785 (supported); kept, not adopted: the user chose the three-way split (PH), 22 Nov |
+| PG | PanDerm checkpoint 1's recipe with half of DDI (`ddi_train`) in training, as idea T; DDI scored on `ddi_hold` | Failed step 1 (21 Nov); retrained for a look: `ddi_hold` 0.691 → 0.785 (supported); **kept: PanDerm checkpoint 2's all-DDI version** (user, 22 Nov); new ideas are compared with PanDerm checkpoint 2 |
 | PF | PanDerm checkpoint 1's recipe, validated and kept as a running average of its weights | Discarded on the test sets (20 Nov): passed step 1, level at home and on MIDAS test, DDI 0.686 → 0.668 (a supported loss) |
 | PE | PanDerm checkpoint 1's recipe with stochastic depth (drop path 0.2), as in PanDerm's own fine-tuning | Discarded at step 1 (18 Nov): `val` within-source AUC 0.983 → 0.980, MIDAS validation 0.856 → 0.869, neither supported |
 | PD | PA's recipe with colour augmentation aimed at skin tone and lighting | Discarded at step 1 (17 Nov): flat at home, MIDAS validation 0.842 → 0.835 |

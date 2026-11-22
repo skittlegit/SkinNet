@@ -337,7 +337,7 @@ No run is lower than its checkpoint by a supported amount on `test`, `midas_test
 - **PanDerm keeps gaining from more DDI photos; the from-scratch network levels off** (+0.042 then +0.094 for PanDerm, +0.029 then +0.043 from scratch).
 - **`ddi_val` agreed with `ddi_hold` on both tracks** (+0.048 and +0.086 at step 1). So a DDI validation set can stand in for the test half when ideas are judged.
 - **None of the four passed step 1 as written.** `val` or `midas_val` was a little lower each time, never by a supported amount.
-- **The user's decision (22 Nov):** the three-way split on both tracks. U is checkpoint 5 (`skinnet-c5`) and PH is PanDerm checkpoint 2 (`panderm-c2`). T and PG are kept and not adopted.
+- **The user's decision (22 Nov):** the three-way split on both tracks. U is checkpoint 5 (`skinnet-c5`) and PH is PanDerm checkpoint 2 (`panderm-c2`). T and PG were then kept as their all-DDI versions: the same configs with `ddi_val` also in training, the figures reported for each track for now.
 
 ## PanDerm track, idea PF: a running average of the weights (20 Nov 2026)
 
