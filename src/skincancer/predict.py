@@ -14,7 +14,7 @@ import pandas as pd
 
 from . import runs
 
-TEST_ONLY = {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test"}   # ddi_hold: section 25
+TEST_ONLY = {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test"}   # and every ext_<name> (runs.is_test_only)
 LEDGER = Path("runs/final_ledger.csv")
 
 
@@ -51,7 +51,7 @@ def main(argv=None):
                     help="rebuild predictions on a test-only set already in the ledger (no new entry)")
     args = ap.parse_args(argv)
     rdir = Path(args.run)
-    test_only = [s for s in args.splits if s in TEST_ONLY]
+    test_only = [s for s in args.splits if runs.is_test_only(s)]
     if test_only and not args.final:
         raise SystemExit(f"{test_only} are test-only: pass --final (scored once per run)")
     if args.final:
@@ -61,7 +61,7 @@ def main(argv=None):
             raise SystemExit(f"{rdir} has no summary.json (training did not finish): not scoring test sets")
         check_ledger(str(rdir.as_posix()), test_only, args.force)
     model, cfg = runs.load_run(rdir)
-    manifest = pd.read_csv(cfg["manifest"])
+    manifest = runs.read_manifest(cfg["manifest"])
     classes = runs.classes_of(cfg)
     (rdir / "preds").mkdir(exist_ok=True)
     scored = []
@@ -76,7 +76,7 @@ def main(argv=None):
         scored.append(split)
         print(f"{split}: {len(df)} images")
     if args.final and not args.force:   # --force reproduces a look the ledger already lists
-        append_ledger(str(rdir.as_posix()), [s for s in scored if s in TEST_ONLY])
+        append_ledger(str(rdir.as_posix()), [s for s in scored if runs.is_test_only(s)])
 
 
 if __name__ == "__main__":

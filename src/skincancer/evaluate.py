@@ -30,6 +30,10 @@ EVAL_SETS = {
     "dermacon_test": ("binary", ["label_fine"]),  # Indian tumours
     "ak_side": ("rates", []),                     # precancerous: neither class
     "dermacon_other": ("rates", []),              # Indian clinic images that are not cancer
+    # outside test sets never trained on (section 27; data/external.csv)
+    "ext_hiba": ("binary", ["label_fine"]), "ext_mednode": ("binary", ["label_fine"]),
+    "ext_mcrsl": ("binary", ["label_fine"]), "ext_derm7pt": ("binary", ["label_fine"]),
+    "ext_asan": ("binary", ["label_fine"]), "ext_isic2019": ("binary", ["label_fine"]),
 }
 # Cancers and the benign tumours that resemble them: the hard part of the task.
 HARD_TYPES = {"bcc", "scc", "mel", "rare_cancer", "benign"}
@@ -122,7 +126,8 @@ def evaluate(exp: str, runs_dir="runs", results_dir="results", manifest_path=Non
     label_col = cfg["data"]["label_col"]
     classes = CLASSES[label_col]
     cols = [f"p_{c}" for c in classes]
-    manifest = pd.read_csv(manifest_path or cfg.get("manifest", "data/manifest.csv"))
+    from .runs import read_manifest
+    manifest = read_manifest(manifest_path or cfg.get("manifest", "data/manifest.csv"))
 
     # Per-seed threshold on P(malignant) that catches OP_SENSITIVITY of the cancers in OP_SPLIT.
     thresholds = {}

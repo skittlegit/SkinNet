@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 
 from . import metrics as M
+from . import runs
 from .evaluate import load_preds, run_config
 from .labels import CLASSES
 
@@ -76,7 +77,7 @@ def main(argv=None):
     ap.add_argument("--n-boot", type=int, default=2000)
     args = ap.parse_args(argv)
     cfg = run_config(Path(args.runs_dir) / args.a)
-    manifest = pd.read_csv(cfg["manifest"], low_memory=False)
+    manifest = runs.read_manifest(cfg["manifest"])
     rows = []
     for b in args.b:
         for split in args.splits:

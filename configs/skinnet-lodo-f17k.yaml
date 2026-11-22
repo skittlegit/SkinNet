@@ -1,0 +1,6 @@
+# Leave-one-dataset-out (DECISIONS.md, section 27): checkpoint 5's all-DDI recipe (idea T) with fitzpatrick17k
+# left out of training and validation. A measurement, never a checkpoint.
+extends: skinnet-idea-t.yaml
+name: skinnet-lodo-f17k
+data:
+  exclude_datasets: [fitzpatrick17k]

@@ -27,7 +27,8 @@ import pandas as pd
 import yaml
 
 from .labels import CLASSES
-from .predict import LEDGER, TEST_ONLY, append_ledger, check_ledger
+from .predict import LEDGER, append_ledger, check_ledger
+from .runs import is_test_only, read_manifest
 
 
 def make_tta(exp: str, name: str, runs_dir: str = "runs") -> list[Path]:
@@ -55,7 +56,7 @@ def make_ensemble(exp: str, name: str | None, splits: list[str], runs_dir: str =
     if not src:
         raise FileNotFoundError(f"no runs under {Path(runs_dir) / exp}")
     dst = Path(runs_dir) / name / "avg"
-    test_only = [s for s in splits if s in TEST_ONLY]
+    test_only = [s for s in splits if is_test_only(s)]
     if test_only and not final:
         raise SystemExit(f"{test_only} are test-only: pass --final (scored once per model)")
     if final:
@@ -85,7 +86,7 @@ def make_subset(exp: str, source: str, split: str, manifest_path: str = "data/ma
                 runs_dir: str = "runs") -> list[Path]:
     """preds/<split>.csv for every scored folder of `exp` (seeds and average), cut from its
     preds/<source>.csv. Every image of `split` must already be in `source`'s predictions."""
-    manifest = pd.read_csv(manifest_path)
+    manifest = read_manifest(manifest_path)
     ids = set(manifest.loc[manifest["split"] == split, "image_id"])
     if not ids:
         raise SystemExit(f"no images in split {split!r}")

@@ -54,6 +54,21 @@ def classes_of(cfg: dict) -> list[str]:
     return CLASSES[cfg["data"]["label_col"]]
 
 
+EXTERNAL = Path("data/external.csv")   # outside test sets, split ext_<name> (data/external.py, section 27)
+
+
+def is_test_only(split: str) -> bool:
+    return split in {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test"} or split.startswith("ext_")
+
+
+def read_manifest(path) -> pd.DataFrame:
+    """The manifest, with the outside test sets appended when data/external.csv exists."""
+    m = pd.read_csv(path, low_memory=False)
+    if EXTERNAL.exists():
+        m = pd.concat([m, pd.read_csv(EXTERNAL, low_memory=False)], ignore_index=True)
+    return m
+
+
 def split_rows(manifest: pd.DataFrame, split) -> pd.DataFrame:
     """Rows of one split, or of several (a list of split names)."""
     names = [split] if isinstance(split, str) else list(split)
