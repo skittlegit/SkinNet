@@ -855,8 +855,8 @@ Lower on both validation sets, neither by a supported amount on the two that dec
 T and PG trained on all 328 trainable images, now `ddi_train` + `ddi_val`; their configs say so (their runs are unchanged). Checkpoint 4 and PanDerm checkpoint 1 never trained on DDI, so `ddi_val` is unseen for them; their `ddi_val` predictions are cut from their DDI predictions (`derive subset`): 0.701 and 0.677 (42 cancers, so about ±0.1).
 
 **The two ideas.** Each is its track's current checkpoint with `ddi_train` (164) added to `data.train_splits`, nothing else changed:
-- **U** (from scratch, `configs/skinnet-idea-u.yaml`), against `skinnet-c4`, then T.
-- **PH** (PanDerm, `configs/panderm-idea-h.yaml`), against `panderm-c1`, then PG.
+- **U** (from scratch, `configs/skinnet-idea-u.yaml`, now `configs/skinnet-c5.yaml`), against `skinnet-c4`, then T.
+- **PH** (PanDerm, `configs/panderm-idea-h.yaml`, now `configs/panderm-c2.yaml`), against `panderm-c1`, then PG.
 
 Step 1 adds `ddi_val` to `val` and `midas_val` (higher on all three, none lower by a supported amount). Epochs and seeds are still chosen on `val` alone: 42 cancers are too few to choose an epoch on. Whatever step 1 shows, both are scored once on the test sets, because the comparison below needs their `ddi_hold` scores; step 1's outcome is reported, and it is what a future idea with a DDI validation set would be judged on.
 
@@ -909,3 +909,26 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **The design rule:** PH is lower than PG on `ddi_hold` by a supported amount (−0.052), so on the PanDerm track the half in training is kept: PanDerm keeps gaining from the second 164 DDI photos (+0.042 with 164, +0.094 with 328), where SkinNet gained most of its gain from the first 164 (section 26, idea U). The two tracks come out differently.
 - `ddi_val` again saw the gain that `ddi_hold` then confirmed (+0.086 and +0.042), as with U.
 - As written, which model (if any) becomes a checkpoint, and what is deleted, waits for the user. PG and PH are both kept.
+
+**User decision (22 Nov 2026): the three-way split on both tracks. Idea U is checkpoint 5 (`skinnet-c5`) and idea PH is PanDerm checkpoint 2 (`panderm-c2`).**
+
+- **On the PanDerm track this overrides the rule above.** PH is below PG on `ddi_hold` by a supported amount (−0.052), so the rule kept the half in training. The user chose the DDI validation set over the extra 164 photos, so that every later idea on both tracks can be checked on DDI before a test set is looked at.
+- **Neither model meets the written rules for a checkpoint.** Neither passed step 1, and neither is higher on every test set (section 19). Both are level on `test` and `midas_test` (no difference supported) and higher on `ddi_hold` by a supported amount. They are checkpoints by the user's decision, as checkpoint 4 was by the team's.
+- **Renamed.** Configs, runs, results and ledger rows: `skinnet-idea-u` → `skinnet-c5`, `panderm-idea-h` → `panderm-c2`. The logs inside the run folders keep the old names. Weights are copied to `checkpoints/skinnet-c5/` and `checkpoints/panderm-c2/`. Git tags: `checkpoint-5` and `panderm-checkpoint-2`.
+- **T and PG are kept** (configs, runs, weights) and marked not adopted (user, 22 Nov).
+- **From now on, on both tracks:**
+  - Training uses `ddi_train` (164 images).
+  - Step 1 adds `ddi_val` to `val` and `midas_val`: higher on all three, none lower by a supported amount.
+  - The test sets are `test`, `midas_test`, `ddi_hold` and DermaCon-IN.
+  - New ideas are compared with `skinnet-c5` and `panderm-c2`.
+- **Reporting.** DDI is no longer an unseen hospital for these models: `ddi_hold` holds other photos from the hospital they trained on. The never-seen DDI scores are checkpoint 4's and PanDerm checkpoint 1's (0.650 and 0.686 on all of DDI). They are reported beside the new ones.
+- **Across tracks, `panderm-c2` − `skinnet-c5`:**
+
+  | Set | Difference [95% interval] | Supported |
+  | --- | --- | --- |
+  | `test` | +0.075 | yes |
+  | `midas_test` | +0.130 | yes |
+  | `ddi_hold` | +0.063 [+0.006, +0.118] | yes |
+  | DermaCon-IN | +0.036 | no |
+
+- **Left open.** A final retrain with `ddi_val` added to training, once a track's recipe is settled. Like any training, it needs the user's approval first.

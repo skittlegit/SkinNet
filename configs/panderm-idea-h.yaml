@@ -1,8 +1,0 @@
-# PanDerm track, idea PH (DECISIONS.md, section 26): PanDerm checkpoint 1's recipe with a quarter of DDI
-# (ddi_train) in training and DDI validation (ddi_val) in step 1, as idea U. Compared with PG.
-extends: panderm-c1.yaml
-name: panderm-idea-h
-data:
-  train_splits: [train, midas_train, ddi_train]
-eval:
-  splits: [val, test, ak_side, midas_val, ddi_val]

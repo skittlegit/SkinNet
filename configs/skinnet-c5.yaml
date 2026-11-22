@@ -1,0 +1,9 @@
+# Checkpoint 5 (DECISIONS.md, section 26; was idea U): checkpoint 4's recipe with a quarter of DDI
+# (ddi_train, 164 images) in training; another quarter (ddi_val) joins step 1 and the held-out half
+# (ddi_hold) is the test. Chosen by the user on 22 Nov over idea T (all 328 trainable DDI images).
+extends: skinnet-c4.yaml
+name: skinnet-c5
+data:
+  train_splits: [train, midas_train, ddi_train]
+eval:
+  splits: [val, test, ak_side, midas_val, ddi_val]

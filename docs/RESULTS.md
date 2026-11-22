@@ -294,6 +294,28 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## DDI in training: ideas T, U, PG and PH; checkpoint 5 and PanDerm checkpoint 2 (20–22 Nov 2026)
+
+DDI was split by near-duplicate group, stratified by cancer and skin type, into `ddi_train` (164), `ddi_val` (164) and `ddi_hold` (328, test only) (DECISIONS.md, sections 25 and 26). The four runs differ only in how much of DDI is trained on:
+- **T and PG:** each track's checkpoint with all 328 trainable DDI photos.
+- **U and PH:** each track's checkpoint with 164, and `ddi_val` kept for step 1.
+
+AUC on `ddi_hold`; each difference is against the track's checkpoint without DDI:
+
+| Track | No DDI | Quarter + `ddi_val` (U / PH) | Half (T / PG) |
+| --- | --- | --- | --- |
+| From scratch | 0.641 (checkpoint 4) | 0.670, +0.029, supported | 0.684, +0.043, supported |
+| PanDerm | 0.691 (PanDerm checkpoint 1) | 0.733, +0.042, supported | 0.785, +0.094, supported |
+
+No run is lower than its checkpoint by a supported amount on `test`, `midas_test` or DermaCon-IN. Full tables are in DECISIONS.md, section 26, and CHECKPOINTS.md.
+
+**Reading.**
+- **DDI photos in training raise DDI on both tracks,** at no supported cost elsewhere. `ddi_hold` holds other photos from the same hospital, so this shows each model learned that hospital. It does not show the models carry over to a new one.
+- **PanDerm keeps gaining from more DDI photos; the from-scratch network levels off** (+0.042 then +0.094 for PanDerm, +0.029 then +0.043 from scratch).
+- **`ddi_val` agreed with `ddi_hold` on both tracks** (+0.048 and +0.086 at step 1). So a DDI validation set can stand in for the test half when ideas are judged.
+- **None of the four passed step 1 as written.** `val` or `midas_val` was a little lower each time, never by a supported amount.
+- **The user's decision (22 Nov):** the three-way split on both tracks. U is checkpoint 5 (`skinnet-c5`) and PH is PanDerm checkpoint 2 (`panderm-c2`). T and PG are kept and not adopted.
+
 ## PanDerm track, idea PF: a running average of the weights (20 Nov 2026)
 
 PanDerm checkpoint 1's recipe, validated, selected and kept as an exponential average of its weights (decay 0.999 per step). Three seeds, test-time flips and the seed average; passed step 1, then scored once on every set.
