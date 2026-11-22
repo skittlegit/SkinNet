@@ -294,6 +294,23 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## Outside test sets never trained on (22 Nov 2026)
+
+Five sets no model trains on or is chosen by (DECISIONS.md, section 27), scored once per model. AUC, with the rates at the 0.5 cut-off for the reported versions T and PG.
+
+| Split | Photos (cancers) | T AUC | T missed / false alarms | PG AUC | PG missed / false alarms | PG − T (paired) |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ext_hiba` | 279 (227) | 0.866 | 36% / 12% | 0.884 | 19% / 19% | +0.018 [−0.034, +0.072] |
+| `ext_mednode` | 169 (70) | 0.786 | 51% / 17% | 0.917 | 10% / 26% | +0.131 [+0.055, +0.203] |
+| `ext_asan` | 12,144 (3,982) | 0.786 | 34% / 23% | 0.919 | 17% / 14% | +0.133 [+0.126, +0.140] |
+| `ext_isic2019` | 4,995 (2,498) | 0.733 | 44% / 22% | 0.831 | 27% / 21% | +0.097 [+0.084, +0.111] |
+| `ext_derm7pt` | 958 (294) | 0.714 | 20% / 49% | 0.814 | 14% / 44% | +0.100 [+0.064, +0.137] |
+| `ddi_hold` | 328 | 0.684 | 31% / 43% | 0.785 | 30% / 27% | +0.101 [+0.045, +0.158] |
+
+- **Both tracks lose ground away from home** (`test`: T 0.902, PanDerm about 0.977). SkinNet loses more: 0.03–0.19 against PanDerm's 0.06–0.19, from a lower start.
+- **PanDerm is ahead outside by about 0.10**, supported on every set but HIBA. Part of this may be pretraining that saw some of these photos.
+- **DDI in training did not hurt elsewhere** for PanDerm, and on SkinNet cost MED-NODE (small) and, for T, ISIC 2019 by 0.015. All models and paired tables: DECISIONS.md, section 27, and `results/compare_ext_22nov.txt`.
+
 ## Confident mistakes and low scores: T and PG (22 Nov 2026)
 
 Checked on the saved predictions of the all-DDI versions (T, PG). No training was done.

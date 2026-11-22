@@ -991,3 +991,23 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **Done:** the plots. Every run now logs training and validation accuracy and loss (`python -m skincancer.plot_history`).
 - **Not run yet, the user's call:** a ViT-L from scratch on 18,350 photos throws away the 2.1 million pretraining images that make PanDerm what it is. Large ViTs trained from scratch do poorly even on 1.3 million ImageNet photos. It would take about 1–2 days for one seed.
 - **Split:** changing it would mean rebuilding every split and retraining every model to stay comparable.
+
+**Outcome (22 Nov, scored once; `results/compare_ext_22nov.txt`).** AUC; paired differences are b minus a with 95% intervals over bootstrap resamples of groups.
+
+| Split | Ckpt 4 | Ckpt 5 | T | PanDerm ckpt 1 | PanDerm ckpt 2 | PG |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ext_hiba` | 0.866 | 0.860 | 0.866 | 0.887 | 0.911 | 0.884 |
+| `ext_mednode` | 0.822 | 0.771 | 0.786 | 0.920 | 0.932 | 0.917 |
+| `ext_asan` | 0.775 | 0.784 | 0.786 | 0.912 | 0.920 | 0.919 |
+| `ext_isic2019` | 0.748 | 0.749 | 0.733 | 0.832 | 0.833 | 0.831 |
+| `ext_derm7pt` | 0.709 | 0.713 | 0.714 | 0.805 | 0.822 | 0.814 |
+| `ddi_hold` | 0.641 | 0.670 | 0.684 | 0.691 | 0.733 | 0.785 |
+| `test` (home) | 0.903 | 0.901 | 0.902 | 0.977 | 0.976 | — |
+
+- **The expectation held in its main part.** Every model drops outside: SkinNet from 0.90 at home to 0.71–0.87, PanDerm from 0.98 to 0.81–0.93. PanDerm (PG) is above SkinNet (T) by a supported 0.10–0.13 on MED-NODE, Derm7pt, Asan, ISIC 2019 and `ddi_hold`; on HIBA the difference (+0.018 [−0.034, +0.072]) is not supported.
+- **Where it did not hold.** Dermoscopy was not the lowest: Derm7pt's clinical photos and DDI are lower for both tracks.
+- **Adding DDI did not cost the other outside sets on PanDerm.** Checkpoint 2 against checkpoint 1: supported gains on HIBA (+0.024), Derm7pt (+0.017), Asan (+0.009) and `ddi_hold` (+0.042); the rest level. PG against checkpoint 1: level everywhere except Asan (+0.008) and `ddi_hold` (+0.094).
+- **On SkinNet it is mixed.** Against checkpoint 4, checkpoint 5 and T gain on Asan (+0.009, +0.011) and `ddi_hold` (+0.029, +0.043), and lose on MED-NODE (−0.051, −0.036; 169 photos). T also loses on ISIC 2019 (−0.015 [−0.019, −0.011]).
+- **At the 0.5 cut-off** T misses 20–51% of cancers outside, PG 10–30%. T's false alarms on Derm7pt are 49% (PG 44%): its benign lesions are mostly nevi photographed close up.
+- **Read with the caution above:** PanDerm's pretraining may contain some of these photos.
+
