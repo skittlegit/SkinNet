@@ -32,9 +32,10 @@ The images are not in the repository. Put them under `data/raw/` as laid out in 
 | --- | --- | --- |
 | Fitzpatrick17k | training, validation, test | github.com/mattgroh/fitzpatrick17k (full image set from the authors) |
 | PAD-UFES-20 | training, validation, test | Mendeley Data; merge `imgs_part_*` into `images/` |
-| DDI | test only | Stanford AIMI (request access); never shown in figures |
+| DDI | test only for the checkpoints; ideas T, U, PG, PH (section 26) train on part of it | Stanford AIMI (request access); never shown in figures |
 | DermaCon-IN | test only | Harvard Dataverse: `python -m skincancer.data.download_dermacon_in` |
-| MRA-MIDAS | test only | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
+| MRA-MIDAS | 40% training, 30% validation, 30% test, by patient (since checkpoint 3) | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
+| MILK10k (clinical close-ups) | training only (since checkpoint 4; `data/extra/milk10k.csv`) | ISIC Archive, doi:10.34970/648456 |
 
 The pipeline that built the committed files, for reference:
 
