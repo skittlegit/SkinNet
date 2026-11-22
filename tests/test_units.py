@@ -474,3 +474,26 @@ def test_isic2019_labels_and_one_image_per_lesion(tmp_path, monkeypatch):
     monkeypatch.setattr(extra, "ISIC2019_PER_CLASS", 1)
     again = extra.isic2019_rows(tmp_path)
     assert again["in_subsample"].sum() == 2 and again.groupby("label_binary")["in_subsample"].sum().tolist() == [1, 1]
+
+
+def test_derm1m_selection_rules():
+    import pandas as pd
+    from skincancer.data.derm1m import select, source_group
+    rows = []
+    for k in range(8):   # one video, 8 frames of mycosis fungoides: capped at 5
+        rows.append({"filename": f"youtube/abcdefghijk_frame_{k}_0.jpg", "source": "youtube", "disease_label": "mycosis fungoides", "caption": "patch on the trunk"})
+    rows += [
+        {"filename": "pubmed/PMC1_fig1_0.jpg", "source": "pubmed_english", "disease_label": "cutaneous t-cell lymphoma", "caption": "plaque"},
+        {"filename": "pubmed/PMC2_fig1_0.jpg", "source": "pubmed_english", "disease_label": "mycosis fungoides", "caption": "H&E stain, x40"},   # histology
+        {"filename": "pubmed/PMC3_fig1_0.jpg", "source": "pubmed_english", "disease_label": "eczema, mycosis fungoides, psoriasis", "caption": "rash"},   # differential
+        {"filename": "IIYI/1_1.png", "source": "IIYI_chinese", "disease_label": "onychomycosis", "caption": "nail"},   # not mycosis fungoides
+    ]
+    rows += [{"filename": f"youtube/v{k:010d}_frame_1_0.jpg", "source": "youtube", "disease_label": "psoriasis", "caption": "plaques"} for k in range(20)]
+    rows += [{"filename": f"pubmed/PMC9{k}_fig2_0.jpg", "source": "pubmed_english", "disease_label": "eczema", "caption": "eczema"} for k in range(5)]
+    s = select(pd.DataFrame(rows))
+    mf = s[s["label_binary"] == 1]
+    assert len(mf) == 6 and set(mf["source"]) == {"youtube", "pubmed_english"}
+    assert not s["label"].str.contains("onychomycosis|,").any()
+    assert (s[s["label_binary"] == 0]["source"].value_counts() == mf["source"].value_counts()).all()   # matched per source
+    assert source_group("youtube/abcdefghijk_frame_3_1.jpg") == "yt_abcdefghijk"
+    assert source_group("pubmed/00_PMC9_fig-g002_1.jpg") == "pubmed_00_PMC9_fig-g002"

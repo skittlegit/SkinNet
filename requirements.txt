@@ -24,4 +24,5 @@ imagehash==4.3.2
 pillow==13.0.0
 tqdm==4.70.1
 requests==2.34.2
+openpyxl==3.1.5                # reading MCR-SL's spreadsheets (data/external.py)
 # redivis                      # only for data/download_midas.py; install it when needed
