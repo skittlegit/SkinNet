@@ -56,3 +56,16 @@ The ISIC archive was queried directly (15 Nov): it holds 9,316 clinical close-up
 | MED-NODE (Groningen) | 170 clinical photos: 70 melanomas, 100 nevi | Free for research | Too small alone |
 | SLICE-3D (ISIC 2024) | 401,059 crops from 3-D total-body photography, 393 cancers, several centres | CC BY-NC (a CC BY subset exists) | A different kind of image with very few cancers; the same risk as idea K |
 | Asan full-size images | As above, at full resolution | Request to Asan's ethics committee | The thumbnails did not help outside (idea S); whether the full-size photos would is untested. The team's choice |
+
+## Search of 22 Nov 2026: mycosis fungoides photos
+
+Why: mycosis fungoides, a skin lymphoma that looks like a rash, is 27 of DDI's 48 cancers on skin types V–VI. PanDerm without DDI ranked it below benign lesions (RESULTS.md, DDI in training). Our training holds 123 such photos, only 10 on types V–VI.
+
+**On disk already.** All 182 of Fitzpatrick17k's photos are used: 123 in train, 25 in val, 34 in test. DermaCon-IN has 4, but that set is test-only. SCIN's labels are dermatologists' guesses from photos, not biopsies.
+
+| Source | What it is | Licence and access | Verdict |
+| --- | --- | --- | --- |
+| Dermoscopy of Mycosis Fungoides (Mendeley r9xfjgsyrx, 2024) | 89 patients in Tunisia, skin types III–V: early mycosis fungoides confirmed by biopsy and immunohistochemistry, and psoriasis and chronic dermatitis lookalikes. Clinical and dermoscopic photos were taken of each lesion. | CC BY 4.0. A download button is shown, but which files it holds is not confirmed. | **Best lead.** It has darker skin, biopsy-confirmed cases and the rash lookalikes the model confuses with mycosis fungoides. Download it and check that the clinical photos are included. |
+| Large plaque parapsoriasis and early mycosis fungoides (Mendeley 4p88hnwyj8, 2025) | Clinical photos from Cumhuriyet University, Turkey. Count, confirmation method and skin types are not stated. | CC BY 4.0. Files are not confirmed. | Check the files. It is probably small. |
+| Derm1M (ICCV 2025) | 403,563 images in 390 conditions, from YouTube, PubMed, forums, public datasets and teaching slides. | CC BY-NC 4.0, gated on Hugging Face (the person accepts the terms). | Mycosis fungoides is likely among the conditions but not confirmed. Labels come from the text, not biopsies. It may hold copies of Fitzpatrick17k, DDI or other test images, so it needs the near-duplicate check against every test set. It comes from PanDerm's authors, which may overlap with PanDerm's pretraining. |
+| Multimodal mycosis fungoides CNN (Br J Dermatol 2025, PubMed 40465821) | 1,157 cases, 2,452 clinical photos | Not public. Request from the authors. | Largest known set; worth an email from the team. |

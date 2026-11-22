@@ -294,6 +294,20 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
+## Confident mistakes and low scores: T and PG (22 Nov 2026)
+
+Checked on the saved predictions of the all-DDI versions (T, PG). No training was done.
+
+- **Confident misses are rare.** About 1% of cancers score below 0.1 on the home sets: 5 of 478 on `test` for T and 4 for PG. On DermaCon-IN tumours, PG scores 3 of 19 cancers below 0.1; two of them are melanomas that both models miss.
+- **Errors both models make confidently on `test`** (cancer below 0.2 or non-cancer above 0.8 for both): 7 cancers and 11 non-cancers, all from Fitzpatrick17k.
+  - Looked at by eye (not by a dermatologist), several cancer photos show no visible tumour: a "squamous cell carcinoma" that is a scattered rash on the buttocks, a "basal cell carcinoma" that is a palm covered in pits, and another that is a whole sun-damaged back.
+  - The false alarms are mostly tumour-like benign lesions, such as a large bleeding pyogenic granuloma.
+  - Fitzpatrick17k labels name the condition of the page they came from, not always the lesion in the photo. Part of the confident error on `test` is label noise, which no training fixes.
+- **Low scores outside are mostly an offset, and only for SkinNet.**
+  - On MIDAS test, T's median score for cancers is 0.43, so most fall under the 0.5 cut-off even when ranked above benign lesions.
+  - Rescaling T's scores on MIDAS validation (two numbers fitted, no network training) cuts misses on MIDAS test from 59% to 29%, with false alarms rising from 11% to 34%.
+  - PG is already about calibrated there: 22% missed and 24% false alarms, versus 20% and 24% after rescaling. Its MIDAS errors are ranking errors.
+
 ## DDI in training: ideas T, U, PG and PH; checkpoint 5 and PanDerm checkpoint 2 (20–22 Nov 2026)
 
 DDI was split by near-duplicate group, stratified by cancer and skin type, into `ddi_train` (164), `ddi_val` (164) and `ddi_hold` (328, test only) (DECISIONS.md, sections 25 and 26). The four runs differ only in how much of DDI is trained on:
