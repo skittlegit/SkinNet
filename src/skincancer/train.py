@@ -163,6 +163,11 @@ def train(cfg: dict) -> dict:
         extra = load_extra(cfg["data"]["extra_train"], cfg["data"]["label_col"], runs.classes_of(cfg))
         train_df = pd.concat([train_df, extra[train_df.columns.intersection(extra.columns)]], ignore_index=True)
     val_df = runs.labelled(runs.split_rows(manifest, cfg["data"]["val_splits"]), cfg)
+    excl = cfg["data"].get("exclude_datasets") or []   # leave-one-dataset-out: kept out of training and validation
+    if excl:
+        train_df = train_df[~train_df["dataset"].isin(excl)]
+        val_df = val_df[~val_df["dataset"].isin(excl)]
+        print(f"[{cfg['name']} s{cfg['seed']}] datasets left out: {excl}")
     label_col = cfg["data"]["label_col"]
     counts = train_df[label_col].value_counts().reindex(classes, fill_value=0).to_numpy(float)
     if (counts == 0).any():
@@ -219,11 +224,13 @@ def train(cfg: dict) -> dict:
             break
         t0 = time.time()
         model.train()
-        tot, n = 0.0, 0
+        tot, n, hits = 0.0, 0, 0
         for x, y in tr_loader:
             x, y = x.to(dev, non_blocking=True), y.to(dev, non_blocking=True)
             with torch.autocast(dev.type, enabled=use_amp):
-                loss = criterion(model(x), y)
+                out = model(x)
+                loss = criterion(out, y)
+            hits += (out.argmax(1) == y).sum().item()   # logged only: accuracy on the (augmented, resampled) batches
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
             scaler.step(opt)
@@ -237,10 +244,12 @@ def train(cfg: dict) -> dict:
         model.eval()
         if ema is not None:   # validate, select and keep the averaged weights
             ema.swap()
-        val_auc = selection_score(val_loader.dataset.labels, runs.infer(model, val_loader)[:, 1],
-                                  val_source, select_metric)
-        rec = {"epoch": ep, "lr": lr, "loss": tot / max(n, 1), "val_auc": val_auc,
-               "secs": round(time.time() - t0, 1)}
+        pv = runs.infer(model, val_loader)
+        yv = np.asarray(val_loader.dataset.labels)
+        val_auc = selection_score(yv, pv[:, 1], val_source, select_metric)
+        val_loss = float(-np.mean(np.log(np.clip(pv[np.arange(len(yv)), yv], 1e-7, 1.0))))
+        rec = {"epoch": ep, "lr": lr, "loss": tot / max(n, 1), "train_acc": hits / max(n, 1), "val_loss": val_loss,
+               "val_acc": float((pv.argmax(1) == yv).mean()), "val_auc": val_auc, "secs": round(time.time() - t0, 1)}
         history.append(rec)
         print("  " + "  ".join(f"{k}={v:.4g}" if isinstance(v, float) else f"{k}={v}" for k, v in rec.items()),
               flush=True)

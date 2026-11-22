@@ -192,6 +192,79 @@ def milk10k_download(root: Path, workers: int = 16) -> None:
                 print(f"{i}/{len(todo)} tried, {done} fetched", flush=True)
 
 
+HIBA_API = "https://api.isic-archive.com/api/v2/images/search/?collections=175&limit=100"   # ISIC collection 175
+CLINICAL_TYPES = ("clinical: close-up", "clinical: overview")
+
+
+def isic_collection_download(d: Path, api: str, image_types: tuple[str, ...], workers: int = 16) -> None:
+    """Fetch the metadata of every image in an ISIC collection, then the images of the given types."""
+    import json
+    from concurrent.futures import ThreadPoolExecutor
+    import socket
+    from urllib.request import urlopen, urlretrieve
+    socket.setdefaulttimeout(60)
+    (d / "images").mkdir(parents=True, exist_ok=True)
+    meta = d / "metadata.json"
+    if not meta.exists():
+        rows, url = [], api
+        while url:
+            with urlopen(url) as r:
+                page = json.load(r)
+            rows += page["results"]
+            url = page.get("next")
+        meta.write_text(json.dumps(rows), encoding="utf-8")
+    rows = json.loads(meta.read_text(encoding="utf-8"))
+    todo = [(r["files"]["full"]["url"], d / "images" / f"{r['isic_id']}.jpg") for r in rows
+            if r["metadata"]["acquisition"].get("image_type") in image_types
+            and not (d / "images" / f"{r['isic_id']}.jpg").exists()]
+    print(f"{len(rows)} images in the collection, {len(todo)} of types {image_types} to fetch", flush=True)
+
+    def get(job) -> bool:
+        url, dst = job
+        tmp = dst.with_suffix(".part")
+        try:
+            urlretrieve(url, tmp)
+            tmp.replace(dst)
+            return True
+        except Exception as e:   # reported; a second run fetches what is missing
+            print("failed", dst.name, e, flush=True)
+            return False
+
+    with ThreadPoolExecutor(workers) as ex:
+        done = sum(ex.map(get, todo))
+    print(f"{done} of {len(todo)} fetched", flush=True)
+
+
+def hiba_download(root: Path) -> None:
+    """HIBA (Hospital Italiano de Buenos Aires; ISIC collection 175, CC BY): the clinical photos only."""
+    isic_collection_download(root / "hiba", HIBA_API, CLINICAL_TYPES)
+
+
+def _fetch(url: str, dst: Path) -> None:
+    from urllib.request import Request, urlopen
+    import shutil
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    if dst.exists():
+        print("have", dst, flush=True)
+        return
+    tmp = dst.with_suffix(dst.suffix + ".part")
+    with urlopen(Request(url, headers={"User-Agent": "Mozilla/5.0"})) as r, open(tmp, "wb") as f:
+        shutil.copyfileobj(r, f, 1 << 20)
+    tmp.replace(dst)
+    print("fetched", dst, dst.stat().st_size, flush=True)
+
+
+def mednode_download(root: Path) -> None:
+    """MED-NODE (University Medical Center Groningen): 70 melanomas and 100 nevi, clinical photos. Zip only."""
+    _fetch("https://www.cs.rug.nl/~imaging/databases/melanoma_naevi/complete_mednode_dataset.zip",
+           root / "mednode" / "complete_mednode_dataset.zip")
+
+
+def mcrsl_download(root: Path) -> None:
+    """MCR-SL (University Hospital of North Norway; Zenodo 17306338; licence not stated on the record). Zip only."""
+    _fetch("https://zenodo.org/records/17306338/files/MCR-SL_dataset.zip?download=1", root / "mcrsl" / "MCR-SL_dataset.zip")
+
+
 def isic_binary(clin: pd.DataFrame, need_biopsy: bool) -> tuple[pd.Series, pd.Series, np.ndarray]:
     """ISIC archive labels -> (most specific diagnosis, mapped label, cancer 1 / not 0 / NaN).
     Cancer when ISIC-DX says malignant and the most specific diagnosis maps to a cancer type;
@@ -474,14 +547,15 @@ def load_extra(names: list[str], label_col: str, classes: list[str], extra_dir: 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("name", choices=["derm7pt", "scin", "milk10k", "isic2019", "asan"])
-    ap.add_argument("--download", action="store_true", help="scin, milk10k, isic2019, asan: fetch the tables and photos, then stop")
+    ap.add_argument("name", choices=["derm7pt", "scin", "milk10k", "isic2019", "asan", "hiba", "mednode", "mcrsl"])
+    ap.add_argument("--download", action="store_true", help="scin, milk10k, isic2019, asan, hiba, mednode, mcrsl: fetch the tables and photos, then stop")
     ap.add_argument("--data-config", default="configs/data.yaml")
     args = ap.parse_args(argv)
     cfg = load_data_config(args.data_config)
     if args.download:
         return {"scin": scin_download, "milk10k": milk10k_download, "isic2019": isic2019_download,
-                "asan": asan_download}[args.name](Path(cfg["data_root"]))
+                "asan": asan_download, "hiba": hiba_download, "mednode": mednode_download,
+                "mcrsl": mcrsl_download}[args.name](Path(cfg["data_root"]))
     df = build(args.name, cfg)
     EXTRA_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(EXTRA_DIR / f"{args.name}.csv", index=False)
