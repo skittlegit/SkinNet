@@ -1011,3 +1011,13 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **At the 0.5 cut-off** T misses 20–51% of cancers outside, PG 10–30%. T's false alarms on Derm7pt are 49% (PG 44%): its benign lesions are mostly nevi photographed close up.
 - **Read with the caution above:** PanDerm's pretraining may contain some of these photos.
 
+**Leave-one-dataset-out, SkinNet (22 Nov; 3 seeds each, against T on the same images).** AUC; the left-out source's own test images first.
+
+| Left out | Training photos left | Its own test images: T → left out | Elsewhere (supported changes only) |
+| --- | --- | --- | --- |
+| Fitzpatrick17k | about 6,900 of 18,350 | 0.879 → 0.592, −0.287 [−0.325, −0.250] (2,459); tumours only 0.768 → 0.681 (400) | ISIC 2019 −0.148, MED-NODE −0.214, Derm7pt −0.085, Asan −0.034, DermaCon-IN −0.159 |
+| PAD-UFES-20 | about 17,250 | 0.935 → 0.841, −0.095 [−0.142, −0.054] (236) | HIBA −0.052, Derm7pt −0.049, Asan −0.025 |
+| MIDAS | about 17,800 | `midas_test` 0.736 → 0.708, −0.028 [−0.050, −0.005] (414) | MED-NODE −0.033, Asan −0.014, ISIC 2019 +0.006 |
+
+- **A source never trained on costs SkinNet about 0.09** where the comparison is clean (PAD-UFES-20; Fitzpatrick17k tumours). The expectation that leaving out MIDAS costs a supported amount on `midas_test` held, though it is small (−0.03): MIDAS was already hard for SkinNet with it in training.
+- **Leaving out Fitzpatrick17k is not a clean measure.** It removes 60% of the training photos, leaves PAD-UFES-20's 236 photos as the only validation set, and takes away every rash: three quarters of Fitzpatrick17k's test photos are non-tumour conditions that no other source has, and the model left without it scores them a median 0.60 (T: 0.21).

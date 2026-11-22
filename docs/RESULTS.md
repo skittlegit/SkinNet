@@ -311,6 +311,21 @@ Five sets no model trains on or is chosen by (DECISIONS.md, section 27), scored 
 - **PanDerm is ahead outside by about 0.10**, supported on every set but HIBA. Part of this may be pretraining that saw some of these photos.
 - **DDI in training did not hurt elsewhere** for PanDerm, and on SkinNet cost MED-NODE (small) and, for T, ISIC 2019 by 0.015. All models and paired tables: DECISIONS.md, section 27, and `results/compare_ext_22nov.txt`.
 
+## Leave-one-dataset-out, SkinNet (22 Nov 2026)
+
+T's recipe retrained with one source removed from training and validation, 3 seeds, compared (paired) with T on that source's own test images (DECISIONS.md, section 27).
+
+| Left out | T | Without it | Difference |
+| --- | --- | --- | --- |
+| PAD-UFES-20 (`test`, 236) | 0.935 | 0.841 | −0.095 [−0.142, −0.054] |
+| Fitzpatrick17k (`test`, 2,459) | 0.879 | 0.592 | −0.287 [−0.325, −0.250] |
+| Fitzpatrick17k, tumours only (400) | 0.768 | 0.681 | about −0.09 |
+| MIDAS (`midas_test`, 414) | 0.736 | 0.708 | −0.028 [−0.050, −0.005] |
+
+- About 0.09 is what an unseen source costs SkinNet where the comparison is clean.
+- Without Fitzpatrick17k the model has never seen a rash and scores them as cancer-like (median 0.60), and it trains on 60% fewer photos.
+- PAD-UFES-20's phone close-ups also help on the close-up outside sets (HIBA −0.05, Derm7pt −0.05 without them).
+
 ## Confident mistakes and low scores: T and PG (22 Nov 2026)
 
 Checked on the saved predictions of the all-DDI versions (T, PG). No training was done.
