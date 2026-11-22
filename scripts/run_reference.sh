@@ -2,7 +2,7 @@
 # A reference model (DECISIONS.md, section 19): never a checkpoint, scored once on every set.
 # Trains three seeds and scores them on the test-only sets (scripts/run.sh), averages the seeds on
 # every set, then compares with checkpoint 3 everywhere.
-#   PY=.venv/Scripts/python bash scripts/run_reference.sh ref-resnet18-r2
+#   PY=.venv/Scripts/python REF=skinnet-c5 bash scripts/run_reference.sh <name>
 set -uo pipefail
 EXP=${1:?usage: run_reference.sh <name>}
 PY=${PY:-python}
@@ -10,7 +10,8 @@ REF=${REF:-skinnet-c3}
 LOGS=runs/$EXP/logs
 export PY PYTHONUNBUFFERED=1
 
-bash scripts/run.sh "configs/$EXP.yaml" "$EXP" || exit 1
+case $EXP in panderm*) CFG=configs/panderm/$EXP.yaml ;; *) CFG=configs/skinnet/$EXP.yaml ;; esac
+bash scripts/run.sh "$CFG" "$EXP" || exit 1
 for s in ${SEEDS:-0 1 2}; do
   [ -f "runs/$EXP/s$s/summary.json" ] || { echo "  FAILED: seed $s did not finish, see $LOGS/s$s.log"; exit 1; }
 done

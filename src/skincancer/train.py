@@ -1,6 +1,6 @@
 """Train SkinNet from random weights: every layer, one learning rate, no pretrained weights.
 
-    python -m skincancer.train --config configs/skinnet.yaml --seed 0
+    python -m skincancer.train --config configs/skinnet/skinnet.yaml --seed 0
 
 Writes runs/<name>/s<seed>/: best.pt, config.yaml, history.csv, summary.json and
 preds/<split>.csv for every split in eval.splits.
@@ -300,7 +300,7 @@ def train(cfg: dict) -> dict:
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--config", default="configs/skinnet.yaml")
+    ap.add_argument("--config", default="configs/skinnet/skinnet.yaml")
     ap.add_argument("--seed", type=int)
     ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE")
     ap.add_argument("--overwrite", action="store_true")

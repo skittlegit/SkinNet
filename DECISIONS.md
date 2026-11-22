@@ -78,7 +78,7 @@ Defined in `src/skincancer/models.py`. A residual CNN, small enough to train on 
 
 ## 6. Training
 
-Fixed on 12 Nov 2026, before any SkinNet run was scored on a test set. The config is `configs/skinnet.yaml`.
+Fixed on 12 Nov 2026, before any SkinNet run was scored on a test set. The config is `configs/skinnet/skinnet.yaml`.
 
 | Setting | Value |
 | --- | --- |
@@ -107,7 +107,7 @@ Fixed on 12 Nov 2026, before any SkinNet run was scored on a test set. The confi
 
 ## 8. Second round: training that the shortcut cannot exploit (12 Nov 2026)
 
-Written after the baseline results ([docs/RESULTS.md](docs/RESULTS.md)) and before any of these models was trained. No new data is used.
+Written after the baseline results ([docs/skinnet/RESULTS.md](docs/skinnet/RESULTS.md)) and before any of these models was trained. No new data is used.
 
 **What the baseline showed.** It learned that a smartphone photo usually means cancer (89% false alarms on PAD-UFES-20 non-cancers), and it could not tell a cancer from a benign tumour that resembles it (81% false alarms on those).
 
@@ -133,7 +133,7 @@ The other two variants are never scored on `test` or the outside sets. Training 
 
 **If none helps,** the next steps are in [docs/DATA_PLAN.md](docs/DATA_PLAN.md) (Derm7pt first) and then larger images.
 
-**Outcome (12 Nov 2026):** A was chosen and became checkpoint 1 ([docs/CHECKPOINTS.md](docs/CHECKPOINTS.md)). B and C were discarded: their configs, trained models and the two code options only they used were removed. The comparison is kept in [docs/RESULTS.md](docs/RESULTS.md).
+**Outcome (12 Nov 2026):** A was chosen and became checkpoint 1 ([docs/CHECKPOINTS.md](docs/CHECKPOINTS.md)). B and C were discarded: their configs, trained models and the two code options only they used were removed. The comparison is kept in [docs/skinnet/RESULTS.md](docs/skinnet/RESULTS.md).
 
 ## 9. Third round: more hard cases and larger images (12 Nov 2026)
 
@@ -226,7 +226,7 @@ Written before idea O was trained.
 
 **Why.** Idea J did what it was meant to do on the outside validation photos, and lost at home mainly because one seed was cut short. Early stopping saves time; it is not part of what makes the model good, and the best weights are kept whichever epoch they come from. Turning it off removes that source of chance.
 
-**Idea O** (`configs/skinnet-c3.yaml`): idea J with `patience: 0`, so every seed trains for all 60 epochs. Seeds 0 and 1 of idea J already ran all 60 epochs, so with early stopping off they would be the same runs; they are reused, and only seed 2 is trained again. Then test-time flips and the seed average, as before.
+**Idea O** (`configs/skinnet/skinnet-c3.yaml`): idea J with `patience: 0`, so every seed trains for all 60 epochs. Seeds 0 and 1 of idea J already ran all 60 epochs, so with early stopping off they would be the same runs; they are reused, and only seed 2 is trained again. Then test-time flips and the seed average, as before.
 
 **How it is judged:** exactly as idea J (section 11), by paired comparison with checkpoint 2. Step 1 on `midas_val` and `val`; only if it passes, scored once on `test`, `midas_test`, DDI and DermaCon-IN; checkpoint 3 if the gain is supported on `midas_test` or DDI and nothing is lower by a supported amount on `test` or DDI.
 
@@ -352,7 +352,7 @@ One name per model, used for its config, its run folder and its result folder.
 
 | What | Name | Example |
 | --- | --- | --- |
-| Baseline | `skinnet` | `configs/skinnet.yaml`, `runs/skinnet/`, `results/skinnet/` |
+| Baseline | `skinnet` | `configs/skinnet/skinnet.yaml`, `runs/skinnet/`, `results/skinnet/` |
 | A checkpoint | `skinnet-c<number>` | `skinnet-c3` |
 | An idea being tested | `skinnet-idea-<letter>` | `skinnet-idea-n` |
 
@@ -424,7 +424,7 @@ Written after the photos were downloaded and before idea Q was trained. No model
 
 **A risk named now.** Cancers are about 70% of its photos and half of all its photos are BCC. Balanced drawing inside each dataset (checkpoint 1) removes the reward for recognising MILK10k's kind of photo, but the network may still lean towards BCC-like features.
 
-**Idea Q** (`configs/skinnet-idea-q.yaml`, now `configs/skinnet-c4.yaml`): checkpoint 3's recipe with MILK10k added. Three seeds, 60 epochs, test-time flips, seed average. Judged exactly as ideas M, N and L (section 14), by paired comparison with checkpoint 3: step 1 on `midas_val` and `val`; only if it passes, scored once on `test`, `midas_test`, DDI and DermaCon-IN; checkpoint 4 (or the next number) if the gain is supported on at least one of `test`, `midas_test` or DDI and none is lower by a supported amount. (Step 1 was tightened on 14 Nov, before Q's result was known: it now needs a supported gain on `midas_val`. See section 19.)
+**Idea Q** (`configs/skinnet-idea-q.yaml`, now `configs/skinnet/skinnet-c4.yaml`): checkpoint 3's recipe with MILK10k added. Three seeds, 60 epochs, test-time flips, seed average. Judged exactly as ideas M, N and L (section 14), by paired comparison with checkpoint 3: step 1 on `midas_val` and `val`; only if it passes, scored once on `test`, `midas_test`, DDI and DermaCon-IN; checkpoint 4 (or the next number) if the gain is supported on at least one of `test`, `midas_test` or DDI and none is lower by a supported amount. (Step 1 was tightened on 14 Nov, before Q's result was known: it now needs a supported gain on `midas_val`. See section 19.)
 
 **Order changed.** Q runs before L, after M (section 16 had L first). Q takes about an hour and a half, L about five and a half, and Q is the more likely of the two to move the outside scores.
 
@@ -606,7 +606,7 @@ Written before the run. The team asked to check PanDerm (Yan et al., Nature Medi
 
 **What PanDerm was trained on, and the risk to our scores.** Its pretraining (paper, Methods) used 11 sources: in-house total-body photography, dermoscopy and clinical photos from Australian and New Zealand clinics; two in-house collections of educational clinical photos (Edu1, Edu2, about 149,000) whose sources are not named; 352,000 ISIC 2024 tiles; and pathology slides. None of our evaluation sets (DDI, MIDAS, DermaCon-IN) is named among them. The unnamed educational collections could include atlas photos, and Fitzpatrick17k, part of our `test` split, was built from online atlases. So a gain on `test` may partly be images PanDerm has seen; a gain on MIDAS, DDI or DermaCon-IN is much less exposed. The paper does not state that its evaluation sets were excluded from pretraining.
 
-**What is trained** (`configs/panderm.yaml`): checkpoint 4's data and sampling (MILK10k included, balanced drawing, test-time flips, three seeds and their average), every layer trained. Changed for a pretrained ViT: learning rate 5e-5 (AdamW, weight decay 0.05), 20 epochs with 2 of warm-up, the class token after the final norm feeding the same dropout and linear head. Scored once on every set and compared with checkpoint 4 and with the ImageNet ResNet-18 at 1e-4 (section 19).
+**What is trained** (`configs/panderm/panderm.yaml`): checkpoint 4's data and sampling (MILK10k included, balanced drawing, test-time flips, three seeds and their average), every layer trained. Changed for a pretrained ViT: learning rate 5e-5 (AdamW, weight decay 0.05), 20 epochs with 2 of warm-up, the class token after the final norm feeding the same dropout and linear head. Scored once on every set and compared with checkpoint 4 and with the ImageNet ResNet-18 at 1e-4 (section 19).
 
 **Outcome of the PanDerm reference (16 Nov 2026).** Three seeds, test-time flips and the seed average, scored once on every set (ledger, 16 Nov). The run was paused by the team on 15 Nov after the first seed; the other two trained from their starts on 16 Nov; nothing else differs. Against checkpoint 4:
 
@@ -648,7 +648,7 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 
 **Ideas, in order** (PanDerm-track letters are separate from the from-scratch ones):
 
-- **PA, gentler fine-tuning** (`configs/panderm-idea-a.yaml`, running). `panderm` trained every layer at 5e-5 from the first step, with a new random head; the first steps can damage the pretrained features that carry over to unseen clinics (Kumar et al. 2022). PA trains the head alone for 3 epochs (1e-3), then every layer for 20 with a rate that shrinks by 0.75 per block towards the input (1e-4 at the top, 2.4e-6 at the patch embedding). New options `train.head_epochs`, `train.head_lr`, `train.layer_decay`. Expectation: level at home, a small gain on MIDAS; DDI uncertain.
+- **PA, gentler fine-tuning** (`configs/panderm/panderm-idea-a.yaml`, running). `panderm` trained every layer at 5e-5 from the first step, with a new random head; the first steps can damage the pretrained features that carry over to unseen clinics (Kumar et al. 2022). PA trains the head alone for 3 epochs (1e-3), then every layer for 20 with a rate that shrinks by 0.75 per block towards the input (1e-4 at the top, 2.4e-6 at the patch embedding). New options `train.head_epochs`, `train.head_lr`, `train.layer_decay`. Expectation: level at home, a small gain on MIDAS; DDI uncertain.
 - **PB, a larger input** (384 px): MIDAS and DDI photos are clinic photos where the lesion is a small part of the frame. (Corrected 17 Nov: this line first said a larger input had raised SkinNet's outside scores. It had not: ideas E and F at 320 px were discarded in the third round.) Needs the position embedding recomputed for the new grid. Built on PA's recipe if PA passes, else on `panderm`'s.
 - **PC, PanDerm Large**: the paper's main network (ViT-L), if it fits in 8 GB at batch 16 with mixed precision.
 - **PD, ideas that failed from scratch but may not on a pretrained network**: the Asan thumbnails (section 22) are not among them, their fault being blur; stronger colour augmentation aimed at skin tone is, and is the one most directed at DDI.
@@ -695,7 +695,7 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 **PB deferred, PC started (17 Nov 2026).**
 
 - **PB (384 px) is not run on this machine.** Measured before any training: at batch 32 it needs 8.6 GB on the 8 GB GPU and takes 3.2 seconds a step, about 30 minutes an epoch. At batch 16 it would be about 13 hours for three seeds and no longer PA's recipe. With ideas E and F (320 px, from scratch) discarded, that is too much for its chance. The code for another input size stays (`data.img_size` resamples PanDerm's position embedding; tested); the config is removed.
-- **PC, PanDerm Large** (`configs/panderm-c1.yaml`), written before the run. The paper's network is the ViT-L/16; `PanDerm_Base` is the smaller one released later. Its published file is the whole pretraining checkpoint; only the encoder is kept (`data/weights/panderm_large.pth`, same licence, not in git) and it fits timm's BEiT ViT-L/16 key for key. PA's recipe unchanged except the layer decay, 0.86 over 24 blocks in place of 0.75 over 12, which gives the same range of learning rates. Gradient checkpointing (`model.grad_checkpointing`) brings batch 32 from 11.8 GB to 6.3 GB at the same numbers; about 10 minutes an epoch, so about 11 hours for three seeds. Compared at step 1 with `panderm-idea-a` and `panderm`. Expectation: a small gain at home and on MIDAS; for DDI the check by skin type above gives no reason to expect a change.
+- **PC, PanDerm Large** (`configs/panderm/panderm-c1.yaml`), written before the run. The paper's network is the ViT-L/16; `PanDerm_Base` is the smaller one released later. Its published file is the whole pretraining checkpoint; only the encoder is kept (`data/weights/panderm_large.pth`, same licence, not in git) and it fits timm's BEiT ViT-L/16 key for key. PA's recipe unchanged except the layer decay, 0.86 over 24 blocks in place of 0.75 over 12, which gives the same range of learning rates. Gradient checkpointing (`model.grad_checkpointing`) brings batch 32 from 11.8 GB to 6.3 GB at the same numbers; about 10 minutes an epoch, so about 11 hours for three seeds. Compared at step 1 with `panderm-idea-a` and `panderm`. Expectation: a small gain at home and on MIDAS; for DDI the check by skin type above gives no reason to expect a change.
 
 **PC sped up after its first seed (17 Nov 2026, at the team's request).** Every PanDerm seed so far (PA's three, PC's first) picked its best epoch at epoch 6, and no epoch after 10 came within 0.006 of it. So seeds 1 and 2 of PC stop 4 epochs after their best (`train.patience: 4`): 11 epochs in place of 23, about 1.9 hours a seed in place of 3.8. The learning-rate schedule is unchanged (still planned over 23 epochs), so the network a seed keeps is the same as without stopping unless an epoch after the stop would have beaten it, which none of the four seeds shows. Seed 0 ran all 23 epochs; with patience 4 it would have kept the same network.
 
@@ -761,7 +761,7 @@ Against the ImageNet ResNet-18 at learning rate 1e-4 (section 19):
 - The reading: averaging the weights made a smoother fit to our training sources, which showed on `val`, and cost a little on the one hospital no model has seen, like idea N's longer schedule on the from-scratch track (DDI 0.657 → 0.592). On both tracks, more fitting to our own photos has not reached DDI. The two regularisers tried on PanDerm (PE, PF) both raised `midas_val` without a supported gain and neither moved DDI up.
 - By the team's instruction of 20 Nov, no new training is started until the team decides the next step.
 
-**PanDerm checkpoint 1's config stands alone (20 Nov 2026, team).** `configs/panderm-c1.yaml` now extends `panderm.yaml` with idea PA's settings written out, instead of extending `panderm-idea-a.yaml`; the resolved config is identical, so the checkpoint is unchanged. PA's config and runs no longer carry anything the checkpoint needs; they stay until the team decides on stored weights at the end of the PanDerm track.
+**PanDerm checkpoint 1's config stands alone (20 Nov 2026, team).** `configs/panderm/panderm-c1.yaml` now extends `panderm.yaml` with idea PA's settings written out, instead of extending `panderm-idea-a.yaml`; the resolved config is identical, so the checkpoint is unchanged. PA's config and runs no longer carry anything the checkpoint needs; they stay until the team decides on stored weights at the end of the PanDerm track.
 
 ## 25. Half of DDI in training, on both tracks (20 Nov 2026)
 
@@ -780,8 +780,8 @@ Nothing else in the manifest changed (checked row by row). `ddi_hold` is test-on
 
 **The two ideas.** Each is its track's current checkpoint with `ddi_train` added to `data.train_splits`, nothing else changed. Drawn like every other dataset in training: cancer and not cancer equally often inside DDI, and DDI's share of the draws its share of the images (about 2%).
 
-- **T** (from scratch, `configs/skinnet-idea-t.yaml`): checkpoint 4's recipe + `ddi_train`. Compared with `skinnet-c4`.
-- **PG** (PanDerm, `configs/panderm-idea-g.yaml`): PanDerm checkpoint 1's recipe + `ddi_train`. Compared with `panderm-c1`.
+- **T** (from scratch, `configs/skinnet/skinnet-idea-t.yaml`): checkpoint 4's recipe + `ddi_train`. Compared with `skinnet-c4`.
+- **PG** (PanDerm, `configs/panderm/panderm-idea-g.yaml`): PanDerm checkpoint 1's recipe + `ddi_train`. Compared with `panderm-c1`.
 
 **How each is judged.** Sections 19 and 24 unchanged, with `ddi_hold` in place of DDI: step 1 on `val` (within-source AUC) and `midas_val`, higher on both and neither lower by a supported amount; then scored once on `test`, `midas_test`, `ddi_hold` and DermaCon-IN; a new checkpoint (`skinnet-c5`, `panderm-c2`) if higher on `test`, `midas_test` and `ddi_hold`, at least one by a supported amount, none lower by a supported amount, and DermaCon-IN not lower by a supported amount. Narrow misses go to the team. The two run one after the other, T first (about 2 hours), then PG (about 6).
 
@@ -855,8 +855,8 @@ Lower on both validation sets, neither by a supported amount on the two that dec
 T and PG trained on all 328 trainable images, now `ddi_train` + `ddi_val`; their configs say so (their runs are unchanged). Checkpoint 4 and PanDerm checkpoint 1 never trained on DDI, so `ddi_val` is unseen for them; their `ddi_val` predictions are cut from their DDI predictions (`derive subset`): 0.701 and 0.677 (42 cancers, so about ±0.1).
 
 **The two ideas.** Each is its track's current checkpoint with `ddi_train` (164) added to `data.train_splits`, nothing else changed:
-- **U** (from scratch, `configs/skinnet-idea-u.yaml`, now `configs/skinnet-c5.yaml`), against `skinnet-c4`, then T.
-- **PH** (PanDerm, `configs/panderm-idea-h.yaml`, now `configs/panderm-c2.yaml`), against `panderm-c1`, then PG.
+- **U** (from scratch, `configs/skinnet-idea-u.yaml`, now `configs/skinnet/skinnet-c5.yaml`), against `skinnet-c4`, then T.
+- **PH** (PanDerm, `configs/panderm-idea-h.yaml`, now `configs/panderm/panderm-c2.yaml`), against `panderm-c1`, then PG.
 
 Step 1 adds `ddi_val` to `val` and `midas_val` (higher on all three, none lower by a supported amount). Epochs and seeds are still chosen on `val` alone: 42 cancers are too few to choose an epoch on. Whatever step 1 shows, both are scored once on the test sets, because the comparison below needs their `ddi_hold` scores; step 1's outcome is reported, and it is what a future idea with a DDI validation set would be judged on.
 
@@ -1034,3 +1034,12 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **MIDAS is the reverse.** Training on MIDAS is worth 0.09 to PanDerm on `midas_test` and only 0.03 to SkinNet: PanDerm learns the new site's photos better, SkinNet was poor at MIDAS either way. The expectation for MIDAS held on both.
 - **Rashes are learned only from Fitzpatrick17k, on both tracks.** Without it, PanDerm scores rashes a median 0.54 (PG: 0.08); 2.1 million pretraining images did not teach that a rash is not cancer. Its validation set was then PAD-UFES-20 alone, on which validation AUC was 0.99 by the second epoch, so early stopping had little to go on.
 - **Overall:** a source never trained on costs SkinNet about 0.09 AUC and PanDerm between nothing (PAD-UFES-20) and 0.09 (MIDAS). Every gain SkinNet made at MIDAS, MILK10k and DDI was adaptation to those sites, not general skill. These are measurements, not checkpoints.
+
+## 28. Per-track folders in one repository; the ResNet-18 reference removed (23 Nov 2026)
+
+**Decided by the user (22 Nov).** One repository, with each track's files in its own folder. Whether to split it into a SkinNet repository and a PanDerm repository is decided after the outside scoring.
+- **Moved (git history kept):** `configs/skinnet/`, `configs/panderm/`; `docs/skinnet/` and `docs/panderm/` (each RESULTS, IDEAS and earlier CHECKPOINTS); `docs/CHECKPOINTS.md` keeps each track's current model and `docs/COMPARISON.md` the results that set the two side by side; `src/skincancer/models/skinnet.py` and `models/panderm.py`.
+- **Shared, unchanged:** `configs/data.yaml`, this file, the data pipeline, training, scoring and metrics. Every config resolves to exactly the settings it had before the move (checked config by config).
+- **Not moved:** `runs/` and `results/`. They are local and not in git, every name already starts with its track, and the ledger records each run by its path.
+- **Removed (user, 22 Nov):** the ResNet-18 reference of idea P: its three configs, its trained runs, the `resnet18` option in the code and its test. Its written results stay in the SkinNet ideas and results, and its score tables in `results/ref-resnet18-*`. Everything before this change is at git tag `pre-restructure`.
+

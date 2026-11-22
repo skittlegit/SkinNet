@@ -2,10 +2,10 @@
 # Train three seeds, score each once on the test-only sets, then compute metrics.
 # Safe to re-run: finished seeds are skipped and the ledger refuses double scoring.
 #   PY=.venv/Scripts/python bash scripts/run.sh                    # Windows venv
-#   PY=python bash scripts/run.sh configs/skinnet-c3.yaml skinnet-c3   # config and model name
+#   PY=python bash scripts/run.sh configs/skinnet/skinnet-c3.yaml skinnet-c3   # config and model name
 set -uo pipefail
 PY=${PY:-python}
-CFG=${1:-configs/skinnet.yaml}
+CFG=${1:-configs/skinnet/skinnet.yaml}
 EXP=${2:-skinnet}
 SEEDS=${SEEDS:-"0 1 2"}
 FINAL="ddi_test dermacon_test dermacon_other midas_test"

@@ -1,6 +1,6 @@
 # SkinNet trained from random weights. The recipe is fixed in DECISIONS.md (Training);
 # change it there first. `--set key=value` overrides any field for a one-off run.
-extends: data.yaml
+extends: ../data.yaml
 
 name: skinnet                  # runs go to runs/<name>/s<seed>/
 seed: 0

@@ -73,12 +73,13 @@ def workdir(tmp_path_factory):
     pd.DataFrame(ddi).to_csv(raw / "ddi/ddi_metadata.csv", index=False)
 
     (root / "configs").mkdir()
-    for f in (REPO / "configs").glob("*.yaml"):
-        shutil.copy(f, root / "configs" / f.name)
+    for f in (REPO / "configs").rglob("*.yaml"):                        # configs/, configs/skinnet/, configs/panderm/
+        (root / "configs" / f.relative_to(REPO / "configs")).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(f, root / "configs" / f.relative_to(REPO / "configs"))
     data = yaml.safe_load((root / "configs/data.yaml").read_text())
     data["splits"]["min_pad_dark"] = 5
     (root / "configs/data.yaml").write_text(yaml.safe_dump(data))
-    tiny = {"extends": "skinnet.yaml", "name": "tiny", "data": {"img_size": 64, "resize_short": 72},
+    tiny = {"extends": "skinnet/skinnet.yaml", "name": "tiny", "data": {"img_size": 64, "resize_short": 72},
             "model": {"width": 8, "depths": [1, 1, 1, 1]},
             "train": {"epochs": 3, "warmup_epochs": 1, "patience": 2, "batch_size": 16, "num_workers": 0,
                       "amp": False}}

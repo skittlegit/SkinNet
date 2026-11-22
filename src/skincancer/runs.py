@@ -114,8 +114,7 @@ def build_model(cfg: dict, init_weights: bool = True) -> Classifier:
     m = cfg["model"]
     weights = m.get("weights", "none")
     arch = m.get("arch", "skinnet")
-    allowed = {"skinnet": ("none",), "resnet18": ("none", "imagenet"), "panderm_base": ("none", "panderm"),
-               "panderm_large": ("none", "panderm")}
+    allowed = {"skinnet": ("none",), "panderm_base": ("none", "panderm"), "panderm_large": ("none", "panderm")}
     if weights not in allowed.get(arch, ("none",)):
         raise ValueError(f"model.weights {weights!r} does not go with model.arch {arch!r}")
     model = Classifier(len(classes_of(cfg)), m["width"], m["depths"], m["drop"],

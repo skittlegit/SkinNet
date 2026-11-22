@@ -64,7 +64,7 @@ def test_fst_buckets():
 
 
 def test_config_extends_overrides_and_templates():
-    cfg = load_config("configs/skinnet.yaml", ["model.width=48", "seed=2", "name=skinnet_w{model.width}"])
+    cfg = load_config("configs/skinnet/skinnet.yaml", ["model.width=48", "seed=2", "name=skinnet_w{model.width}"])
     assert cfg["name"] == "skinnet_w48" and cfg["seed"] == 2
     assert cfg["manifest"] == "data/manifest.csv"  # from data.yaml
     assert cfg["data"]["train_splits"] == ["train"] and cfg["data"]["val_splits"] == ["val"]
@@ -93,7 +93,7 @@ def test_skinnet():
 
 def test_skinnet_starts_from_random_weights_per_seed():
     from skincancer import runs
-    cfg = load_config("configs/skinnet.yaml")
+    cfg = load_config("configs/skinnet/skinnet.yaml")
     def first_conv(seed):
         runs.set_seed(seed)
         return runs.build_model(cfg).backbone.stem[0].weight.detach().clone()
@@ -271,7 +271,7 @@ def test_make_loader_limits_worker_thread_pools(monkeypatch):
     from skincancer import runs
     from skincancer.config import load_config
     monkeypatch.delenv("OMP_NUM_THREADS", raising=False)
-    cfg = load_config("configs/skinnet.yaml")
+    cfg = load_config("configs/skinnet/skinnet.yaml")
     cfg["train"]["num_workers"] = 2
     n = torch.get_num_threads()
     df = pd.DataFrame({"image_id": ["a"], "path": ["x.jpg"], cfg["data"]["label_col"]: ["cancer"]})
@@ -331,21 +331,15 @@ def test_milk10k_labels_follow_biopsy_and_label_map(tmp_path):
     assert lab[["milk10k_ISIC_3", "milk10k_ISIC_5"]].isna().all()   # actinic keratosis; not biopsied
 
 
-def test_resnet18_reference_model_for_idea_p():
+def test_skinnet_is_the_default_and_has_no_outside_weights():
     from skincancer import runs
-    from skincancer.models import ResNet18
-    cfg = load_config("configs/skinnet.yaml")
-    assert runs.build_model(cfg).backbone.__class__ is SkinNet           # SkinNet stays the default
-    cfg["model"].update(arch="resnet18", weights="imagenet")
-    m = runs.build_model(cfg, init_weights=False)                       # loading a saved run: no download
-    assert isinstance(m.backbone, ResNet18) and m.dim == 512
-    assert m(torch.randn(2, 3, 64, 64)).shape == (2, 2)
-    assert target_layer(m) is m.backbone.net.layer4[-1]
+    cfg = load_config("configs/skinnet/skinnet.yaml")
+    assert runs.build_model(cfg).backbone.__class__ is SkinNet
+    cfg["model"].update(arch="resnet18")                                # removed 23 Nov 2026
+    with pytest.raises(ValueError):
+        runs.build_model(cfg, init_weights=False)
     with pytest.raises(ValueError):
         Classifier(2, pretrained=True)                                  # SkinNet has no outside weights
-    cfg["model"]["weights"] = "something"
-    with pytest.raises(ValueError):
-        runs.build_model(cfg)
     cfg["model"].update(arch="skinnet", weights="panderm")                # weights must fit the network
     with pytest.raises(ValueError):
         runs.build_model(cfg)
@@ -403,7 +397,7 @@ def test_weight_average():
 def test_layer_decay_and_head_only_epochs():
     from skincancer import runs
     from skincancer.train import make_scheduler, param_groups
-    cfg = load_config("configs/skinnet.yaml")
+    cfg = load_config("configs/skinnet/skinnet.yaml")
     with pytest.raises(ValueError):
         param_groups(runs.build_model(cfg), 1e-4, 0.75)                 # layer decay: PanDerm's ViT only
     plain = param_groups(runs.build_model(cfg), 1e-3)
@@ -432,7 +426,7 @@ def test_panderm_reference_model_builds_and_loads_its_weights():
     from pathlib import Path
     from skincancer import runs
     from skincancer.models import PANDERM_BASE_WEIGHTS, PanDermBase
-    cfg = load_config("configs/skinnet.yaml")
+    cfg = load_config("configs/skinnet/skinnet.yaml")
     cfg["model"].update(arch="panderm_base", weights="panderm")
     m = runs.build_model(cfg, init_weights=False)
     assert isinstance(m.backbone, PanDermBase) and m.dim == 768
