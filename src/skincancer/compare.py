@@ -1,6 +1,6 @@
 """Paired comparison of two models on the same images.
 
-    python -m skincancer.compare --a skinnet-c4 --b ref-resnet18-r2 --splits val midas_val
+    python -m skincancer.compare --a skinnet-idea-t --b skinnet-lodo-pad --splits test --datasets pad_ufes_20
     python -m skincancer.compare --a skinnet-c2 --b skinnet-c3 --splits test ddi_test midas_test
 
 Two separate confidence intervals overlap long before a difference stops being real, because
@@ -34,12 +34,16 @@ def _scores(exp_dir: Path, split: str, ids=None):
     return ids, [M.p_malignant(f.set_index("image_id").loc[ids, cols].to_numpy(), classes) for f in frames]
 
 
-def compare(a: str, b: str, split: str, manifest: pd.DataFrame, runs_dir="runs", n_boot: int = 2000, seed: int = 0) -> list[dict]:
+def compare(a: str, b: str, split: str, manifest: pd.DataFrame, runs_dir="runs", n_boot: int = 2000, seed: int = 0,
+            datasets=None) -> list[dict]:
+    """datasets: score only the images from these sources (e.g. the one a leave-one-dataset-out model left out)."""
     ids, sa = _scores(Path(runs_dir) / a, split)
     _, sb = _scores(Path(runs_dir) / b, split, ids)
     meta = manifest.set_index("image_id").loc[ids]
     y = meta["label_binary"].astype(float).to_numpy()
     keep = ~np.isnan(y)
+    if datasets:
+        keep &= meta["dataset"].isin(datasets).to_numpy()
     y, src = y[keep], meta["dataset"].to_numpy()[keep]
     sa, sb = [s[keep] for s in sa], [s[keep] for s in sb]
     groups = meta["group_id"].astype(str).to_numpy()[keep]
@@ -75,13 +79,14 @@ def main(argv=None):
     ap.add_argument("--splits", nargs="+", default=["val"])
     ap.add_argument("--runs-dir", default="runs")
     ap.add_argument("--n-boot", type=int, default=2000)
+    ap.add_argument("--datasets", nargs="+", help="only the images from these sources")
     args = ap.parse_args(argv)
     cfg = run_config(Path(args.runs_dir) / args.a)
     manifest = runs.read_manifest(cfg["manifest"])
     rows = []
     for b in args.b:
         for split in args.splits:
-            for r in compare(args.a, b, split, manifest, args.runs_dir, args.n_boot):
+            for r in compare(args.a, b, split, manifest, args.runs_dir, args.n_boot, datasets=args.datasets):
                 rows.append({"b": b, **{k: v for k, v in r.items() if k != "b"}, "b_value": r["b"]})
     out = pd.DataFrame(rows).rename(columns={"a": "a_value"})
     out = out[["b", "split", "metric", "a_value", "b_value", "diff", "ci_lo", "ci_hi", "supported", "n"]]
