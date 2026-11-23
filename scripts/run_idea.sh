@@ -13,12 +13,13 @@ case $EXP in panderm*) CFG=configs/panderm/$EXP.yaml ;; *) CFG=configs/skinnet/$
 REF=${REF:-skinnet-c4}
 SEEDS=${SEEDS:-"0 1 2"}
 VAL=${VAL:-"val midas_val"}   # VAL="val midas_val ddi_val": DDI validation in step 1 (section 26)
-LOGS=runs/$EXP/logs
+case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+LOGS=$RUN/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1
 
 for s in $SEEDS; do
-  if [ -f "runs/$EXP/s$s/summary.json" ]; then echo "[$(date +%H:%M)] $EXP seed $s already done"; continue; fi
+  if [ -f "$RUN/s$s/summary.json" ]; then echo "[$(date +%H:%M)] $EXP seed $s already done"; continue; fi
   echo "[$(date +%H:%M)] train $EXP seed $s"
   $PY -m skincancer.train --config "$CFG" --seed "$s" > "$LOGS/s$s.log" 2>&1 \
     || { echo "  FAILED: see $LOGS/s$s.log"; exit 1; }

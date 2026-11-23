@@ -11,8 +11,8 @@ Checkpoint 3's recipe with 4,908 biopsy-confirmed clinical close-ups from MILK10
 | Training data | 18,022 images: the 13,114 of checkpoint 3 plus 4,908 from MILK10k (3,620 cancer, 1,288 not cancer; training only) |
 | Training | 60 epochs, early stopping off, about 30 minutes per seed |
 | Config | `configs/skinnet/skinnet-c4.yaml` |
-| Run folder | `runs/skinnet-c4`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
-| Weights | `checkpoints/checkpoint-4/` (local, git-ignored) |
+| Run folder | `runs/skinnet/skinnet-c4`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/skinnet/skinnet-c4/` (local, git-ignored) |
 | Git tag | `checkpoint-4` |
 
 | Score | Checkpoint 3 | Checkpoint 4 | Paired difference [95% interval] |
@@ -44,8 +44,8 @@ Checkpoint 1's recipe trained again with photos from a second kind of source: 55
 | Training data | 13,114 images: the 12,562 of checkpoint 1 plus 552 from MIDAS (`midas_train`) |
 | Training | 60 epochs, early stopping off, about 20 minutes per seed |
 | Config | `configs/skinnet/skinnet-c3.yaml` |
-| Run folder | `runs/skinnet-c3`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
-| Weights | `checkpoints/checkpoint-3/` (local, git-ignored) |
+| Run folder | `runs/skinnet/skinnet-c3`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/skinnet/skinnet-c3/` (local, git-ignored) |
 | Git tag | `checkpoint-3` |
 
 | Score | Checkpoint 2 | Checkpoint 3 | Paired difference [95% interval] |
@@ -73,8 +73,8 @@ Checkpoint 1's three trained models, used better when predicting. Nothing was re
 | | |
 | --- | --- |
 | What it is | For each image, each of the three seeds predicts on the image and its three mirror images (left-right, up-down, both); the twelve cancer probabilities are averaged into one |
-| Weights | The same as checkpoint 1; copies with the prediction settings are in `checkpoints/checkpoint-2/` (local, git-ignored) |
-| Run folder | `runs/skinnet-c2`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | The same as checkpoint 1; copies with the prediction settings are in `checkpoints/skinnet/skinnet-c2/` (local, git-ignored) |
+| Run folder | `runs/skinnet/skinnet-c2`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
 | Git tag | `checkpoint-2` |
 | Built with | `python -m skincancer.derive` (commands below) |
 
@@ -110,7 +110,7 @@ Missed cancers and false alarms use the threshold that catches 90% of cancers on
 | What sets it apart from the baseline | Inside each dataset, cancer and not cancer are drawn equally often, so the kind of photo no longer predicts the class |
 | Config | `configs/skinnet/skinnet-c1.yaml` |
 | Git tag | `checkpoint-1` |
-| Weights | `checkpoints/checkpoint-1/s{0,1,2}/best.pt` (local, git-ignored) |
+| Weights | `checkpoints/skinnet/skinnet-c1/s{0,1,2}/best.pt` (local, git-ignored) |
 
 It weakened the "smartphone photo means cancer" shortcut (false alarms on PAD-UFES-20 non-cancers 89% → 63%) and improved the hard distinction, cancer against a benign lookalike (0.72 → 0.78). Its scores are in the table above. Checkpoint 2 uses its weights unchanged.
 

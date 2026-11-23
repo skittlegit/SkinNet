@@ -13,8 +13,8 @@ PanDerm's ViT-L/16, the network of its paper, fine-tuned on checkpoint 4's train
 | Training data | The 18,022 images of checkpoint 4 |
 | Training | 3 epochs head only, then up to 20; about 10 minutes an epoch with gradient checkpointing, about 2 hours a seed |
 | Config | `configs/panderm/panderm-c1.yaml` (weights `data/weights/panderm_large.pth`, local) |
-| Run folder | `runs/panderm-c1`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
-| Weights | `checkpoints/panderm-c1/` (local, git-ignored) |
+| Run folder | `runs/panderm/panderm-c1`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/panderm/panderm-c1/` (local, git-ignored) |
 | Git tag | `panderm-checkpoint-1` |
 
 | Set | Score | PanDerm base | Idea PA | PanDerm Large (PC) | PC − base [95% interval] | PC − PA [95% interval] |

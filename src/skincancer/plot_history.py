@@ -1,6 +1,6 @@
 """Training curves of a model's seeds: loss, accuracy and validation AUC against epochs.
 
-    python -m skincancer.plot_history --exp skinnet-idea-t          # -> results/<exp>/curves.png
+    python -m skincancer.plot_history --exp skinnet-idea-t          # -> results/<track>/<exp>/curves.png
 
 Accuracy is logged from 22 Nov 2026 on (train.py); older runs show loss and validation AUC only.
 Training accuracy is measured on the augmented, class-balanced batches the model trains on, so it is
@@ -17,12 +17,14 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from .tracks import exp_dir, results_dir as results_dir_of
+
 
 def plot(exp: str, runs_dir: str = "runs", results_dir: str = "results") -> Path:
-    seeds = sorted((Path(runs_dir) / exp).glob("s[0-9]*"))
+    seeds = sorted(exp_dir(exp, runs_dir).glob("s[0-9]*"))
     hists = {s.name: pd.read_csv(s / "history.csv") for s in seeds if (s / "history.csv").exists()}
     if not hists:
-        raise SystemExit(f"no history.csv under {Path(runs_dir) / exp}")
+        raise SystemExit(f"no history.csv under {exp_dir(exp, runs_dir)}")
     panels = [("Loss", [("loss", "train"), ("val_loss", "validation")]),
               ("Accuracy", [("train_acc", "train"), ("val_acc", "validation")]),
               ("Validation AUC", [("val_auc", "validation")])]
@@ -45,7 +47,7 @@ def plot(exp: str, runs_dir: str = "runs", results_dir: str = "results") -> Path
         ax.legend(fontsize=7)
     fig.suptitle(f"{exp}: training curves (dot: the epoch kept)")
     fig.tight_layout()
-    out = Path(results_dir) / exp / "curves.png"
+    out = results_dir_of(exp, results_dir) / "curves.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=120)
     plt.close(fig)

@@ -21,6 +21,7 @@ from . import metrics as M
 from . import runs
 from .evaluate import load_preds, run_config
 from .labels import CLASSES
+from .tracks import exp_dir
 
 
 def _scores(exp_dir: Path, split: str, ids=None):
@@ -37,8 +38,8 @@ def _scores(exp_dir: Path, split: str, ids=None):
 def compare(a: str, b: str, split: str, manifest: pd.DataFrame, runs_dir="runs", n_boot: int = 2000, seed: int = 0,
             datasets=None) -> list[dict]:
     """datasets: score only the images from these sources (e.g. the one a leave-one-dataset-out model left out)."""
-    ids, sa = _scores(Path(runs_dir) / a, split)
-    _, sb = _scores(Path(runs_dir) / b, split, ids)
+    ids, sa = _scores(exp_dir(a, runs_dir), split)
+    _, sb = _scores(exp_dir(b, runs_dir), split, ids)
     meta = manifest.set_index("image_id").loc[ids]
     y = meta["label_binary"].astype(float).to_numpy()
     keep = ~np.isnan(y)
@@ -81,7 +82,7 @@ def main(argv=None):
     ap.add_argument("--n-boot", type=int, default=2000)
     ap.add_argument("--datasets", nargs="+", help="only the images from these sources")
     args = ap.parse_args(argv)
-    cfg = run_config(Path(args.runs_dir) / args.a)
+    cfg = run_config(exp_dir(args.a, args.runs_dir))
     manifest = runs.read_manifest(cfg["manifest"])
     rows = []
     for b in args.b:

@@ -2,7 +2,7 @@
 
     python -m skincancer.train --config configs/skinnet/skinnet.yaml --seed 0
 
-Writes runs/<name>/s<seed>/: best.pt, config.yaml, history.csv, summary.json and
+Writes runs/<track>/<name>/s<seed>/: best.pt, config.yaml, history.csv, summary.json and
 preds/<split>.csv for every split in eval.splits.
 """
 from __future__ import annotations

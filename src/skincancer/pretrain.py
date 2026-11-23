@@ -12,7 +12,7 @@ away. No label is read. The photos are the ones a model may train on (`pretrain.
 manifest and the `pretrain.extra` sets of data/extra/, which already exclude near-duplicates of
 any validation or test image); no validation or test image is ever used.
 
-Writes runs/<name>/pretrain/: backbone.pt (SkinNet weights, no head), history.csv,
+Writes runs/<track>/<name>/pretrain/: backbone.pt (SkinNet weights, no head), history.csv,
 summary.json, config.yaml. `train` starts from backbone.pt when `model.init` names it.
 """
 from __future__ import annotations
@@ -32,6 +32,7 @@ from albumentations.pytorch import ToTensorV2
 from torch.utils.data import DataLoader, Dataset
 
 from . import runs
+from .tracks import exp_dir
 from .config import load_config
 from .data.dataset import MEAN, STD
 from .models import SkinNet
@@ -112,7 +113,7 @@ def pretrain_rows(cfg: dict) -> pd.DataFrame:
 def pretrain(cfg: dict) -> Path:
     p = cfg["pretrain"]
     runs.set_seed(p.get("seed", 0))
-    out = Path(cfg["runs_dir"]) / cfg["name"] / "pretrain"
+    out = exp_dir(cfg["name"], cfg["runs_dir"]) / "pretrain"
     out.mkdir(parents=True, exist_ok=True)
     runs.save_config(cfg, out / "config.yaml")
     dev = runs.device()
@@ -175,7 +176,7 @@ def main(argv=None):
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args(argv)
     cfg = load_config(args.config, list(args.set))
-    done = Path(cfg["runs_dir"]) / cfg["name"] / "pretrain" / "summary.json"
+    done = exp_dir(cfg["name"], cfg["runs_dir"]) / "pretrain" / "summary.json"
     if done.exists() and not args.overwrite:
         print(f"{done.parent} already finished; pass --overwrite to redo")
         return

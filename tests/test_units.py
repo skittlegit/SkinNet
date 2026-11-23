@@ -364,10 +364,10 @@ def test_ddi_split_and_subset(tmp_path):
     man = pd.DataFrame({"image_id": ["a", "b", "c"], "split": ["ddi_hold", "ddi_train", "ddi_hold"]})
     man.to_csv(tmp_path / "m.csv", index=False)
     for d in ("s0", "avg"):
-        (tmp_path / "runs/e" / d / "preds").mkdir(parents=True)
-        (tmp_path / "runs/e" / d / "config.yaml").write_text("name: e\n")
+        (tmp_path / "runs/skinnet/e" / d / "preds").mkdir(parents=True)
+        (tmp_path / "runs/skinnet/e" / d / "config.yaml").write_text("name: e\n")
         pd.DataFrame({"image_id": ["a", "b", "c"], "p_cancer": [.1, .2, .3]}).to_csv(
-            tmp_path / "runs/e" / d / "preds/ddi_test.csv", index=False)
+            tmp_path / "runs/skinnet/e" / d / "preds/ddi_test.csv", index=False)
     out = make_subset("e", "ddi_test", "ddi_hold", str(tmp_path / "m.csv"), str(tmp_path / "runs"))
     assert len(out) == 2 and list(pd.read_csv(out[0])["image_id"]) == ["a", "c"]
 
@@ -497,3 +497,12 @@ def test_derm1m_selection_rules():
     assert (s[s["label_binary"] == 0]["source"].value_counts() == mf["source"].value_counts()).all()   # matched per source
     assert source_group("youtube/abcdefghijk_frame_3_1.jpg") == "yt_abcdefghijk"
     assert source_group("pubmed/00_PMC9_fig-g002_1.jpg") == "pubmed_00_PMC9_fig-g002"
+
+
+def test_each_track_has_its_own_folders():
+    from skincancer.tracks import exp_dir, results_dir, track
+    assert track("panderm-c2") == "panderm" and track("panderm") == "panderm"
+    assert track("skinnet-c5") == "skinnet" and track("tiny") == "skinnet"   # SkinNet is the default
+    assert exp_dir("panderm-idea-g").as_posix() == "runs/panderm/panderm-idea-g"
+    assert exp_dir("skinnet").as_posix() == "runs/skinnet/skinnet"
+    assert results_dir("skinnet-c5", "r").as_posix() == "r/skinnet/skinnet-c5"

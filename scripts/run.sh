@@ -9,7 +9,8 @@ CFG=${1:-configs/skinnet/skinnet.yaml}
 EXP=${2:-skinnet}
 SEEDS=${SEEDS:-"0 1 2"}
 FINAL="ddi_test dermacon_test dermacon_other midas_test"
-LOGS=runs/$EXP/logs
+case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+LOGS=$RUN/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1
 
@@ -19,7 +20,7 @@ for s in $SEEDS; do
     || echo "  FAILED: see $LOGS/s$s.log"
 done
 for s in $SEEDS; do
-  [ -f "runs/$EXP/s$s/summary.json" ] && $PY -m skincancer.predict --run "runs/$EXP/s$s" \
+  [ -f "$RUN/s$s/summary.json" ] && $PY -m skincancer.predict --run "$RUN/s$s" \
     --splits $FINAL --final >> "$LOGS/final.log" 2>&1
 done
 $PY -m skincancer.evaluate --exp "$EXP" | tee "$LOGS/evaluate.log"

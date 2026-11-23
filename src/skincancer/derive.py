@@ -1,7 +1,7 @@
 """Make a new model out of finished runs without retraining.
 
     # seed average: one prediction per image, the mean of the seeds' probabilities.
-    # Written to runs/<exp>/avg/, next to the seeds; evaluate and compare then use it.
+    # Written to runs/<track>/<exp>/avg/, next to the seeds; evaluate and compare then use it.
     python -m skincancer.derive ensemble --exp skinnet-c3 --splits val midas_val
     # test-time flips for a model trained without them: the same weights under a new name,
     # predicting on the image and its mirror images (this is how checkpoint 2 was made)
@@ -10,9 +10,9 @@
     # held-out half, cut from the ones it already has. Not a new look: no image is scored again.
     python -m skincancer.derive subset --exp skinnet-c4 --source ddi_test --splits ddi_hold
 
-`tta` writes runs/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
+`tta` writes runs/<track>/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
 with `predict` as usual. A config with `eval.tta: true` needs no such step. `ensemble` writes
-runs/<name>/avg/preds/<split>.csv from the seeds' prediction files (--name defaults to --exp).
+runs/<track>/<name>/avg/preds/<split>.csv from the seeds' prediction files (--name defaults to --exp).
 Averaging predictions on a test-only set is a new look at that set: it needs --final and is
 recorded in the ledger like any other.
 """
@@ -29,12 +29,13 @@ import yaml
 from .labels import CLASSES
 from .predict import LEDGER, append_ledger, check_ledger
 from .runs import is_test_only, read_manifest
+from .tracks import exp_dir
 
 
 def make_tta(exp: str, name: str, runs_dir: str = "runs") -> list[Path]:
     out = []
-    for sdir in sorted((Path(runs_dir) / exp).glob("s[0-9]*")):
-        dst = Path(runs_dir) / name / sdir.name
+    for sdir in sorted(exp_dir(exp, runs_dir).glob("s[0-9]*")):
+        dst = exp_dir(name, runs_dir) / sdir.name
         dst.mkdir(parents=True, exist_ok=True)
         cfg = yaml.safe_load((sdir / "config.yaml").read_text(encoding="utf-8"))
         cfg["name"] = name
@@ -52,10 +53,10 @@ def make_ensemble(exp: str, name: str | None, splits: list[str], runs_dir: str =
     """force: rebuild predictions on a test-only set that the ledger already lists for this
     model (a reproduction, not a new look); nothing is added to the ledger."""
     name = name or exp
-    src = sorted((Path(runs_dir) / exp).glob("s[0-9]*"))
+    src = sorted(exp_dir(exp, runs_dir).glob("s[0-9]*"))
     if not src:
-        raise FileNotFoundError(f"no runs under {Path(runs_dir) / exp}")
-    dst = Path(runs_dir) / name / "avg"
+        raise FileNotFoundError(f"no runs under {exp_dir(exp, runs_dir)}")
+    dst = exp_dir(name, runs_dir) / "avg"
     test_only = [s for s in splits if is_test_only(s)]
     if test_only and not final:
         raise SystemExit(f"{test_only} are test-only: pass --final (scored once per model)")
@@ -91,7 +92,7 @@ def make_subset(exp: str, source: str, split: str, manifest_path: str = "data/ma
     if not ids:
         raise SystemExit(f"no images in split {split!r}")
     out = []
-    root = Path(runs_dir) / exp
+    root = exp_dir(exp, runs_dir)
     for sdir in [*sorted(root.glob("s[0-9]*")), root / "avg"]:
         src = sdir / "preds" / f"{source}.csv"
         if not src.exists():

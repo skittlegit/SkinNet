@@ -122,16 +122,16 @@ def test_pipeline(workdir, monkeypatch):
 
     for seed in (0, 1):
         train.main(["--config", "configs/tiny.yaml", "--seed", str(seed)])
-    hist = pd.read_csv("runs/tiny/s0/history.csv")
+    hist = pd.read_csv("runs/skinnet/tiny/s0/history.csv")
     assert 1 <= len(hist) <= 3 and hist["lr"].iloc[0] == pytest.approx(1e-3)   # 1 warm-up epoch
-    summary = yaml.safe_load(Path("runs/tiny/s0/summary.json").read_text())
+    summary = yaml.safe_load(Path("runs/skinnet/tiny/s0/summary.json").read_text())
     assert summary["n_train"] == (m["split"] == "train").sum() and summary["n_params"] > 0
-    preds = pd.read_csv("runs/tiny/s0/preds/test.csv")
+    preds = pd.read_csv("runs/skinnet/tiny/s0/preds/test.csv")
     assert [c for c in preds if c.startswith("p_")] == ["p_not_cancer", "p_cancer"]
-    assert np.allclose(preds[["p_not_cancer", "p_cancer"]].sum(1), 1, atol=1e-5)
-    assert not Path("runs/tiny/s0/preds/ddi_hold.csv").exists()  # test-only never automatic
+    assert np.allclose(preds[["p_not_cancer", "p_cancer"]].sum(axis=1), 1, atol=1e-5)
+    assert not Path("runs/skinnet/tiny/s0/preds/ddi_hold.csv").exists()  # test-only never automatic
     train.main(["--config", "configs/tiny.yaml", "--seed", "0"])   # finished: skipped, not retrained
-    assert len(pd.read_csv("runs/tiny/s0/history.csv")) == len(hist)
+    assert len(pd.read_csv("runs/skinnet/tiny/s0/history.csv")) == len(hist)
 
     # a run killed during an epoch continues after the last finished one. (Not bit for bit like an
     # uninterrupted run: albumentations draws from its own unseeded generator, so two whole runs
@@ -150,25 +150,25 @@ def test_pipeline(workdir, monkeypatch):
     monkeypatch.setattr(train, "selection_score", killed_in_epoch_2)
     with pytest.raises(KeyboardInterrupt):
         train.train(dict(cfg, name="tiny_cut"))
-    before = pd.read_csv("runs/tiny_cut/s0/history.csv")
-    assert Path("runs/tiny_cut/s0/last.pt").exists() and len(before) == 2
+    before = pd.read_csv("runs/skinnet/tiny_cut/s0/history.csv")
+    assert Path("runs/skinnet/tiny_cut/s0/last.pt").exists() and len(before) == 2
     import torch
-    assert torch.load("runs/tiny_cut/s0/last.pt", weights_only=False)["ema"]["steps"] > 0
+    assert torch.load("runs/skinnet/tiny_cut/s0/last.pt", weights_only=False)["ema"]["steps"] > 0
     monkeypatch.setattr(train, "selection_score", real)
     train.train(dict(cfg, name="tiny_cut"))
-    after = pd.read_csv("runs/tiny_cut/s0/history.csv")
+    after = pd.read_csv("runs/skinnet/tiny_cut/s0/history.csv")
     assert list(after["epoch"]) == [0, 1, 2] and after.iloc[:2].equals(before)   # epochs 0-1 kept, not redone
     assert after["lr"].iloc[2] == pytest.approx(5e-4)                              # the schedule went on too
-    assert not Path("runs/tiny_cut/s0/last.pt").exists() and Path("runs/tiny_cut/s0/summary.json").exists()
+    assert not Path("runs/skinnet/tiny_cut/s0/last.pt").exists() and Path("runs/skinnet/tiny_cut/s0/summary.json").exists()
 
     with pytest.raises(SystemExit):
-        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold"])  # needs --final
+        predict.main(["--run", "runs/skinnet/tiny/s0", "--splits", "ddi_hold"])  # needs --final
     for seed in (0, 1):
-        predict.main(["--run", f"runs/tiny/s{seed}", "--splits", "ddi_hold", "--final"])
+        predict.main(["--run", f"runs/skinnet/tiny/s{seed}", "--splits", "ddi_hold", "--final"])
     with pytest.raises(SystemExit):
-        predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold", "--final"])  # only once
+        predict.main(["--run", "runs/skinnet/tiny/s0", "--splits", "ddi_hold", "--final"])  # only once
     ledger = pd.read_csv("runs/final_ledger.csv")
-    assert set(ledger["run"]) == {"runs/tiny/s0", "runs/tiny/s1"}
+    assert set(ledger["run"]) == {"runs/skinnet/tiny/s0", "runs/skinnet/tiny/s1"}
 
     out = evaluate.evaluate("tiny", n_boot=50)
     assert set(out["eval_set"]) >= {"val", "test", "ddi_hold", "ak_side"}
@@ -182,7 +182,7 @@ def test_pipeline(workdir, monkeypatch):
     missed = by_type[(by_type["subgroup"] == "bcc") & (by_type["metric"] == "missed_cancer_rate")].iloc[0]
     assert 0 <= missed["mean"] <= 1
     assert set(out.loc[out["eval_set"] == "ak_side", "metric"]) == {"pred_malignant_rate", "pred_malignant_rate_op90"}
-    assert Path("results/tiny/metrics.csv").exists()
+    assert Path("results/skinnet/tiny/metrics.csv").exists()
 
     assert "source_auc" in set(out.loc[out["eval_set"] == "test", "metric"])
     hard = out[(out["eval_set"] == "test") & (out["subgroup"] == "cancer_vs_lookalike")]
@@ -192,10 +192,10 @@ def test_pipeline(workdir, monkeypatch):
     train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=tiny_bal", "--set",
                 "train.sampling=source_class", "--set", "train.class_weighting=none", "--set",
                 "train.select_metric=source_auc"])
-    assert yaml.safe_load(Path("runs/tiny_bal/s0/summary.json").read_text())["select_metric"] == "source_auc"
+    assert yaml.safe_load(Path("runs/skinnet/tiny_bal/s0/summary.json").read_text())["select_metric"] == "source_auc"
     val_only = evaluate.evaluate("tiny_bal", n_boot=20, splits=["val"])
-    assert set(val_only["eval_set"]) == {"val"} and Path("results/tiny_bal/metrics_val.csv").exists()
-    assert not Path("results/tiny_bal/metrics.csv").exists()            # the full table is untouched
+    assert set(val_only["eval_set"]) == {"val"} and Path("results/skinnet/tiny_bal/metrics_val.csv").exists()
+    assert not Path("results/skinnet/tiny_bal/metrics.csv").exists()            # the full table is untouched
     with pytest.raises(ValueError):
         train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=bad", "--set",
                     "train.sampling=source_class"])                     # sampling + weighted loss: refused
@@ -211,12 +211,12 @@ def test_pipeline(workdir, monkeypatch):
     # derived models (how checkpoint 2 is built): test-time flips, then the seed average
     from skincancer import derive
     derive.main(["tta", "--exp", "tiny", "--name", "tiny_tta"])
-    assert yaml.safe_load(Path("runs/tiny_tta/s1/config.yaml").read_text())["eval"]["tta"] is True
+    assert yaml.safe_load(Path("runs/skinnet/tiny_tta/s1/config.yaml").read_text())["eval"]["tta"] is True
     for seed in (0, 1):
-        predict.main(["--run", f"runs/tiny_tta/s{seed}", "--splits", "val"])
+        predict.main(["--run", f"runs/skinnet/tiny_tta/s{seed}", "--splits", "val"])
     derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "val", "test"])
-    ens = pd.read_csv("runs/tiny_ens/avg/preds/val.csv").set_index("image_id")
-    parts = [pd.read_csv(f"runs/tiny/s{k}/preds/val.csv").set_index("image_id").loc[ens.index] for k in (0, 1)]
+    ens = pd.read_csv("runs/skinnet/tiny_ens/avg/preds/val.csv").set_index("image_id")
+    parts = [pd.read_csv(f"runs/skinnet/tiny/s{k}/preds/val.csv").set_index("image_id").loc[ens.index] for k in (0, 1)]
     assert np.allclose(ens["p_cancer"], (parts[0]["p_cancer"] + parts[1]["p_cancer"]) / 2)
     with pytest.raises(SystemExit):
         derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold"])   # needs --final
@@ -225,16 +225,16 @@ def test_pipeline(workdir, monkeypatch):
         derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold", "--final"])   # once
     n_rows = len(pd.read_csv("runs/final_ledger.csv"))
     derive.main(["ensemble", "--exp", "tiny", "--name", "tiny_ens", "--splits", "ddi_hold", "--final", "--force"])
-    predict.main(["--run", "runs/tiny/s0", "--splits", "ddi_hold", "--final", "--force"])
+    predict.main(["--run", "runs/skinnet/tiny/s0", "--splits", "ddi_hold", "--final", "--force"])
     assert len(pd.read_csv("runs/final_ledger.csv")) == n_rows            # reproductions add no ledger rows
-    assert "runs/tiny_ens/avg" in set(pd.read_csv("runs/final_ledger.csv")["run"])
+    assert "runs/skinnet/tiny_ens/avg" in set(pd.read_csv("runs/final_ledger.csv")["run"])
     assert set(compare.main(["--a", "tiny", "--b", "tiny_ens", "--splits", "val", "--n-boot", "50"])["b"]) == {"tiny_ens"}
 
     # training on two splits at once
     train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=tiny_both", "--set",
                 "data.train_splits=[train, val]", "--set", "train.epochs=1"])
-    both = yaml.safe_load(Path("runs/tiny_both/s0/summary.json").read_text())
+    both = yaml.safe_load(Path("runs/skinnet/tiny_both/s0/summary.json").read_text())
     assert both["n_train"] == m["split"].isin(["train", "val"]).sum()
 
     from skincancer.analysis import gradcam
-    gradcam.main(["--run", "runs/tiny/s0", "--split", "test", "--n", "3"])
+    gradcam.main(["--run", "runs/skinnet/tiny/s0", "--split", "test", "--n", "3"])

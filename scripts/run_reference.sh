@@ -7,13 +7,14 @@ set -uo pipefail
 EXP=${1:?usage: run_reference.sh <name>}
 PY=${PY:-python}
 REF=${REF:-skinnet-c3}
-LOGS=runs/$EXP/logs
+case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+LOGS=$RUN/logs
 export PY PYTHONUNBUFFERED=1
 
 case $EXP in panderm*) CFG=configs/panderm/$EXP.yaml ;; *) CFG=configs/skinnet/$EXP.yaml ;; esac
 bash scripts/run.sh "$CFG" "$EXP" || exit 1
 for s in ${SEEDS:-0 1 2}; do
-  [ -f "runs/$EXP/s$s/summary.json" ] || { echo "  FAILED: seed $s did not finish, see $LOGS/s$s.log"; exit 1; }
+  [ -f "$RUN/s$s/summary.json" ] || { echo "  FAILED: seed $s did not finish, see $LOGS/s$s.log"; exit 1; }
 done
 $PY -m skincancer.derive ensemble --exp "$EXP" --splits val test ak_side midas_val > "$LOGS/derive.log" 2>&1 \
   && $PY -m skincancer.derive ensemble --exp "$EXP" --final \

@@ -60,9 +60,9 @@ python -m skincancer.data.count_check       # split × class and split × type-o
 
 ```bash
 python -m skincancer.train --config configs/skinnet/skinnet.yaml --seed 0     # one seed
-python -m skincancer.predict --run runs/skinnet/s0 --splits ddi_test dermacon_test dermacon_other midas_test --final
-python -m skincancer.evaluate --exp skinnet                           # results/skinnet/metrics.csv
-python -m skincancer.analysis.gradcam --run runs/skinnet/s0 --split test
+python -m skincancer.predict --run runs/skinnet/skinnet/s0 --splits ddi_test dermacon_test dermacon_other midas_test --final
+python -m skincancer.evaluate --exp skinnet                           # results/skinnet/skinnet/metrics.csv
+python -m skincancer.analysis.gradcam --run runs/skinnet/skinnet/s0 --split test
 python -m skincancer.compare --a skinnet-c1 --b skinnet-c2 --splits val test   # is b better than a?
 ```
 
@@ -95,14 +95,16 @@ src/skincancer/evaluate.py        metrics with confidence intervals
 src/skincancer/compare.py         paired comparison of two models on the same images
 src/skincancer/data/              label map, manifest, dedup, splits, outside sets, dataset and augmentation
 scripts/                          run.sh, run_idea.sh, run_reference.sh (pick configs/skinnet or configs/panderm by name)
-runs/<name>/s<seed>/              best.pt  config.yaml  history.csv  summary.json  preds/   (local, not in git)
+runs/skinnet/<name>/s<seed>/      best.pt  config.yaml  history.csv  summary.json  preds/   (local, not in git)
+runs/panderm/<name>/s<seed>/      the same for PanDerm models
 runs/final_ledger.csv             one row per (run, test-only set) ever scored
-results/<name>/metrics.csv        long format, one row per set x subgroup x metric   (local)
+results/skinnet/<name>/, results/panderm/<name>/   metrics.csv: one row per set x subgroup x metric (local)
+checkpoints/skinnet/, checkpoints/panderm/        the kept models' weights (local)
 ```
 
-`runs/` and `results/` stay flat, one folder per model name: names already start with `skinnet-` or `panderm-`, the ledger records each run by its path, and neither folder is in git.
+`runs/`, `results/` and `checkpoints/` have one folder per track. The track comes from the model's name: `panderm…` goes to `panderm/`, every other name to `skinnet/` ([tracks.py](src/skincancer/tracks.py)). Commands still take just the name (`--exp panderm-c2`); `predict --run` takes the full folder (`runs/panderm/panderm-c2/s0`). None of the three is in git.
 
-Two files connect everything. `data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
+Two files connect everything. `data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/<track>/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
 
 ## Rules the code enforces
 

@@ -2,7 +2,8 @@
 
     python -m skincancer.evaluate --exp skinnet
 
-Reads runs/<exp>/avg/preds/<split>.csv if the seed average exists, else runs/<exp>/s*/preds/<split>.csv; writes results/<exp>/metrics.csv in long
+Reads runs/<track>/<exp>/avg/preds/<split>.csv if the seed average exists, else runs/<track>/<exp>/s*/preds/<split>.csv;
+writes results/<track>/<exp>/metrics.csv (skincancer/tracks.py) in long
 format: exp, eval_set, subgroup_col, subgroup, metric, mean, std, ci_lo, ci_hi, n, n_malignant, n_seeds.
 """
 from __future__ import annotations
@@ -16,6 +17,8 @@ import yaml
 
 from . import metrics as M
 from .labels import CLASSES
+from .tracks import exp_dir
+from .tracks import results_dir as results_dir_of
 
 # eval set -> (task, subgroup columns). Subgroups by type of lesion show which cancers are
 # missed and which harmless conditions raise false alarms.
@@ -121,8 +124,8 @@ def score_set(split: str, frames: list[pd.DataFrame], manifest: pd.DataFrame, cl
 
 def evaluate(exp: str, runs_dir="runs", results_dir="results", manifest_path=None,
              n_boot: int = 1000, splits=None) -> pd.DataFrame:
-    exp_dir = Path(runs_dir) / exp
-    cfg = run_config(exp_dir)
+    edir = exp_dir(exp, runs_dir)
+    cfg = run_config(edir)
     label_col = cfg["data"]["label_col"]
     classes = CLASSES[label_col]
     cols = [f"p_{c}" for c in classes]
@@ -131,21 +134,21 @@ def evaluate(exp: str, runs_dir="runs", results_dir="results", manifest_path=Non
 
     # Per-seed threshold on P(malignant) that catches OP_SENSITIVITY of the cancers in OP_SPLIT.
     thresholds = {}
-    seeds, frames = load_preds(exp_dir, OP_SPLIT)
+    seeds, frames = load_preds(edir, OP_SPLIT)
     yb = manifest.set_index("image_id")["label_binary"]
     for seed, f in zip(seeds, frames):
         thresholds[seed] = M.sensitivity_threshold(yb.loc[f["image_id"]].to_numpy(),
                                                    M.p_malignant(f[cols].to_numpy(), classes), OP_SENSITIVITY)
     rows = []
     for split in splits or EVAL_SETS:
-        seeds, frames = load_preds(exp_dir, split)
+        seeds, frames = load_preds(edir, split)
         if not frames or frames[0].empty:
             continue
         rows += score_set(split, frames, manifest, classes, label_col, n_boot,
                           [thresholds.get(s, np.nan) for s in seeds])
     out = pd.DataFrame(rows)
     out.insert(0, "exp", exp)
-    odir = Path(results_dir) / exp
+    odir = results_dir_of(exp, results_dir)
     odir.mkdir(parents=True, exist_ok=True)
     # a partial evaluation (chosen splits only) never overwrites the full table
     out.to_csv(odir / ("metrics.csv" if splits is None else f"metrics_{'_'.join(splits)}.csv"), index=False)

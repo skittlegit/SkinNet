@@ -8,7 +8,7 @@ Scores are the mean of three seeds. Details and confidence intervals: [SkinNet r
 
 ## Names
 
-| Model | Name in `results/` and `runs/` | Built from |
+| Model | Name (folder in `runs/<track>/`, `results/<track>/`) | Built from |
 | --- | --- | --- |
 | Baseline | `skinnet` | `configs/skinnet/skinnet.yaml` |
 | Checkpoint 1 | `skinnet-c1` | `configs/skinnet/skinnet-c1.yaml` |
@@ -21,7 +21,7 @@ Scores are the mean of three seeds. Details and confidence intervals: [SkinNet r
 | Checkpoint 5, all-DDI version | `skinnet-idea-t` | `configs/skinnet/skinnet-idea-t.yaml`: checkpoint 5 with `ddi_val` also in training (section 26) |
 | PanDerm checkpoint 2, all-DDI version | `panderm-idea-g` | `configs/panderm/panderm-idea-g.yaml`: PanDerm checkpoint 2 with `ddi_val` also in training (section 26) |
 
-One name per model, the same for its config, run folder and result folder. A run folder `runs/<name>/` holds the seeds (`s0`, `s1`, `s2`) and their average (`avg`); `results/<name>/metrics.csv` is the model's full score table. An idea being tested is `skinnet-idea-<letter>`; if kept it is renamed to the next checkpoint (`skinnet-c6`, `panderm-c3`), and if discarded it is deleted. The rule is in [DECISIONS.md](../DECISIONS.md), section 15.
+One name per model, the same for its config, run folder and result folder. A run folder `runs/<track>/<name>/` holds the seeds (`s0`, `s1`, `s2`) and their average (`avg`); `results/<track>/<name>/metrics.csv` is the model's full score table. The track is `panderm` for names starting `panderm` and `skinnet` for every other. An idea being tested is `skinnet-idea-<letter>`; if kept it is renamed to the next checkpoint (`skinnet-c6`, `panderm-c3`), and if discarded it is deleted. The rule is in [DECISIONS.md](../DECISIONS.md), section 15.
 
 ## Checkpoint 5 and PanDerm checkpoint 2 (22 Nov 2026): each track's current model
 
@@ -34,8 +34,8 @@ DDI is now partly seen in training. `ddi_hold` holds other photos from DDI's hos
 | Name | `skinnet-c5` (was idea U) | `panderm-c2` (was idea PH) |
 | Training data | 18,186 images: checkpoint 4's 18,022 + 164 of `ddi_train` | The same 18,186 |
 | Config | `configs/skinnet/skinnet-c5.yaml` | `configs/panderm/panderm-c2.yaml` |
-| Run folder | `runs/skinnet-c5` | `runs/panderm-c2` |
-| Weights | `checkpoints/skinnet-c5/` (local, git-ignored) | `checkpoints/panderm-c2/` (local, git-ignored) |
+| Run folder | `runs/skinnet/skinnet-c5` | `runs/panderm/panderm-c2` |
+| Weights | `checkpoints/skinnet/skinnet-c5/` (local, git-ignored) | `checkpoints/panderm/panderm-c2/` (local, git-ignored) |
 | Git tag | `checkpoint-5` | `panderm-checkpoint-2` |
 
 Scores are AUC; `val` is within-source AUC. Bold marks a supported difference.
@@ -50,7 +50,7 @@ Scores are AUC; `val` is within-source AUC. Bold marks a supported difference.
 | `ddi_hold` | 0.641 | 0.670 | **+0.029 [+0.007, +0.052]** | 0.691 | 0.733 | **+0.042 [+0.003, +0.082]** |
 | DermaCon-IN (65 photos) | 0.818 | 0.847 | +0.029 [−0.014, +0.084] | 0.850 | 0.882 | +0.032 [−0.006, +0.104] |
 
-**The all-DDI versions** (ideas T and PG). They are each checkpoint's recipe with `ddi_val` added to training (328 DDI photos), kept by the user on 22 Nov as the figures reported for each track for now. New ideas are still compared with checkpoint 5 and PanDerm checkpoint 2. Weights are in `checkpoints/skinnet-idea-t/` and `checkpoints/panderm-idea-g/`; git tags `checkpoint-5-all-ddi` and `panderm-checkpoint-2-all-ddi`. Their `ddi_hold` scores are a little optimistic, since `ddi_hold` chose the design. On `ddi_hold`:
+**The all-DDI versions** (ideas T and PG). They are each checkpoint's recipe with `ddi_val` added to training (328 DDI photos), kept by the user on 22 Nov as the figures reported for each track for now. New ideas are still compared with checkpoint 5 and PanDerm checkpoint 2. Weights are in `checkpoints/skinnet/skinnet-idea-t/` and `checkpoints/panderm/panderm-idea-g/`; git tags `checkpoint-5-all-ddi` and `panderm-checkpoint-2-all-ddi`. Their `ddi_hold` scores are a little optimistic, since `ddi_hold` chose the design. On `ddi_hold`:
 - T scored 0.684: checkpoint 5 − T = −0.014, not supported.
 - PG scored 0.785: PanDerm checkpoint 2 − PG = −0.052 [−0.088, −0.017], supported.
 
@@ -66,11 +66,11 @@ Scores are AUC; `val` is within-source AUC. Bold marks a supported difference.
 
 ```bash
 # checkpoint 1, one seed (weights are local, not in git)
-python -m skincancer.predict --run checkpoints/checkpoint-1/s0 --splits val
+python -m skincancer.predict --run checkpoints/skinnet/skinnet-c1/s0 --splits val
 
 # checkpoint 2: rebuild it from checkpoint 1's runs
 python -m skincancer.derive tta --exp skinnet-c1 --name skinnet-c2
-for s in 0 1 2; do python -m skincancer.predict --run runs/skinnet-c2/s$s --splits val test; done
+for s in 0 1 2; do python -m skincancer.predict --run runs/skinnet/skinnet-c2/s$s --splits val test; done
 python -m skincancer.derive ensemble --exp skinnet-c2 --splits val test
 python -m skincancer.compare --a skinnet-c1 --b skinnet-c2 --splits val test
 
