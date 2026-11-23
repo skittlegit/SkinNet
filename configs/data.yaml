@@ -5,7 +5,6 @@ label_map: data/label_map.csv
 groups: data/groups.csv
 splits_dir: data/splits
 cache_dir: data/cache          # preprocessed-image cache, keyed by preprocessing settings
-features_dir: data/features    # cached texture features
 
 datasets:
   fitzpatrick17k:

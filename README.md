@@ -38,13 +38,13 @@ The images are not in the repository. Put them under `data/raw/` as laid out in 
 
 | Dataset | Used for | Get it from |
 | --- | --- | --- |
-| Fitzpatrick17k | training, validation, test | github.com/mattgroh/fitzpatrick17k (full image set from the authors) |
+| Fitzpatrick17k | training, validation, test | github.com/mattgroh/fitzpatrick17k: `python -m skincancer.data.download_fitzpatrick17k` (dead links from the Wayback Machine, checked by MD5) |
 | PAD-UFES-20 | training, validation, test | Mendeley Data; merge `imgs_part_*` into `images/` |
 | DDI | test only for the checkpoints; ideas T, U, PG, PH (section 26) train on part of it | Stanford AIMI (request access); never shown in figures |
 | DermaCon-IN | test only | Harvard Dataverse: `python -m skincancer.data.download_dermacon_in` |
 | MRA-MIDAS | 40% training, 30% validation, 30% test, by patient (since checkpoint 3) | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
 | MILK10k (clinical close-ups) | training only (since checkpoint 4; `data/extra/milk10k.csv`) | ISIC Archive, doi:10.34970/648456 |
-| HIBA, MED-NODE, Derm7pt, Asan and Hallym, ISIC 2019 | test only, never trained on (`data/external.csv`, splits `ext_*`; section 27) | `python -m skincancer.data.extra --help`, then `python -m skincancer.data.external` |
+| HIBA, MED-NODE, Derm7pt, Asan and Hallym, ISIC 2019, MCR-SL | test only, never trained on (`data/external.csv`, splits `ext_*`; section 27) | `python -m skincancer.data.extra --help`, then `python -m skincancer.data.external` |
 
 The pipeline that built the committed files, for reference:
 
@@ -64,6 +64,7 @@ python -m skincancer.predict --run runs/skinnet/skinnet/s0 --splits ddi_test der
 python -m skincancer.evaluate --exp skinnet                           # results/skinnet/skinnet/metrics.csv
 python -m skincancer.analysis.gradcam --run runs/skinnet/skinnet/s0 --split test
 python -m skincancer.compare --a skinnet-c1 --b skinnet-c2 --splits val test   # is b better than a?
+python -m skincancer.plot_history --exp skinnet-c5                    # results/skinnet/skinnet-c5/curves.png
 ```
 
 Or all three seeds, the test-only sets and the metrics in one go:
