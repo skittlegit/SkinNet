@@ -91,10 +91,12 @@ class WeightAverage:
     `every` training steps avg <- avg + (1 - decay**every) * (weights - avg), so `decay` is the
     per-step rate and about 1 / (1 - decay) steps carry most of the weight. Kept in CPU memory: a
     second copy of PanDerm Large on the GPU would not fit in 8 GB. swap() exchanges the network's
-    weights with the average, in place; a second swap() puts them back."""
+    weights with the average, in place; a second swap() puts them back. Batch norm's running
+    statistics (SkinNet, idea W) are averaged with the weights, so the averaged weights are never
+    paired with statistics gathered for other weights."""
 
     def __init__(self, model, decay: float, every: int = 1):
-        self.params = list(model.parameters())
+        self.params = list(model.parameters()) + [b for b in model.buffers() if b.dtype.is_floating_point]
         self.avg = [p.detach().to("cpu", copy=True) for p in self.params]
         pin = self.params[0].is_cuda
         self.buf = [torch.empty_like(a, pin_memory=pin) for a in self.avg]

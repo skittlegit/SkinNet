@@ -1,0 +1,7 @@
+# Idea W (DECISIONS.md, section 30): checkpoint 5 validated, selected and kept as a running average
+# of its weights and batch norm statistics (about the last 2,000 steps, 3.5 epochs).
+extends: skinnet-c5.yaml
+name: skinnet-idea-w
+train:
+  ema_decay: 0.9995
+  ema_every: 1

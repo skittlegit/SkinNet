@@ -343,6 +343,20 @@ def test_ddi_split_and_subset(tmp_path):
     assert len(out) == 2 and list(pd.read_csv(out[0])["image_id"]) == ["a", "c"]
 
 
+def test_weight_average_includes_batch_norm_statistics():
+    from skincancer.train import WeightAverage
+    m = torch.nn.BatchNorm1d(3)
+    ema = WeightAverage(m, decay=0.5)
+    assert len(ema.avg) == 4                     # weight, bias, running mean and variance; not the step count
+    with torch.no_grad():
+        m.running_mean.add_(2.0)
+    ema.update()
+    ema.swap()
+    assert torch.allclose(m.running_mean, torch.full((3,), 1.0))   # the statistics were averaged too
+    ema.swap()
+    assert torch.allclose(m.running_mean, torch.full((3,), 2.0))
+
+
 def test_weight_average():
     from skincancer.train import WeightAverage
     m = torch.nn.Linear(3, 2)

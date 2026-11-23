@@ -1172,3 +1172,34 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - The Derm1M photos were learned only a little: on `derm1m_test` both models are close to chance, and the gain is smallest on dark skin (0.533 to 0.560).
 - More MF photos were called cancer on `test`, at the price of more false alarms on rashes.
 - Taken together, adding these photos did not make MF on dark skin easier to catch.
+
+## 30. Overnight ideas W, X and PJ (24 Nov 2026)
+
+**Who decided.** On 24 Nov the user wrote: "run more stuff, plan and run you have my full approval as it is only experiments dont discard anything ill check everything in the morning, run whole night". The ideas below are Claude's choice. Everything is written before training. Nothing is deleted, whatever the outcome; the user decides in the morning.
+
+**Order** (one GPU, one lane, `runs/lane_night.sh`):
+1. Idea PI's step 1, then its step 2 if passed (section 29).
+2. W, then X, then PJ.
+
+**The ideas.** Each changes one thing in its track's current checkpoint and is aimed at the outside sets, where the user's worry is.
+- **W, weight averaging for SkinNet** (`configs/skinnet/skinnet-idea-w.yaml`): checkpoint 5 validated, selected and kept as a running average of its weights.
+  - `train.ema_decay` is 0.9995 per step, so about the last 2,000 steps (3.5 epochs) carry most of the weight.
+  - PF tried this on PanDerm and lost on DDI. A network trained from random weights for 60 epochs is a different case: its weights still move a lot late in training, which is where averaging helps most (SWAD, Cha et al. 2021).
+  - Fixed before W: the average now includes batch norm's running statistics (SkinNet has batch norm, PanDerm does not). Before the fix, averaged weights would have been paired with statistics gathered for other weights.
+- **X, colour augmentation for SkinNet** (`configs/skinnet/skinnet-idea-x.yaml`): checkpoint 5 with `data.colour_aug`, the skin-tone and lighting augmentation of PanDerm idea PD.
+  - It applies a gamma curve, saturation and a little hue, and a shift of each colour channel.
+  - PD was flat on PanDerm, whose pretraining had already seen many skin tones. SkinNet starts from random weights and has seen only our photos, so it has more to gain on DDI and MIDAS.
+- **PJ, PanDerm's early layers nearly frozen** (`configs/panderm/panderm-idea-j.yaml`): PanDerm checkpoint 2 with `train.layer_decay` 0.75 instead of 0.86.
+  - The learning rate now shrinks to about 1e-7 at the patch embedding; the lower half of the 24 blocks barely moves.
+  - Every PanDerm seed peaks a few epochs into full training. Fine-tuning that moves the early layers can damage the features that carry over to unseen clinics (Kumar et al. 2022), and PJ tests how far that goes.
+
+**How they are judged** (section 26's rule, fixed now):
+1. **Step 1, validation only,** paired against the checkpoint (W and X against `skinnet-c5`, PJ against `panderm-c2`). It passes if the idea is higher on all three of `val` (within-source AUC), `midas_val` and `ddi_val`, and lower on none by a supported amount. The lane applies the rule itself (`runs/step1_gate.py`) and logs the verdict.
+2. **Step 2, test sets, scored once** (ledger), only for an idea that passed step 1: `test`, `midas_test`, `ddi_hold`, DermaCon-IN and the six outside sets, paired against the checkpoint.
+3. **A candidate for the user** if passed step 1 and nothing on the test sets is lower by a supported amount, with a supported gain on at least one of `midas_test`, `ddi_hold`, DermaCon-IN or an outside set. Whether it becomes a checkpoint is the user's decision.
+
+**Expectation.** From past ideas, training-side changes help at home more than outside:
+- W: a little higher at home, level outside.
+- X: level at home, possibly a small gain on DDI.
+- PJ: a little lower at home, level or a small gain outside.
+- Most likely none passes step 1, which asks for gains on all three sets.
