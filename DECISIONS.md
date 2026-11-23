@@ -1123,3 +1123,52 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - Derm1M's labels are captions, not biopsies.
 - The tone is rough.
 - PanDerm's pretraining may include Derm1M's public sources.
+
+**Outcome of idea V (23 Nov 2026): passed step 1, not kept after step 2.** Paired comparisons with checkpoint 5, seed averages, 95% intervals of the difference (`runs/skinnet/skinnet-idea-v/logs/compare_*.log`).
+
+Step 1 (validation): no guard lower by a supported amount, so it went on to the test sets as planned. Every guard but `val` leaned lower, and so did MF on `val`.
+
+| Set | Checkpoint 5 | Idea V | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `val` within-source AUC | 0.903 | 0.907 | +0.004 [−0.003, +0.014] | no |
+| `midas_val` AUC | 0.808 | 0.800 | −0.008 [−0.027, +0.009] | no |
+| `ddi_val` AUC | 0.749 | 0.734 | −0.015 [−0.053, +0.023] | no |
+| MF only, `val` (25 MF) | 0.736 | 0.719 | −0.017 [−0.046, +0.013] | no |
+| MF only, `ddi_val` (9 MF) | 0.639 | 0.670 | +0.031 [−0.049, +0.127] | no |
+
+Step 2 (test sets, scored once, in the ledger):
+
+| Set | Checkpoint 5 | Idea V | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| **MF only, `ddi_hold`** (12 MF) | 0.515 | 0.566 | +0.051 [−0.036, +0.132] | no |
+| **MF only, `test`** (34 MF) | 0.700 | 0.718 | +0.017 [−0.011, +0.044] | no |
+| `test` AUC (pooled) | 0.901 | 0.893 | −0.008 [−0.014, −0.002] | **yes, lower** |
+| `test` within-source AUC | 0.903 | 0.902 | −0.002 [−0.010, +0.006] | no |
+| `midas_test` | 0.744 | 0.760 | +0.016 [−0.004, +0.033] | no |
+| `ddi_hold` | 0.670 | 0.658 | −0.012 [−0.038, +0.013] | no |
+| DermaCon-IN | 0.847 | 0.820 | −0.026 [−0.070, +0.019] | no |
+| `ext_hiba` | 0.860 | 0.861 | +0.001 [−0.020, +0.022] | no |
+| `ext_mednode` | 0.771 | 0.805 | +0.034 [+0.001, +0.068] | yes, higher |
+| `ext_mcrsl` | 0.804 | 0.809 | +0.005 [−0.031, +0.039] | no |
+| `ext_derm7pt` | 0.714 | 0.723 | +0.009 [−0.006, +0.024] | no |
+| `ext_asan` | 0.784 | 0.786 | +0.001 [−0.001, +0.004] | no |
+| `ext_isic2019` | 0.750 | 0.701 | −0.049 [−0.055, −0.043] | **yes, lower** |
+| `derm1m_test` | 0.545 | 0.602 | +0.057 [+0.021, +0.091] | yes, higher |
+
+At the 90%-sensitivity threshold (fixed on `val`, seed average):
+
+| | Checkpoint 5 | Idea V |
+| --- | --- | --- |
+| MF called cancer, `ddi_hold` | 10 / 12 | 9 / 12 |
+| MF called cancer, `test` | 21 / 34 | 25 / 34 |
+| Fitzpatrick17k non-tumour photos in `test` called cancer | 31.7% | 35.1% |
+| `derm1m_test` AUC, light / medium / dark | 0.551 / 0.548 / 0.533 | 0.646 / 0.574 / 0.560 |
+
+**Why not kept:**
+- Two guards are lower by a supported amount: `ext_isic2019` (−0.049) and pooled `test` AUC (−0.008).
+- The MF gains on `ddi_hold` and `test` point the right way, but neither is supported.
+
+**What it shows:**
+- The Derm1M photos were learned only a little: on `derm1m_test` both models are close to chance, and the gain is smallest on dark skin (0.533 to 0.560).
+- More MF photos were called cancer on `test`, at the price of more false alarms on rashes.
+- Taken together, adding these photos did not make MF on dark skin easier to catch.
