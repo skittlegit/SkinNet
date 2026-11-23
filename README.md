@@ -112,3 +112,4 @@ Two files connect everything. `data/manifest.csv` has one row per image (cancer 
 - DDI's held-out half, DermaCon-IN, MIDAS test and the `ext_*` outside sets are never scored during training. `predict --final` scores them and refuses to score the same run on the same set twice.
 - A near-duplicate group never spans two splits.
 - Seeds 0, 1, 2. Results are the seed mean with a group-bootstrap 95% confidence interval.
+ making a change here
