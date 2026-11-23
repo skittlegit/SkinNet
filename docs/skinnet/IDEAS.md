@@ -31,6 +31,7 @@ Rules for each idea are written in [DECISIONS.md](../../DECISIONS.md) before it 
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
 | T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 5's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 5 |
 | U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
+| V | Derm1M's mycosis fungoides photos and look-alike rashes (574 / 586, matched by source and skin tone, every photo looked at) added to checkpoint 5's training | 23 Nov | Training; judged by the plan in DECISIONS.md, section 29, written before training |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.

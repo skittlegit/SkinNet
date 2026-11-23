@@ -56,18 +56,24 @@ def classes_of(cfg: dict) -> list[str]:
 
 
 EXTERNAL = Path("data/external.csv")   # outside test sets, split ext_<name> (data/external.py, section 27)
+DERM1M = Path("data/extra/derm1m_mf.csv")   # its held-back part, split derm1m_test (data/derm1m.py, section 29)
+TEST_ONLY = {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test", "derm1m_test"}
 
 
 def is_test_only(split: str) -> bool:
-    return split in {"ddi_test", "ddi_hold", "dermacon_test", "dermacon_other", "midas_test"} or split.startswith("ext_")
+    return split in TEST_ONLY or split.startswith("ext_")
 
 
 def read_manifest(path) -> pd.DataFrame:
-    """The manifest, with the outside test sets appended when data/external.csv exists."""
-    m = pd.read_csv(path, low_memory=False)
+    """The manifest, with the outside test sets (data/external.csv) and Derm1M's held-back test
+    part appended when they exist. Derm1M's training part stays out: it is loaded by data.extra_train."""
+    parts = [pd.read_csv(path, low_memory=False)]
     if EXTERNAL.exists():
-        m = pd.concat([m, pd.read_csv(EXTERNAL, low_memory=False)], ignore_index=True)
-    return m
+        parts.append(pd.read_csv(EXTERNAL, low_memory=False))
+    if DERM1M.exists():
+        d = pd.read_csv(DERM1M, low_memory=False)
+        parts.append(d[d["split"] == "derm1m_test"])
+    return pd.concat(parts, ignore_index=True)
 
 
 def split_rows(manifest: pd.DataFrame, split) -> pd.DataFrame:

@@ -1,0 +1,7 @@
+# Idea V (DECISIONS.md, section 29): checkpoint 5 with Derm1M's mycosis fungoides photos and
+# look-alike rashes from the same sources (data/extra/derm1m_mf.csv, split train_extra) added to
+# training. Judged against checkpoint 5 by the plan written before training (section 29).
+extends: skinnet-c5.yaml
+name: skinnet-idea-v
+data:
+  extra_train: [milk10k, derm1m_mf]

@@ -37,6 +37,8 @@ EVAL_SETS = {
     "ext_hiba": ("binary", ["label_fine"]), "ext_mednode": ("binary", ["label_fine"]),
     "ext_mcrsl": ("binary", ["label_fine"]), "ext_derm7pt": ("binary", ["label_fine"]),
     "ext_asan": ("binary", ["label_fine"]), "ext_isic2019": ("binary", ["label_fine"]),
+    # Derm1M's held-back mycosis fungoides photos and look-alike rashes (section 29)
+    "derm1m_test": ("binary", ["tone", "source"]),
 }
 # Cancers and the benign tumours that resemble them: the hard part of the task.
 HARD_TYPES = {"bcc", "scc", "mel", "rare_cancer", "benign"}

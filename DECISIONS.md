@@ -1052,3 +1052,74 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 
 - PG − T +0.057 [−0.050, +0.150] and PanDerm checkpoint 2 − 1 +0.023 [+0.003, +0.047], the only supported difference among the main models. With 22 cancer lesions, the intervals are wide.
 - Leave-one-dataset-out on MCR-SL: only SkinNet without PAD-UFES-20 is lower by a supported amount (−0.036 [−0.068, −0.006]), as on the other close-up sets.
+
+## 29. Derm1M mycosis fungoides photos in training: ideas V and PI (23 Nov 2026)
+
+**Why.** Mycosis fungoides (MF) is the cancer the models miss most on dark skin. Our training data holds 143 MF photos (123 Fitzpatrick17k, 20 DDI), 27 of them on skin types V–VI. Derm1M (Yan et al. 2025; research use only, images never in git) has about 1,500 photos whose caption names MF or cutaneous T-cell lymphoma.
+
+**Who decided.**
+- **22 Nov:** the user approved preparing the photos with no training.
+- **23 Nov:** the user approved the clean-up below ("go ahead with the no training steps").
+- **Training:** after Claude wrote that training would start only on the user's word, the user replied "yeah continue you have my go". Claude took this as the go-ahead for the training below and said so in its reply.
+
+**The data** (`python -m skincancer.data.derm1m`; `data/extra/derm1m_mf.csv`, images under `data/raw/derm1m/images/`):
+- **Labels** from Derm1M's captions, not biopsies: only rows labelled MF, cutaneous T-cell lymphoma or Sézary syndrome and nothing else. A plain "mycosis" search also catches onychomycosis.
+- **Against MF, the rashes it is mistaken for:** psoriasis, eczema and its kinds, lichen planus, contact dermatitis, tinea, pityriasis rosea. They come from the same sources, so a model cannot tell the class from the source.
+- **Left out by rule:**
+  - captions naming histology, staining, microscopy, dermoscopy, scans or charts
+  - photos of the mouth, tongue, gums, lips, eyes, nails, genital mucosa or endoscopy, by caption or Derm1M's body location
+  - images under 128 px, or panel strips
+  - no more than 5 photos from any one video, figure, book page or post
+- **Skin tone matched.** Each photo gets a rough tone: the ITA (a colour-based skin-tone angle) of its skin-coloured pixels, light > 28, medium 5–28, dark ≤ 5. On 720 Fitzpatrick17k photos it ranks with the dermatologists' skin types at Spearman −0.58, so it is for matching the classes, not for describing anyone. The rashes are drawn from a pool three times larger, to the same number per source and tone as the MF photos.
+- **Every photo used was looked at** (Claude, numbered contact sheets with both classes mixed and unlabelled; `data/derm1m_review.csv`). 263 of the 1,974 photos looked at were left out:
+
+  | Verdict | Photos | What |
+  | --- | --- | --- |
+  | `unusable` | 120 | Dermoscopy or trichoscopy; blurred or blank frames; text burned into the photo, about 30 of them naming the diagnosis or stage ("Mycosis fungoides", "T3 IIB", "MF patch") |
+  | `not_skin` | 113 | Histology, mouths and tongues, eyes, nails, endoscopy, drawings, title slides, objects |
+  | `no_lesion` | 30 | Portraits and frames with nothing to judge |
+
+  - 9% of MF photos and 17% of rashes were left out. YouTube rashes had the most junk.
+  - Three MF photos that look like melanoma are kept and marked `label_doubt`.
+  - The team may spot-check the file.
+- **Near-duplicates:**
+  - 5 photos matching a validation or test image and 6 matching a training image (our `train` or MILK10k) were dropped.
+  - Near-duplicates inside Derm1M join one group.
+- **Split by group,** 70% `train_extra` and 30% `derm1m_test`, with no group in both:
+
+  | | MF | Rashes | Dark (MF / rashes) |
+  | --- | --- | --- | --- |
+  | `train_extra` | 574 | 586 | 182 / 198 |
+  | `derm1m_test` | 274 | 262 | 99 / 83 |
+
+**The ideas.**
+- **V:** checkpoint 5 with `derm1m_mf` added to training (`configs/skinnet/skinnet-idea-v.yaml`).
+- **PI:** PanDerm checkpoint 2 with the same (`configs/panderm/panderm-idea-i.yaml`).
+- Three seeds each; nothing else changes.
+- With `source_class` sampling, Derm1M keeps its share of draws (about 6%), MF and rashes balanced inside it.
+
+**How they are judged, written before training.**
+1. **Step 1, validation only.** Each idea is paired against its checkpoint (V against checkpoint 5, PI against PanDerm checkpoint 2).
+   - **Guards:** `val` (within-source), `midas_val` and `ddi_val`. Step 1 is passed if none is lower by a supported amount.
+   - **Also reported** (`compare --positives "mycosis.fungoides"`, MF photos against every non-cancer in the set): the MF photos of `val` (25, Fitzpatrick17k) and `ddi_val` (9).
+   - An idea that fails step 1 is not scored on any test set.
+2. **Step 2, test sets, scored once** (runs/final_ledger.csv), for an idea that passed step 1.
+   - **The question, MF outside Derm1M:**
+     - MF against every non-cancer on `ddi_hold`: 12 MF photos, 10 of skin types V–VI.
+     - MF against every non-cancer on `test`: 34 Fitzpatrick17k MF photos.
+     - On each, how many MF photos are called cancer at the 90%-sensitivity threshold.
+   - **Whether it learned at all:** `derm1m_test` AUC, overall and by tone. The checkpoints never saw Derm1M, so a gain here is expected and shows learning, not carrying over.
+   - **Guards:** `test`, `midas_test`, `ddi_hold`, DermaCon-IN, the six outside sets, and false alarms on Fitzpatrick17k's non-tumour photos in `test` (rashes) at the 90%-sensitivity threshold.
+   - The checkpoints are scored once on `derm1m_test` for the comparison.
+3. **Kept** if:
+   - it passed step 1;
+   - no guard is lower by a supported amount;
+   - MF AUC is higher on both `ddi_hold` and `test`, by a supported amount on at least one.
+
+   Whether a kept idea becomes the next checkpoint is the user's decision, as before.
+
+**Limits, stated now.**
+- 12 MF photos on `ddi_hold` and 34 on `test` give wide intervals: a real gain on dark skin may not reach "supported".
+- Derm1M's labels are captions, not biopsies.
+- The tone is rough.
+- PanDerm's pretraining may include Derm1M's public sources.

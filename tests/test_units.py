@@ -449,7 +449,7 @@ def test_isic2019_labels_and_one_image_per_lesion(tmp_path, monkeypatch):
 
 def test_derm1m_selection_rules():
     import pandas as pd
-    from skincancer.data.derm1m import select, source_group
+    from skincancer.data.derm1m import POOL, select, source_group
     rows = []
     for k in range(8):   # one video, 8 frames of mycosis fungoides: capped at 5
         rows.append({"filename": f"youtube/abcdefghijk_frame_{k}_0.jpg", "source": "youtube", "disease_label": "mycosis fungoides", "caption": "patch on the trunk"})
@@ -457,17 +457,41 @@ def test_derm1m_selection_rules():
         {"filename": "pubmed/PMC1_fig1_0.jpg", "source": "pubmed_english", "disease_label": "cutaneous t-cell lymphoma", "caption": "plaque"},
         {"filename": "pubmed/PMC2_fig1_0.jpg", "source": "pubmed_english", "disease_label": "mycosis fungoides", "caption": "H&E stain, x40"},   # histology
         {"filename": "pubmed/PMC3_fig1_0.jpg", "source": "pubmed_english", "disease_label": "eczema, mycosis fungoides, psoriasis", "caption": "rash"},   # differential
+        {"filename": "pubmed/PMC4_fig1_0.jpg", "source": "pubmed_english", "disease_label": "mycosis fungoides", "caption": "lesions of the oral mucosa"},   # not skin
         {"filename": "IIYI/1_1.png", "source": "IIYI_chinese", "disease_label": "onychomycosis", "caption": "nail"},   # not mycosis fungoides
     ]
     rows += [{"filename": f"youtube/v{k:010d}_frame_1_0.jpg", "source": "youtube", "disease_label": "psoriasis", "caption": "plaques"} for k in range(20)]
     rows += [{"filename": f"pubmed/PMC9{k}_fig2_0.jpg", "source": "pubmed_english", "disease_label": "eczema", "caption": "eczema"} for k in range(5)]
-    s = select(pd.DataFrame(rows))
+    rows += [{"filename": f"pubmed/PMC8{k}_fig2_0.jpg", "source": "pubmed_english", "disease_label": "lichen planus", "caption": "white lace",
+              "body_location": "tongue"} for k in range(5)]                                     # not skin, by body location
+    s = select(pd.DataFrame(rows).assign(body_location=lambda d: d.get("body_location", pd.Series(dtype=object)).fillna("no body location information")))
     mf = s[s["label_binary"] == 1]
     assert len(mf) == 6 and set(mf["source"]) == {"youtube", "pubmed_english"}
     assert not s["label"].str.contains("onychomycosis|,").any()
-    assert (s[s["label_binary"] == 0]["source"].value_counts() == mf["source"].value_counts()).all()   # matched per source
+    assert not s["filename"].str.contains("PMC4_|PMC8").any()
+    pool = s[s["label_binary"] == 0]["source"].value_counts()
+    assert pool["youtube"] == min(20, POOL * 5) and pool["pubmed_english"] == min(5, POOL * 1)   # a pool, matched later
+    assert s["rank"].is_unique
     assert source_group("youtube/abcdefghijk_frame_3_1.jpg") == "yt_abcdefghijk"
     assert source_group("pubmed/00_PMC9_fig-g002_1.jpg") == "pubmed_00_PMC9_fig-g002"
+
+
+def test_derm1m_rashes_matched_by_source_and_tone():
+    import numpy as np
+    import pandas as pd
+    from skincancer.data.derm1m import match, tone
+    assert (tone(40.0), tone(10.0), tone(-20.0), tone(np.nan)) == ("light", "medium", "dark", "unknown")
+    mf = pd.DataFrame({"source": ["yt", "yt", "yt", "pm"], "tone": ["dark", "dark", "light", "dark"], "label_binary": 1.0})
+    rash = pd.DataFrame({"source": ["yt"] * 6 + ["pm", "yt"], "tone": ["light", "light", "dark", "medium", "dark", "dark", "light", "dark"],
+                         "label_binary": 0.0})
+    sel = pd.concat([mf, rash], ignore_index=True)
+    sel["rank"] = np.arange(len(sel))
+    sel["exclude_reason"] = None
+    sel.loc[6, "exclude_reason"] = "review_not_skin"      # the first dark youtube rash was dropped by the review
+    used = match(sel)
+    r = sel[used & (sel["label_binary"] == 0)]
+    assert sorted(r.index) == [4, 8, 9, 11]   # yt: first light, next two dark; pm has no dark rash, so the next dark one from yt
+    assert r["tone"].value_counts().to_dict() == {"dark": 3, "light": 1}
 
 
 def test_each_track_has_its_own_folders():
@@ -477,3 +501,8 @@ def test_each_track_has_its_own_folders():
     assert exp_dir("panderm-idea-g").as_posix() == "runs/panderm/panderm-idea-g"
     assert exp_dir("skinnet").as_posix() == "runs/skinnet/skinnet"
     assert results_dir("skinnet-c5", "r").as_posix() == "r/skinnet/skinnet-c5"
+
+
+def test_derm1m_test_is_test_only():
+    from skincancer.runs import is_test_only
+    assert is_test_only("derm1m_test") and is_test_only("ext_mcrsl") and not is_test_only("train_extra")
