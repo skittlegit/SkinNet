@@ -181,10 +181,8 @@ def train(cfg: dict) -> dict:
     val_source = val_df["dataset"].to_numpy()
 
     model = runs.build_model(cfg)
-    init = cfg["model"].get("init")
-    if init:   # idea L: start from our own self-supervised SkinNet weights (skincancer.pretrain), never outside ones
-        model.backbone.load_state_dict(torch.load(init, map_location="cpu"))
-        print(f"[{cfg['name']} s{cfg['seed']}] backbone initialised from {init}")
+    if cfg["model"].get("init"):   # idea L's start from self-supervised weights, removed 23 Nov 2026 (section 28)
+        raise ValueError("model.init is no longer supported: idea L's pretraining was removed (DECISIONS.md, section 28)")
     model = model.to(dev)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[{cfg['name']} s{cfg['seed']}] train={len(train_df)} val={len(val_df)} "

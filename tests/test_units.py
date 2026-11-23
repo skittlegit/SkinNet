@@ -279,35 +279,6 @@ def test_make_loader_limits_worker_thread_pools(monkeypatch):
     assert os.environ["OMP_NUM_THREADS"] == "1" and torch.get_num_threads() == n
 
 
-def test_nt_xent_rewards_matching_views():
-    import torch
-    from skincancer.pretrain import nt_xent
-    g = torch.Generator().manual_seed(0)
-    z = torch.randn(16, 8, generator=g)
-    same = nt_xent(z, z + 0.01 * torch.randn(16, 8, generator=g), 0.2)
-    other = nt_xent(z, torch.randn(16, 8, generator=g), 0.2)
-    assert same < other
-
-
-def test_pretrain_refuses_evaluation_splits():
-    import pytest
-    from skincancer.pretrain import pretrain_rows
-    with pytest.raises(ValueError, match="evaluation splits"):
-        pretrain_rows({"pretrain": {"splits": ["train", "val"]}})
-
-
-def test_pretrained_backbone_loads_into_the_classifier(tmp_path):
-    import torch
-    from skincancer.models import Classifier
-    from skincancer.pretrain import SimCLR
-    ssl = SimCLR(16, (1, 1, 1, 1))
-    torch.save(ssl.backbone.state_dict(), tmp_path / "backbone.pt")
-    clf = Classifier(2, 16, (1, 1, 1, 1))
-    clf.backbone.load_state_dict(torch.load(tmp_path / "backbone.pt"))
-    for a, b in zip(ssl.backbone.state_dict().values(), clf.backbone.state_dict().values()):
-        assert torch.equal(a, b)
-
-
 def test_milk10k_labels_follow_biopsy_and_label_map(tmp_path):
     import json
     from skincancer.data.extra import milk10k_rows

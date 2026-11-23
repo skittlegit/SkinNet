@@ -90,7 +90,6 @@ docs/DATA_PLAN.md                 data sources
 DECISIONS.md                      every rule and decision, in order (both tracks)
 src/skincancer/models/            skinnet.py (SkinNet), panderm.py (PanDerm's ViT), __init__.py (the shared classifier head)
 src/skincancer/train.py           training loop (both tracks)
-src/skincancer/pretrain.py        SkinNet idea L: self-supervised (SimCLR) pretraining on unlabelled photos
 src/skincancer/predict.py         scoring a finished run; the test-set ledger
 src/skincancer/evaluate.py        metrics with confidence intervals
 src/skincancer/compare.py         paired comparison of two models on the same images

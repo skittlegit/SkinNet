@@ -156,7 +156,7 @@ The PanDerm track's ideas (PA, PB, ...) are in [PanDerm ideas](../panderm/IDEAS.
 - **What was trained:** DECISIONS.md, section 17: SimCLR for 200 epochs on about 17,000 photos without their labels (`src/skincancer/pretrain.py`), then checkpoint 3's recipe from those weights.
 - **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 3, and with checkpoint 4 alongside.
 - **Result:** within-source AUC on our validation split 0.882 → 0.939, supported, the largest SkinNet gain at home; MIDAS validation 0.793 → 0.753, lower (−0.065 against checkpoint 4, a supported loss).
-- **Outcome:** discarded at the first step (14 Nov), not scored on test sets. Pretraining on mostly our own photos teaches the network our home datasets, not other hospitals: the same pattern as ideas I and N, and as the ImageNet ResNet-18 reference. The pretraining code stays for later use.
+- **Outcome:** discarded at the first step (14 Nov), not scored on test sets. Pretraining on mostly our own photos teaches the network our home datasets, not other hospitals: the same pattern as ideas I and N, and as the ImageNet ResNet-18 reference. The pretraining code was kept for later use until 23 Nov, when the user had it removed (DECISIONS.md, section 28; it is in git history before that date).
 
 ### Q. More biopsy-confirmed tumour photos from new sources
 
