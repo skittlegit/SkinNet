@@ -9,7 +9,7 @@ CFG=${1:-configs/skinnet/skinnet.yaml}
 EXP=${2:-skinnet}
 SEEDS=${SEEDS:-"0 1 2"}
 FINAL="ddi_test dermacon_test dermacon_other midas_test"
-case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+RUN=runs/skinnet/$EXP   # skincancer/tracks.py
 LOGS=$RUN/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1

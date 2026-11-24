@@ -13,7 +13,7 @@ CFG=configs/skinnet/$EXP.yaml
 REF=${REF:-skinnet-c5}
 SEEDS=${SEEDS:-"0 1 2"}
 VAL=${VAL:-"val midas_val ddi_val"}   # DDI validation in step 1 since section 26
-case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+RUN=runs/skinnet/$EXP   # skincancer/tracks.py
 LOGS=$RUN/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1

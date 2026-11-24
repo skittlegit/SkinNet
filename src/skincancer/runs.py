@@ -27,13 +27,6 @@ def _seed_worker(worker_id: int, base: int) -> None:
     cv2.setNumThreads(0)   # workers only decode and augment; see make_loader for the thread pools
 
 
-def forever(loader):
-    """Endless iterator that re-iterates the loader (unlike itertools.cycle, which keeps
-    every batch in memory)."""
-    while True:
-        yield from loader
-
-
 def set_seed(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -117,16 +110,12 @@ def make_loader(df: pd.DataFrame, cfg: dict, train: bool, seed: int = 0, drop_la
 
 
 def build_model(cfg: dict, init_weights: bool = True) -> Classifier:
-    """init_weights=False skips downloading outside weights when a saved best.pt is loaded next."""
+    """SkinNet from random weights. init_weights is kept for callers that load a saved best.pt next."""
     m = cfg["model"]
-    weights = m.get("weights", "none")
-    arch = m.get("arch", "skinnet")
-    allowed = {"skinnet": ("none",)}   # PanDerm's ViTs: skittlegit/PanDerm (section 31)
-    if weights not in allowed.get(arch, ("none",)):
-        raise ValueError(f"model.weights {weights!r} does not go with model.arch {arch!r}")
-    model = Classifier(len(classes_of(cfg)), m["width"], m["depths"], m["drop"],
-                       arch=arch, pretrained=init_weights and weights != "none", img_size=cfg["data"]["img_size"])
-    return model
+    if m.get("weights", "none") != "none":
+        raise ValueError("SkinNet has no outside weights (PanDerm's are in skittlegit/PanDerm)")
+    return Classifier(len(classes_of(cfg)), m["width"], m["depths"], m["drop"], arch=m.get("arch", "skinnet"),
+                      img_size=cfg["data"]["img_size"])
 
 
 def save_config(cfg: dict, path: Path) -> None:

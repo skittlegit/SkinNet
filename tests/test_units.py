@@ -379,25 +379,12 @@ def test_weight_average():
     assert again.steps == 2 and all(torch.equal(a, b) for a, b in zip(again.avg, ema.avg))
 
 
-def test_layer_decay_and_head_only_epochs():
-    from skincancer import runs
-    from skincancer.train import make_scheduler, param_groups
-    cfg = load_config("configs/skinnet/skinnet.yaml")
-    with pytest.raises(ValueError):
-        param_groups(runs.build_model(cfg), 1e-4, 0.75)                 # layer decay: PanDerm's ViTs only (moved)
-    plain = param_groups(runs.build_model(cfg), 1e-3)
-    assert len(plain) == 2 and plain[0]["head"] and plain[1]["lr"] == 1e-3
-    groups = param_groups(runs.build_model(cfg), 1e-4)
-    opt = torch.optim.AdamW(groups, lr=1e-4)
-    sched = make_scheduler(opt, epochs=7, warmup=2, head_epochs=3, head_lr=1e-3)
-    seen = []
-    for _ in range(7):
-        seen.append((opt.param_groups[0]["lr"], opt.param_groups[-1]["lr"]))
-        opt.step()
-        sched.step()
-    assert seen[:3] == [pytest.approx((1e-3, 0.0))] * 3                # head alone first
-    assert seen[3] == pytest.approx((5e-5, 5e-5)) and seen[4] == pytest.approx((1e-4, 1e-4))
-    assert seen[5][1] == pytest.approx(1e-4) and 0 < seen[6][1] < 1e-4   # then the cosine, as without head epochs
+def test_panderm_training_options_are_refused():
+    from skincancer import train
+    for key, val in (("layer_decay", 0.75), ("head_epochs", 3)):   # PanDerm's options (skittlegit/PanDerm)
+        with pytest.raises(ValueError, match=key):
+            train.main(["--config", "configs/skinnet/skinnet.yaml", "--set", f"train.{key}={val}",
+                        "--set", "name=never_written"])
 
 
 def test_isic2019_labels_and_one_image_per_lesion(tmp_path, monkeypatch):
@@ -474,12 +461,10 @@ def test_derm1m_rashes_matched_by_source_and_tone():
     assert r["tone"].value_counts().to_dict() == {"dark": 3, "light": 1}
 
 
-def test_each_track_has_its_own_folders():
-    from skincancer.tracks import exp_dir, results_dir, track
-    assert track("panderm-c2") == "panderm" and track("panderm") == "panderm"
-    assert track("skinnet-c5") == "skinnet" and track("tiny") == "skinnet"   # SkinNet is the default
-    assert exp_dir("panderm-idea-g").as_posix() == "runs/panderm/panderm-idea-g"
-    assert exp_dir("skinnet").as_posix() == "runs/skinnet/skinnet"
+def test_model_folders_keep_the_track_level():
+    from skincancer.tracks import exp_dir, results_dir
+    assert exp_dir("skinnet").as_posix() == "runs/skinnet/skinnet"                  # paths in the ledger still hold
+    assert exp_dir("tiny", "r").as_posix() == "r/skinnet/tiny"
     assert results_dir("skinnet-c5", "r").as_posix() == "r/skinnet/skinnet-c5"
 
 

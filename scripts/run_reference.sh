@@ -7,7 +7,7 @@ set -uo pipefail
 EXP=${1:?usage: run_reference.sh <name>}
 PY=${PY:-python}
 REF=${REF:-skinnet-c5}
-case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
+RUN=runs/skinnet/$EXP   # skincancer/tracks.py
 LOGS=$RUN/logs
 export PY PYTHONUNBUFFERED=1
 

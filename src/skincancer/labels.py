@@ -55,13 +55,7 @@ def map_diagnosis(diagnosis) -> tuple[str, bool, str]:
     return "exclude", False, "default"
 
 
-def is_malignant(label) -> bool:
-    return label in CANCER_TYPES
-
-
 # ---- skin type -------------------------------------------------------------------
-SOURCE_FST = {1, 2, 3}
-TARGET_FST = {4, 5, 6}
 DDI_BINS = {12: "I-II", 34: "III-IV", 56: "V-VI"}  # DDI keeps its native bins
 
 

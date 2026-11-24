@@ -20,9 +20,6 @@ from ..config import load_data_config
 from ..labels import CANCER_TYPES
 from .sources import load_all
 
-TRAIN_DATASETS = {"fitzpatrick17k", "pad_ufes_20"}
-
-
 def attach_labels(meta: pd.DataFrame, label_map: pd.DataFrame) -> pd.DataFrame:
     lm = label_map[["dataset", "diagnosis", "label_4class"]]
     df = meta.merge(lm, on=["dataset", "diagnosis"], how="left")

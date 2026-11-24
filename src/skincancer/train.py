@@ -65,25 +65,14 @@ def selection_score(y: np.ndarray, p_cancer: np.ndarray, source: np.ndarray, met
     raise ValueError(f"unknown train.select_metric {metric!r}")
 
 
-def make_scheduler(opt, epochs: int, warmup: int = 0, head_epochs: int = 0, head_lr: float | None = None):
-    """Stepped once per epoch: linear warm-up over `warmup` epochs, then cosine decay to zero.
-    With head_epochs (PanDerm track, DECISIONS.md section 24) the first head_epochs train only
-    the parameter groups marked `head`, at the constant rate head_lr; every other group's rate
-    is zero until then, and the warm-up and cosine run over the epochs that remain."""
-    rest = max(epochs - head_epochs - warmup, 1)
+def make_scheduler(opt, epochs: int, warmup: int = 0):
+    """Stepped once per epoch: linear warm-up over `warmup` epochs, then cosine decay to zero."""
+    rest = max(epochs - warmup, 1)
 
-    def body(e):
-        e -= head_epochs
-        if e < 0:
-            return 0.0
+    def factor(e):
         return (e + 1) / warmup if e < warmup else 0.5 * (1 + math.cos(math.pi * (e - warmup) / rest))
 
-    def head(g):
-        base = g["lr"]   # read now: the scheduler changes g["lr"] as it steps
-        return lambda e: head_lr / base if e < head_epochs else body(e)
-
-    return torch.optim.lr_scheduler.LambdaLR(
-        opt, [head(g) if g.get("head") and head_epochs else body for g in opt.param_groups])
+    return torch.optim.lr_scheduler.LambdaLR(opt, factor)
 
 
 class WeightAverage:
@@ -129,23 +118,19 @@ class WeightAverage:
         self.steps = st["steps"]
 
 
-def param_groups(model, lr: float, layer_decay: float | None = None) -> list[dict]:
-    """Parameter groups for AdamW. The linear head is its own group, marked `head` (for
-    train.head_epochs). Layer decay was for PanDerm's ViTs, now in skittlegit/PanDerm (section 31)."""
-    if layer_decay:
-        raise ValueError("train.layer_decay is for PanDerm's ViTs, which moved to skittlegit/PanDerm")
-    return [{"params": list(model.head.parameters()), "lr": lr, "head": True},
-            {"params": [p for p in model.backbone.parameters() if p.requires_grad], "lr": lr}]
-
-
 def train(cfg: dict) -> dict:
+    t = cfg["train"]
+    for key in ("layer_decay", "head_epochs"):   # PanDerm's options, in skittlegit/PanDerm since section 31
+        if t.get(key):
+            raise ValueError(f"train.{key} is for PanDerm's ViTs (skittlegit/PanDerm)")
+    if cfg["model"].get("init"):   # idea L's start from self-supervised weights, removed 23 Nov 2026 (section 28)
+        raise ValueError("model.init is no longer supported: idea L's pretraining was removed (DECISIONS.md, section 28)")
     runs.set_seed(cfg["seed"])
     rdir = runs.run_dir(cfg)
     rdir.mkdir(parents=True, exist_ok=True)
     runs.save_config(cfg, rdir / "config.yaml")
     dev = runs.device()
     classes = runs.classes_of(cfg)
-    t = cfg["train"]
     manifest = pd.read_csv(cfg["manifest"])
     train_df = runs.labelled(runs.split_rows(manifest, cfg["data"]["train_splits"]), cfg)
     if cfg["data"].get("extra_train"):   # training-only data kept outside the manifest (data/extra.py)
@@ -171,8 +156,6 @@ def train(cfg: dict) -> dict:
     val_source = val_df["dataset"].to_numpy()
 
     model = runs.build_model(cfg)
-    if cfg["model"].get("init"):   # idea L's start from self-supervised weights, removed 23 Nov 2026 (section 28)
-        raise ValueError("model.init is no longer supported: idea L's pretraining was removed (DECISIONS.md, section 28)")
     model = model.to(dev)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[{cfg['name']} s{cfg['seed']}] train={len(train_df)} val={len(val_df)} "
@@ -182,9 +165,8 @@ def train(cfg: dict) -> dict:
     val_loader = runs.make_loader(val_df, cfg, train=False)
     criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights, dtype=torch.float32, device=dev),
                                     label_smoothing=float(t["label_smoothing"]))
-    opt = torch.optim.AdamW(param_groups(model, t["lr"], t.get("layer_decay")), lr=t["lr"],
-                            weight_decay=t["weight_decay"])
-    sched = make_scheduler(opt, t["epochs"], t["warmup_epochs"], t.get("head_epochs", 0), t.get("head_lr"))
+    opt = torch.optim.AdamW(model.parameters(), lr=t["lr"], weight_decay=t["weight_decay"])
+    sched = make_scheduler(opt, t["epochs"], t["warmup_epochs"])
     use_amp = t["amp"] and dev.type == "cuda"
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
     ema = WeightAverage(model, t["ema_decay"], t.get("ema_every", 1)) if t.get("ema_decay") else None
@@ -227,7 +209,7 @@ def train(cfg: dict) -> dict:
                 ema.update()
             tot += loss.item() * len(y)
             n += len(y)
-        lr = opt.param_groups[-1]["lr"]   # the top of the backbone (the head's is the same after head_epochs)
+        lr = opt.param_groups[0]["lr"]
         sched.step()
         model.eval()
         if ema is not None:   # validate, select and keep the averaged weights
