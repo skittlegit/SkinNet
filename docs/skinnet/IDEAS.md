@@ -33,7 +33,7 @@ Rules for each idea are written in [DECISIONS.md](../../DECISIONS.md) before it 
 | U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
 | V | Derm1M's mycosis fungoides photos and look-alike rashes (574 / 586, matched by source and skin tone, every photo looked at) added to checkpoint 5's training | 23 Nov | Passed step 1; not kept: lower on `ext_isic2019` (−0.049) and pooled `test` AUC (−0.008), MF gains on `ddi_hold` (+0.051) and `test` (+0.017) not supported (DECISIONS.md, section 29) |
 | W | Checkpoint 5 kept as a running average of its weights and batch norm statistics | 24 Nov | Failed step 1, no test set scored: `midas_val` +0.017 (supported), `val` −0.003 and `ddi_val` −0.019 (not supported); kept for the user (DECISIONS.md, section 30) |
-| X | Checkpoint 5 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Queued overnight; judged by section 26's rule (DECISIONS.md, section 30) |
+| X | Checkpoint 5 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Failed step 1, no test set scored: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016; kept for the user (DECISIONS.md, section 30) |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.

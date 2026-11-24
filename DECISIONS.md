@@ -1265,3 +1265,15 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - Fails because it is not higher on all three.
 - It is the first SkinNet training change to gain on `midas_val` by a supported amount, though it leans lower on `ddi_val`.
 - Kept with everything else (configs, runs, weights); the user decides.
+
+**Outcome of idea X (24 Nov 2026): failed step 1, not scored on any test set.** Paired with checkpoint 5, seed averages:
+
+| Set | Checkpoint 5 | Idea X | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `val` within-source AUC | 0.903 | 0.889 | −0.014 [−0.027, −0.000] | **yes, lower** |
+| `midas_val` AUC | 0.808 | 0.755 | −0.054 [−0.085, −0.020] | **yes, lower** |
+| `ddi_val` AUC | 0.749 | 0.733 | −0.016 [−0.052, +0.020] | no |
+
+- Lower everywhere, and by a supported amount on two sets: colour augmentation hurts SkinNet, as it did nothing for PanDerm (PD).
+- Colour seems to carry information the network uses, even on MIDAS photos.
+- Kept with everything else; the user decides.
