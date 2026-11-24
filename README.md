@@ -71,7 +71,7 @@ Or all three seeds, the test-only sets and the metrics in one go:
 PY=.venv/Scripts/python bash scripts/run.sh        # Windows venv; PY=python elsewhere
 ```
 
-For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `scripts/run.sh` scores the test-only sets and is for an idea that has passed that step.
+For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/skinnet/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there.
 
 `--set key=value` overrides any config field, for example `--set model.width=48 --set name=skinnet_w48`.
 
@@ -91,7 +91,7 @@ src/skincancer/predict.py         scoring a finished run; the test-set ledger
 src/skincancer/evaluate.py        metrics with confidence intervals
 src/skincancer/compare.py         paired comparison of two models on the same images
 src/skincancer/data/              label map, manifest, dedup, splits, outside sets, Derm1M, dataset and augmentation
-scripts/                          run.sh, run_idea.sh, run_reference.sh
+scripts/                          run.sh, run_idea.sh (step 1), step1_gate.py (the step 1 rule), step2.sh (test sets, once), run_reference.sh
 runs/skinnet/<name>/s<seed>/      best.pt  config.yaml  history.csv  summary.json  preds/   (local, not in git)
 runs/final_ledger.csv             one row per (run, test-only set) ever scored (both tracks before the split)
 results/skinnet/<name>/           metrics.csv: one row per set x subgroup x metric (local)

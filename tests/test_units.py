@@ -471,3 +471,22 @@ def test_model_folders_keep_the_track_level():
 def test_derm1m_test_is_test_only():
     from skincancer.runs import is_test_only
     assert is_test_only("derm1m_test") and is_test_only("ext_mcrsl") and not is_test_only("train_extra")
+
+
+def test_step1_gate(tmp_path):
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location("gate", Path(__file__).resolve().parents[1] / "scripts/step1_gate.py")
+    gate = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gate)
+    head = "reference: c\n  b     split     metric  a_value  b_value    diff   ci_lo  ci_hi supported    n\n"
+    def log(rows):
+        f = tmp_path / "c.log"
+        f.write_text(head + "".join(f"  i {s} {m} 0.8 0.8 {d} -0.1 0.1 {sp} 100\n" for s, m, d, sp in rows))
+        return str(f)
+    up = [("val", "auc", -0.01, "no"), ("val", "source_auc", 0.01, "no"), ("midas_val", "auc", 0.02, "no"), ("ddi_val", "auc", 0.01, "no")]
+    assert gate.verdict(log(up))[0]                                             # higher on all three
+    mixed = up[:2] + [("midas_val", "auc", -0.02, "no"), ("ddi_val", "auc", 0.01, "no")]
+    assert not gate.verdict(log(mixed))[0] and gate.verdict(log(mixed), "guard")[0]
+    worse = up[:3] + [("ddi_val", "auc", -0.05, "yes")]                         # a supported loss
+    assert not gate.verdict(log(worse), "guard")[0]
