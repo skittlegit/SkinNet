@@ -1173,6 +1173,56 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - More MF photos were called cancer on `test`, at the price of more false alarms on rashes.
 - Taken together, adding these photos did not make MF on dark skin easier to catch.
 
+**Outcome of idea PI (24 Nov 2026): passed step 1; on the test sets the MF question is answered yes, but by section 29's rule it is not kept.** Paired comparisons with PanDerm checkpoint 2, seed averages, 95% intervals of the difference (`runs/panderm/panderm-idea-i/logs/compare_*.log`). Seeds' best epochs 3, 4 and 4 (training was paused for about six hours during seed 0 and resumed unchanged).
+
+Step 1 (validation): level or higher on all three, none by a supported amount.
+
+| Set | Checkpoint 2 | Idea PI | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `val` within-source AUC | 0.980 | 0.981 | +0.001 [−0.002, +0.004] | no |
+| `midas_val` AUC | 0.870 | 0.870 | +0.001 [−0.017, +0.018] | no |
+| `ddi_val` AUC | 0.764 | 0.789 | +0.026 [−0.021, +0.072] | no |
+| MF only, `val` (25 MF) | 0.904 | 0.921 | +0.017 [−0.013, +0.050] | no |
+| MF only, `ddi_val` (9 MF) | 0.669 | 0.781 | +0.113 [−0.003, +0.291] | no |
+
+Step 2 (test sets, scored once, in the ledger):
+
+| Set | Checkpoint 2 | Idea PI | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| **MF only, `ddi_hold`** (12 MF, 10 of types V–VI) | 0.528 | 0.628 | **+0.100 [+0.015, +0.190]** | **yes, higher** |
+| **MF only, `test`** (34 MF) | 0.927 | 0.938 | **+0.011 [+0.000, +0.026]** | **yes, higher** (within-source: +0.011 [−0.001, +0.025], no) |
+| `test` AUC (pooled) | 0.976 | 0.972 | −0.004 [−0.008, +0.000] | no |
+| `test` within-source AUC | 0.979 | 0.976 | −0.002 [−0.008, +0.001] | no |
+| `midas_test` | 0.874 | 0.868 | −0.006 [−0.025, +0.015] | no |
+| `ddi_hold` | 0.733 | 0.750 | +0.017 [−0.007, +0.044] | no |
+| DermaCon-IN | 0.882 | 0.856 | −0.026 [−0.087, +0.005] | no |
+| `ext_hiba` | 0.911 | 0.906 | −0.006 [−0.024, +0.014] | no |
+| `ext_mednode` | 0.932 | 0.909 | −0.023 [−0.039, −0.007] | **yes, lower** |
+| `ext_mcrsl` | 0.906 | 0.873 | −0.033 [−0.072, +0.003] | no |
+| `ext_derm7pt` | 0.822 | 0.782 | −0.040 [−0.052, −0.028] | **yes, lower** |
+| `ext_asan` | 0.920 | 0.919 | −0.001 [−0.003, +0.001] | no |
+| `ext_isic2019` | 0.833 | 0.822 | −0.010 [−0.015, −0.006] | **yes, lower** |
+| `derm1m_test` | 0.650 | 0.741 | +0.091 [+0.059, +0.123] | yes, higher |
+
+At the 90%-sensitivity threshold (fixed on `val`, seed average):
+
+| | Checkpoint 2 | Idea PI |
+| --- | --- | --- |
+| MF called cancer, `ddi_hold` | 5 / 12 | 6 / 12 |
+| MF called cancer, `test` | 23 / 34 | 27 / 34 |
+| Fitzpatrick17k non-tumour photos in `test` called cancer | 4.0% | 6.1% |
+| `derm1m_test` AUC, light / medium / dark | 0.710 / 0.582 / 0.600 | 0.766 / 0.700 / 0.728 |
+
+**Why not kept:**
+- Three outside sets are lower by a supported amount: `ext_mednode` (−0.023), `ext_derm7pt` (−0.040) and `ext_isic2019` (−0.010). DermaCon-IN and `ext_mcrsl` lean the same way.
+- The rule asks for no guard lower by a supported amount, so it fails, even though its MF part is met.
+
+**What it shows, unlike SkinNet's idea V:**
+- PanDerm learned the Derm1M photos, dark skin included: `derm1m_test` 0.600 → 0.728 on dark skin.
+- That carried over to MF photos it never saw, from another hospital: `ddi_hold` MF +0.100, supported, though on 12 photos.
+- The price is melanoma and naevus sets from elsewhere (MED-NODE, Derm7pt, ISIC 2019), and a few more false alarms on rashes (4.0% → 6.1%).
+- Whether the MF gain is worth that trade is the user's call; nothing is deleted.
+
 ## 30. Overnight ideas W, X and PJ (24 Nov 2026)
 
 **Who decided.** On 24 Nov the user wrote: "run more stuff, plan and run you have my full approval as it is only experiments dont discard anything ill check everything in the morning, run whole night". The ideas below are Claude's choice. Everything is written before training. Nothing is deleted, whatever the outcome; the user decides in the morning.
