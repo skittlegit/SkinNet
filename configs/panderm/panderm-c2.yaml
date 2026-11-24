@@ -1,9 +1,0 @@
-# PanDerm checkpoint 2 (DECISIONS.md, section 26; was idea PH): PanDerm checkpoint 1's recipe with a
-# quarter of DDI (ddi_train) in training and DDI validation (ddi_val) in step 1, as skinnet-c5.
-# Chosen by the user on 22 Nov over idea PG (all 328 trainable DDI images).
-extends: panderm-c1.yaml
-name: panderm-c2
-data:
-  train_splits: [train, midas_train, ddi_train]
-eval:
-  splits: [val, test, ak_side, midas_val, ddi_val]

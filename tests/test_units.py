@@ -311,7 +311,7 @@ def test_skinnet_is_the_default_and_has_no_outside_weights():
         runs.build_model(cfg, init_weights=False)
     with pytest.raises(ValueError):
         Classifier(2, pretrained=True)                                  # SkinNet has no outside weights
-    cfg["model"].update(arch="skinnet", weights="panderm")                # weights must fit the network
+    cfg["model"].update(arch="skinnet", weights="panderm")                # SkinNet takes no outside weights
     with pytest.raises(ValueError):
         runs.build_model(cfg)
 
@@ -384,17 +384,10 @@ def test_layer_decay_and_head_only_epochs():
     from skincancer.train import make_scheduler, param_groups
     cfg = load_config("configs/skinnet/skinnet.yaml")
     with pytest.raises(ValueError):
-        param_groups(runs.build_model(cfg), 1e-4, 0.75)                 # layer decay: PanDerm's ViT only
+        param_groups(runs.build_model(cfg), 1e-4, 0.75)                 # layer decay: PanDerm's ViTs only (moved)
     plain = param_groups(runs.build_model(cfg), 1e-3)
     assert len(plain) == 2 and plain[0]["head"] and plain[1]["lr"] == 1e-3
-    cfg["model"].update(arch="panderm_base", weights="panderm")
-    m = runs.build_model(cfg, init_weights=False)
-    groups = param_groups(m, 1e-4, 0.75)
-    assert len(groups) == 15                                           # head, embedding, 12 blocks, final norm
-    assert groups[0]["head"] and groups[-1]["lr"] == pytest.approx(1e-4)
-    assert groups[1]["lr"] == pytest.approx(1e-4 * 0.75 ** 13) and groups[2]["lr"] == pytest.approx(1e-4 * 0.75 ** 12)
-    n = sum(p.numel() for g in groups for p in g["params"])
-    assert n == sum(p.numel() for p in m.parameters() if p.requires_grad)   # every trained parameter, once
+    groups = param_groups(runs.build_model(cfg), 1e-4)
     opt = torch.optim.AdamW(groups, lr=1e-4)
     sched = make_scheduler(opt, epochs=7, warmup=2, head_epochs=3, head_lr=1e-3)
     seen = []
@@ -405,33 +398,6 @@ def test_layer_decay_and_head_only_epochs():
     assert seen[:3] == [pytest.approx((1e-3, 0.0))] * 3                # head alone first
     assert seen[3] == pytest.approx((5e-5, 5e-5)) and seen[4] == pytest.approx((1e-4, 1e-4))
     assert seen[5][1] == pytest.approx(1e-4) and 0 < seen[6][1] < 1e-4   # then the cosine, as without head epochs
-
-
-def test_panderm_reference_model_builds_and_loads_its_weights():
-    from pathlib import Path
-    from skincancer import runs
-    from skincancer.models import PANDERM_BASE_WEIGHTS, PanDermBase
-    cfg = load_config("configs/skinnet/skinnet.yaml")
-    cfg["model"].update(arch="panderm_base", weights="panderm")
-    m = runs.build_model(cfg, init_weights=False)
-    assert isinstance(m.backbone, PanDermBase) and m.dim == 768
-    assert not m.backbone.net.pos_embed.requires_grad                  # fixed sin-cos, as in PanDerm
-    assert m(torch.randn(2, 3, 224, 224)).shape == (2, 2)
-    cfg["model"]["arch"] = "panderm_large"                              # the paper's ViT-L/16
-    big = runs.build_model(cfg, init_weights=False)
-    assert big.dim == 1024 and len(big.backbone.net.blocks) == 24
-    cfg["model"].update(arch="panderm_base", drop_path=0.2)             # stochastic depth, idea PE
-    dp = runs.build_model(cfg, init_weights=False)
-    assert dp.backbone.net.blocks[-1].drop_path1.drop_prob == pytest.approx(0.2)
-    del cfg["model"]["drop_path"]
-    cfg["data"]["img_size"] = 96                                        # another input size: a 6 x 6 grid
-    m96 = runs.build_model(cfg, init_weights=False)
-    assert m96.backbone.net.pos_embed.shape == (1, 37, 768) and m96(torch.randn(1, 3, 96, 96)).shape == (1, 2)
-    if Path(PANDERM_BASE_WEIGHTS).exists():                             # weights are local, not in git
-        assert PanDermBase(pretrained=True, img_size=96).net.pos_embed.shape == (1, 37, 768)
-        sd = torch.load(PANDERM_BASE_WEIGHTS, map_location="cpu", weights_only=True)
-        loaded = PanDermBase(pretrained=True).net.state_dict()
-        assert all(torch.equal(loaded[k], v) for k, v in sd.items())
 
 
 def test_isic2019_labels_and_one_image_per_lesion(tmp_path, monkeypatch):

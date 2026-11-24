@@ -1,6 +1,0 @@
-# Idea PJ (DECISIONS.md, section 30): PanDerm checkpoint 2 with the learning rate shrinking faster
-# towards the input (0.75 per block instead of 0.86), so the lower half of the 24 blocks barely moves.
-extends: panderm-c2.yaml
-name: panderm-idea-j
-train:
-  layer_decay: 0.75

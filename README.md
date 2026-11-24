@@ -1,23 +1,21 @@
-# Skin cancer or not: two tracks
+# SkinNet: skin cancer or not
 
-One question about a clinical skin photo: is it a skin cancer or not? Two models answer it, on the same data, splits and rules, and one is picked at the end (DECISIONS.md, section 24):
+One question about a clinical skin photo: is it a skin cancer or not? SkinNet is a small residual CNN of our own, trained from random weights on our data: no pretrained weights, no frozen layer.
 
-- **SkinNet** (`configs/skinnet/`, `docs/skinnet/`): a small residual CNN of our own, trained from random weights. No pretrained weights, no frozen layer.
-- **PanDerm** (`configs/panderm/`, `docs/panderm/`): PanDerm's ViT (Nature Medicine 2025), pretrained on about 2.1 million skin images, fine-tuned on our data. Its weights are CC BY-NC-ND 4.0 and are never redistributed.
+It is one of two tracks of one project. The other, **PanDerm** (PanDerm's ViT, pretrained on about 2.1 million skin images and fine-tuned on our data), lives in its own repository, `skittlegit/PanDerm`. The two shared this repository until 24 Nov 2026 (DECISIONS.md, section 31), so its history holds both. Both tracks use the same data, splits and rules.
 
-Both train on about 18,350 photos and are tested on held-back photos, on MIDAS, DDI and DermaCon-IN (Indian), and on five outside sets no model ever trains on (section 27). This is stage one. Telling cancer types apart, and whether darker skin needs its own model, come later.
+The models train on about 18,350 photos and are tested on held-back photos, on MIDAS, DDI and DermaCon-IN (Indian), and on six outside sets no model ever trains on (section 27). This is stage one. Telling cancer types apart, and whether darker skin needs its own model, come later.
 
 This is a research prototype, not a diagnostic tool.
 
-**Read [DECISIONS.md](DECISIONS.md) before changing anything.** It holds the rules for labels, splits, the network, the training recipe and the metrics, and the code enforces them.
+**Read [DECISIONS.md](DECISIONS.md) before changing anything.** It holds the rules for labels, splits, the network, the training recipe and the metrics, and the code enforces them. Sections 1 to 31 are shared with PanDerm; from section 32 on, each repository keeps its own.
 
 The project was restarted on 12 Nov 2026. The earlier experiments (fine-tuned pretrained backbones and everything built on them) are in git under the tag `pre-fresh-start`.
 
 Where to read:
-- Each track's current model: [docs/CHECKPOINTS.md](docs/CHECKPOINTS.md).
-- Both tracks side by side (outside sets, leave-one-dataset-out, DDI): [docs/COMPARISON.md](docs/COMPARISON.md).
+- The current model: [docs/CHECKPOINTS.md](docs/CHECKPOINTS.md) (as of the split, both tracks).
+- SkinNet against PanDerm (outside sets, leave-one-dataset-out, DDI), as of the split: [docs/COMPARISON.md](docs/COMPARISON.md).
 - SkinNet: [results](docs/skinnet/RESULTS.md), [ideas](docs/skinnet/IDEAS.md), [earlier checkpoints](docs/skinnet/CHECKPOINTS.md).
-- PanDerm: [results](docs/panderm/RESULTS.md), [ideas](docs/panderm/IDEAS.md), [earlier checkpoints](docs/panderm/CHECKPOINTS.md).
 - Data sources, tried and planned: [docs/DATA_PLAN.md](docs/DATA_PLAN.md).
 
 ## Setup
@@ -73,38 +71,36 @@ Or all three seeds, the test-only sets and the metrics in one go:
 PY=.venv/Scripts/python bash scripts/run.sh        # Windows venv; PY=python elsewhere
 ```
 
-For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml` (`EXP=panderm-idea-<x> REF=panderm-c2` for `configs/panderm/`), averages the seeds and compares with the current checkpoint (`skinnet-c5` or `panderm-c2`; set `REF`) on the validation sets only; `scripts/run.sh` scores the test-only sets and is for an idea that has passed that step.
+For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `scripts/run.sh` scores the test-only sets and is for an idea that has passed that step.
 
 `--set key=value` overrides any config field, for example `--set model.width=48 --set name=skinnet_w48`.
 
 ## Layout
 
 ```
-configs/data.yaml                 dataset paths and split settings (both tracks)
-configs/skinnet/                  SkinNet: skinnet.yaml (the recipe), checkpoints skinnet-c<n>.yaml, ideas, leave-one-out
-configs/panderm/                  PanDerm: panderm.yaml (extends skinnet-c4's data and recipe), panderm-c<n>.yaml, ideas
-docs/CHECKPOINTS.md               each track's current model
-docs/COMPARISON.md                the two tracks side by side
-docs/skinnet/, docs/panderm/      each track's RESULTS, IDEAS and earlier CHECKPOINTS
+configs/data.yaml                 dataset paths and split settings
+configs/skinnet/                  skinnet.yaml (the recipe), checkpoints skinnet-c<n>.yaml, ideas, leave-one-out
+docs/CHECKPOINTS.md               the current models (both tracks, as of the split)
+docs/COMPARISON.md                SkinNet and PanDerm side by side, as of the split
+docs/skinnet/                     RESULTS, IDEAS and earlier CHECKPOINTS
 docs/DATA_PLAN.md                 data sources
-DECISIONS.md                      every rule and decision, in order (both tracks)
-src/skincancer/models/            skinnet.py (SkinNet), panderm.py (PanDerm's ViT), __init__.py (the shared classifier head)
-src/skincancer/train.py           training loop (both tracks)
+DECISIONS.md                      every rule and decision, in order
+src/skincancer/models/            skinnet.py (SkinNet), __init__.py (the classifier head)
+src/skincancer/train.py           training loop
 src/skincancer/predict.py         scoring a finished run; the test-set ledger
 src/skincancer/evaluate.py        metrics with confidence intervals
 src/skincancer/compare.py         paired comparison of two models on the same images
-src/skincancer/data/              label map, manifest, dedup, splits, outside sets, dataset and augmentation
-scripts/                          run.sh, run_idea.sh, run_reference.sh (pick configs/skinnet or configs/panderm by name)
+src/skincancer/data/              label map, manifest, dedup, splits, outside sets, Derm1M, dataset and augmentation
+scripts/                          run.sh, run_idea.sh, run_reference.sh
 runs/skinnet/<name>/s<seed>/      best.pt  config.yaml  history.csv  summary.json  preds/   (local, not in git)
-runs/panderm/<name>/s<seed>/      the same for PanDerm models
-runs/final_ledger.csv             one row per (run, test-only set) ever scored
-results/skinnet/<name>/, results/panderm/<name>/   metrics.csv: one row per set x subgroup x metric (local)
-checkpoints/skinnet/, checkpoints/panderm/        the kept models' weights (local)
+runs/final_ledger.csv             one row per (run, test-only set) ever scored (both tracks before the split)
+results/skinnet/<name>/           metrics.csv: one row per set x subgroup x metric (local)
+checkpoints/skinnet/              the kept models' weights (local)
 ```
 
-`runs/`, `results/` and `checkpoints/` have one folder per track. The track comes from the model's name: `panderm…` goes to `panderm/`, every other name to `skinnet/` ([tracks.py](src/skincancer/tracks.py)). Commands still take just the name (`--exp panderm-c2`); `predict --run` takes the full folder (`runs/panderm/panderm-c2/s0`). None of the three is in git.
+Commands take just the model's name (`--exp skinnet-c5`); `predict --run` takes the full folder (`runs/skinnet/skinnet-c5/s0`). The `skinnet/` level in `runs/`, `results/` and `checkpoints/` is kept from before the split ([tracks.py](src/skincancer/tracks.py)), so every path in the ledger and the docs still holds.
 
-Two files connect everything. `data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/<track>/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
+`data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/skinnet/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
 
 ## Rules the code enforces
 
@@ -112,4 +108,3 @@ Two files connect everything. `data/manifest.csv` has one row per image (cancer 
 - DDI's held-out half, DermaCon-IN, MIDAS test and the `ext_*` outside sets are never scored during training. `predict --final` scores them and refuses to score the same run on the same set twice.
 - A near-duplicate group never spans two splits.
 - Seeds 0, 1, 2. Results are the seed mean with a group-bootstrap 95% confidence interval.
- making a change here

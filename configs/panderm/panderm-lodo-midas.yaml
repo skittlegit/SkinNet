@@ -1,6 +1,0 @@
-# Leave-one-dataset-out (DECISIONS.md, section 27): PanDerm checkpoint 2's all-DDI recipe (idea PG) with
-# midas left out of training and validation. A measurement, never a checkpoint. One seed.
-extends: panderm-idea-g.yaml
-name: panderm-lodo-midas
-data:
-  exclude_datasets: [midas]

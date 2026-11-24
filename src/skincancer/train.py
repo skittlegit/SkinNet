@@ -130,24 +130,12 @@ class WeightAverage:
 
 
 def param_groups(model, lr: float, layer_decay: float | None = None) -> list[dict]:
-    """Parameter groups for AdamW. The linear head is its own group, marked `head`. With
-    layer_decay (PanDerm's ViT only) each transformer block's rate is the one above it times
-    layer_decay: the final norm trains at lr, block 11 at lr * decay, ..., the patch embedding
-    and class token at lr * decay^13, so the early, general features move least."""
-    groups = [{"params": list(model.head.parameters()), "lr": lr, "head": True}]
-    if not layer_decay:
-        return groups + [{"params": [p for p in model.backbone.parameters() if p.requires_grad], "lr": lr}]
-    from .models import PanDermBase
-    if not isinstance(model.backbone, PanDermBase):
-        raise ValueError("train.layer_decay is set up for PanDerm's ViTs only")
-    depth = len(model.backbone.net.blocks)
-    by_layer: dict[int, list] = {}
-    for name, p in model.backbone.net.named_parameters():
-        if not p.requires_grad:
-            continue
-        layer = int(name.split(".")[1]) + 1 if name.startswith("blocks.") else depth + 1 if name.startswith("norm.") else 0
-        by_layer.setdefault(layer, []).append(p)
-    return groups + [{"params": ps, "lr": lr * layer_decay ** (depth + 1 - layer)} for layer, ps in sorted(by_layer.items())]
+    """Parameter groups for AdamW. The linear head is its own group, marked `head` (for
+    train.head_epochs). Layer decay was for PanDerm's ViTs, now in skittlegit/PanDerm (section 31)."""
+    if layer_decay:
+        raise ValueError("train.layer_decay is for PanDerm's ViTs, which moved to skittlegit/PanDerm")
+    return [{"params": list(model.head.parameters()), "lr": lr, "head": True},
+            {"params": [p for p in model.backbone.parameters() if p.requires_grad], "lr": lr}]
 
 
 def train(cfg: dict) -> dict:

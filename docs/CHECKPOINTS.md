@@ -1,10 +1,10 @@
 # Checkpoints
 
-Each track's current model is below; the earlier checkpoints and what was tried on the way are in [SkinNet checkpoints](skinnet/CHECKPOINTS.md) and [PanDerm checkpoints](panderm/CHECKPOINTS.md). Every idea by letter, kept and discarded: [SkinNet ideas](skinnet/IDEAS.md), [PanDerm ideas](panderm/IDEAS.md).
+Each track's current model is below; the earlier checkpoints and what was tried on the way are in [SkinNet checkpoints](skinnet/CHECKPOINTS.md) and [PanDerm checkpoints](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/CHECKPOINTS.md). Every idea by letter, kept and discarded: [SkinNet ideas](skinnet/IDEAS.md), [PanDerm ideas](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/IDEAS.md).
 
 A checkpoint is a model we have decided to keep and build on. Each new idea starts from the latest checkpoint and has to beat it to become the next one. A checkpoint also records everything that was tried on the way to it, so the same experiments are not run twice.
 
-Scores are the mean of three seeds. Details and confidence intervals: [SkinNet results](skinnet/RESULTS.md), [PanDerm results](panderm/RESULTS.md), and both side by side in [COMPARISON.md](COMPARISON.md).
+Scores are the mean of three seeds. Details and confidence intervals: [SkinNet results](skinnet/RESULTS.md), [PanDerm results](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/RESULTS.md), and both side by side in [COMPARISON.md](COMPARISON.md).
 
 ## Names
 

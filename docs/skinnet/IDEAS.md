@@ -47,7 +47,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 
 ## The ideas
 
-The PanDerm track's ideas (PA, PB, ...) are in [PanDerm ideas](../panderm/IDEAS.md).
+The PanDerm track's ideas (PA, PB, ...) are in [PanDerm ideas](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/IDEAS.md).
 
 ### Baseline (`skinnet`)
 

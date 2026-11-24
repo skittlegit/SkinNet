@@ -1,6 +1,6 @@
 # Both tracks compared
 
-Results that set SkinNet and PanDerm side by side: DDI in training, the outside test sets never trained on, leave-one-dataset-out and the confident mistakes. The rules are in [DECISIONS.md](../DECISIONS.md). Each track's own history: [SkinNet results](skinnet/RESULTS.md), [PanDerm results](panderm/RESULTS.md).
+Results that set SkinNet and PanDerm side by side: DDI in training, the outside test sets never trained on, leave-one-dataset-out and the confident mistakes. The rules are in [DECISIONS.md](../DECISIONS.md). Each track's own history: [SkinNet results](skinnet/RESULTS.md), [PanDerm results](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/RESULTS.md).
 
 ## Outside test sets never trained on (22 Nov 2026)
 

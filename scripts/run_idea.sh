@@ -8,11 +8,11 @@
 set -uo pipefail
 PY=${PY:-python}
 LETTER=${1:?usage: run_idea.sh <letter>}
-EXP=${EXP:-skinnet-idea-$LETTER}   # EXP=panderm-idea-a: a PanDerm-track idea (configs/panderm/panderm-idea-a.yaml), with REF=panderm-c1
-case $EXP in panderm*) CFG=configs/panderm/$EXP.yaml ;; *) CFG=configs/skinnet/$EXP.yaml ;; esac
-REF=${REF:-skinnet-c4}
+EXP=${EXP:-skinnet-idea-$LETTER}   # configs/skinnet/<EXP>.yaml
+CFG=configs/skinnet/$EXP.yaml
+REF=${REF:-skinnet-c5}
 SEEDS=${SEEDS:-"0 1 2"}
-VAL=${VAL:-"val midas_val"}   # VAL="val midas_val ddi_val": DDI validation in step 1 (section 26)
+VAL=${VAL:-"val midas_val ddi_val"}   # DDI validation in step 1 since section 26
 case $EXP in panderm*) RUN=runs/panderm/$EXP ;; *) RUN=runs/skinnet/$EXP ;; esac   # skincancer/tracks.py
 LOGS=$RUN/logs
 mkdir -p "$LOGS"

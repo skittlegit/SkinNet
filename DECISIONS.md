@@ -1277,3 +1277,44 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - Lower everywhere, and by a supported amount on two sets: colour augmentation hurts SkinNet, as it did nothing for PanDerm (PD).
 - Colour seems to carry information the network uses, even on MIDAS photos.
 - Kept with everything else; the user decides.
+
+## 31. Two repositories: SkinNet and PanDerm (24 Nov 2026)
+
+**Decided by the user (24 Nov).** The two tracks are split into two repositories. Asked how, the user chose:
+- the old repository renamed to `SkinNet` (the user then set the capitalisation of both names);
+- history kept;
+- the shared parts copied into both.
+
+**What goes where:**
+- **`skittlegit/SkinNet`** (the old `skittlegit/skincancer`, renamed; GitHub redirects the old address).
+  - It keeps every commit and tag. The PanDerm-only files are removed in an ordinary commit, so nothing in its history is rewritten.
+  - The removed files: `configs/panderm/`, `docs/panderm/`, PanDerm's network (`models/panderm.py`) and its tests.
+- **`skittlegit/PanDerm`** (new, private). It holds the same history with SkinNet's folders filtered out (`configs/skinnet/`, `docs/skinnet/`, `results/skinnet/`; `git filter-repo`).
+  - SkinNet's checkpoint tags are dropped. PanDerm's and the shared tags (`pre-fresh-start`, `pre-restructure`, `data-v1`) stay.
+  - `configs/panderm/panderm.yaml` used to extend SkinNet's checkpoint 4 config. Those settings are written out in it, and every PanDerm config was checked to resolve exactly as before.
+  - The tests still train a small CNN in seconds; its config is `tests/configs/small_cnn.yaml` and its network is `models/skinnet.py`.
+- **Shared and copied into both:**
+  - the data pipeline, manifest, splits, outside sets and Derm1M files;
+  - the metrics, evaluation, comparison and ledger code;
+  - `DECISIONS.md` up to this section;
+  - `docs/CHECKPOINTS.md`, `docs/COMPARISON.md` and `docs/DATA_PLAN.md`, as of the split;
+  - `runs/final_ledger.csv` with every row so far.
+
+**What does not change:**
+- Model names, the `runs/<track>/`, `results/<track>/` and `checkpoints/<track>/` folders, and every path in the ledger and the docs.
+- Data, splits, rules and the test-set ledger. Every look at a test set stays on record in both copies.
+
+**From here on:**
+- Each repository keeps its own `DECISIONS.md`, numbered on from 32, so a section number above 31 names a different decision in each.
+- A fix to shared code is made in both.
+- Comparisons across the tracks need the other repository's prediction files on the same machine.
+- **On this machine** (the user, 24 Nov), one project folder holds both repositories and the shared data:
+
+  ```
+  skincancer/
+    SkinNet/   skittlegit/SkinNet
+    PanDerm/   skittlegit/PanDerm
+    data/      raw/, cache/, extra/: the images, the image cache and the extra training sets, kept once
+  ```
+
+  Each repository's `data/raw`, `data/cache` and `data/extra` are directory links to `skincancer/data/`, so nothing is copied twice and DDI's irreplaceable copy is never duplicated. PanDerm's weights (`data/weights/`) and its runs, results and checkpoints are in `PanDerm/`; SkinNet's stay in `SkinNet/`.

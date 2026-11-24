@@ -1,6 +1,0 @@
-# Idea PI (DECISIONS.md, section 29): PanDerm checkpoint 2 with Derm1M's mycosis fungoides photos
-# and look-alike rashes added to training, as skinnet-idea-v. Judged against PanDerm checkpoint 2.
-extends: panderm-c2.yaml
-name: panderm-idea-i
-data:
-  extra_train: [milk10k, derm1m_mf]
