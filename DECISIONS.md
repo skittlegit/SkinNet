@@ -1318,3 +1318,38 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
   ```
 
   Each repository's `data/raw`, `data/cache` and `data/extra` are directory links to `skincancer/data/`, so nothing is copied twice and DDI's irreplaceable copy is never duplicated. PanDerm's weights (`data/weights/`) and its runs, results and checkpoints are in `PanDerm/`; SkinNet's stay in `SkinNet/`.
+
+## 32. Research-based ideas Y, Z and AA, and SkinNet-KD on hold (24 Nov 2026)
+
+**Who decided.** The user (24 Nov) asked for research into better techniques for each repository before any new work, with approval to change the code structure. The research and the choices below are Claude's. Written before training.
+
+**What the research says for a small network trained from random weights.**
+- In this project only new data has carried over to other hospitals (MIDAS, MILK10k, DDI). Changes to training mostly helped at home only (sections 16 to 22).
+- The one exception so far is W (section 30): a running average of the weights, which lifted `midas_val` by a supported amount.
+- So the ideas below aim at what transfers across hospitals, not at home accuracy:
+  - **Flat minima.** Sharpness-aware minimisation (SAM; Foret et al., ICLR 2021) takes each step against the worst nearby weights. Among sharpness methods it did best in a medical comparison (Hassan et al., IEEE Access 2025). Weight averaging (SWAD, Cha et al. 2021) aims at the same thing.
+  - **Style invariance.** MixStyle (Zhou et al., ICLR 2021) mixes the colour and contrast statistics of early feature maps between images. The network then cannot tell hospitals apart by photo style, which is how it can learn shortcuts. It is a plug-in for convolutional networks with batch norm.
+  - **Mixing images.** Mixup (Zhang et al. 2018) and CutMix (Yun et al. 2019) blend images and labels. They are standard in strong training recipes, including PanDerm's own fine-tuning.
+
+**The ideas.** Each changes one thing in checkpoint 5, and each has a test.
+- **Y, flat minima** (`configs/skinnet/skinnet-idea-y.yaml`): SAM with rho 0.05, plus W's weight average (decay 0.9995).
+  - SAM takes two passes per step, so training takes about twice as long.
+  - Batch norm's statistics are updated by the first pass only (`regularize.sam_step`).
+- **Z, MixStyle** (`skinnet-idea-z.yaml`): MixStyle after stages 1 and 2, used with probability 0.5 and alpha 0.1, the paper's settings. It has no parameters and is off at prediction time.
+- **AA, mixup and CutMix** (`skinnet-idea-aa.yaml`): on half the batches, mixup (alpha 0.2) or CutMix (alpha 1.0), half the time each. Training then uses soft targets with label smoothing 0.1 (`regularize.mix_batch`, `soft_cross_entropy`).
+
+**How they are judged.** Section 26's rule, applied by `scripts/step1_gate.py`:
+1. **Step 1:** higher than checkpoint 5 on all three of `val` (within-source AUC), `midas_val` and `ddi_val`, and lower on none by a supported amount.
+2. **Step 2:** an idea that passes is scored once on every test set (`scripts/step2.sh`, ledger).
+3. **Candidate:** nothing lower by a supported amount, and a supported gain on at least one outside set. Whether it becomes a checkpoint is the user's decision. Nothing is deleted.
+
+**Expectation.**
+- Y: level at home, a small gain on `midas_val`, as with W.
+- Z: level at home, a small gain on DDI if photo style is part of the gap.
+- AA: a little lower at home after 60 epochs (mixing needs longer to fit), level outside.
+- Most likely none passes step 1.
+
+**SkinNet-KD, on hold for the user.** The research's strongest lever for a small network is distillation from a strong teacher (Beyer et al., CVPR 2022): PanDerm's predictions on our photos and on Derm1M's roughly 400,000 clinical photos.
+- **Still from scratch:** SkinNet would start from random weights, with no pretrained weights in it.
+- **No longer our data alone:** its training signal would include PanDerm's.
+- **Decision:** the user is deciding whether that fits the track. If it goes ahead, it is a separately named model (`skinnet-kd`), never mixed into SkinNet's checkpoints.

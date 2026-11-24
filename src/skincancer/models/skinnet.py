@@ -32,7 +32,9 @@ class SkinNet(nn.Module):
     pooling gives the embedding. Defaults (width 32, two blocks per stage): 17 convolution
     layers on the main path, 2.8M parameters, a 256-d embedding, 224 px in -> 7x7 feature map."""
 
-    def __init__(self, width: int = 32, depths=(2, 2, 2, 2)):
+    def __init__(self, width: int = 32, depths=(2, 2, 2, 2), mixstyle: dict | None = None):
+        """mixstyle: {stages: [0, 1], p: 0.5, alpha: 0.1} mixes feature statistics after those
+        stages in training (idea Z, DECISIONS.md section 32); no parameters."""
         super().__init__()
         self.stem = nn.Sequential(*_conv_bn(3, width // 2, 3, 2), nn.ReLU(inplace=True),
                                   *_conv_bn(width // 2, width // 2), nn.ReLU(inplace=True),
@@ -46,6 +48,11 @@ class SkinNet(nn.Module):
             cin = cout
         self.stages = nn.ModuleList(stages)
         self.num_features = cin
+        self.mix_after = set((mixstyle or {}).get("stages", []))
+        self.mixstyle = None
+        if self.mix_after:
+            from ..regularize import MixStyle
+            self.mixstyle = MixStyle(mixstyle.get("p", 0.5), mixstyle.get("alpha", 0.1))
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
@@ -55,6 +62,8 @@ class SkinNet(nn.Module):
 
     def forward(self, x):
         x = self.stem(x)
-        for stage in self.stages:
+        for i, stage in enumerate(self.stages):
             x = stage(x)
+            if i in self.mix_after:
+                x = self.mixstyle(x)
         return x.mean((2, 3))

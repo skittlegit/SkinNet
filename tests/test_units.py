@@ -490,3 +490,50 @@ def test_step1_gate(tmp_path):
     assert not gate.verdict(log(mixed))[0] and gate.verdict(log(mixed), "guard")[0]
     worse = up[:3] + [("ddi_val", "auc", -0.05, "yes")]                         # a supported loss
     assert not gate.verdict(log(worse), "guard")[0]
+
+
+def test_mixing_targets_and_soft_cross_entropy():
+    from skincancer.regularize import mix_batch, soft_cross_entropy
+    torch.manual_seed(0)
+    x, y = torch.rand(8, 3, 32, 32), torch.tensor([0, 1] * 4)
+    for kw in ({"mixup": 0.4}, {"cutmix": 1.0}, {"mixup": 0.4, "cutmix": 1.0}):
+        xm, t = mix_batch(x, y, 2, **kw)
+        assert xm.shape == x.shape and torch.allclose(t.sum(1), torch.ones(8))
+    xm, t = mix_batch(x, y, 2)                                                # nothing on: unchanged, one-hot
+    assert xm is x and torch.equal(t, torch.nn.functional.one_hot(y, 2).float())
+    logits = torch.randn(8, 2)
+    ref = torch.nn.CrossEntropyLoss(label_smoothing=0.1)(logits, y)
+    assert torch.allclose(soft_cross_entropy(logits, t, 0.1), ref, atol=1e-6)
+
+
+def test_mixstyle_only_in_training_and_keeps_shape():
+    from skincancer.regularize import MixStyle
+    torch.manual_seed(0)
+    ms = MixStyle(p=1.0, alpha=0.1)
+    x = torch.randn(6, 4, 8, 8) * torch.arange(1, 7).view(6, 1, 1, 1)     # different style per image
+    ms.eval()
+    assert ms(x) is x
+    ms.train()
+    out = ms(x)
+    assert out.shape == x.shape and not torch.allclose(out, x)
+    m = SkinNet(8, [1, 1, 1, 1], mixstyle={"stages": [0, 1]})
+    assert m.mixstyle is not None and len(list(m.parameters())) == len(list(SkinNet(8, [1, 1, 1, 1]).parameters()))
+
+
+def test_sam_step_moves_weights_and_restores_batch_norm_once():
+    from skincancer.regularize import sam_step
+    import contextlib
+    torch.manual_seed(0)
+    m = Classifier(2, width=8, depths=[1, 1, 1, 1])
+    opt = torch.optim.SGD(m.parameters(), lr=0.1)
+    scaler = torch.amp.GradScaler("cpu", enabled=False)
+    x, y = torch.rand(4, 3, 32, 32), torch.tensor([0, 1, 0, 1])
+    bn = next(mm for mm in m.modules() if isinstance(mm, torch.nn.BatchNorm2d))
+    before = [p.detach().clone() for p in m.parameters()]
+    n_before = int(bn.num_batches_tracked)
+    m.train()
+    out, loss = sam_step(m, lambda mm: (mm(x), torch.nn.functional.cross_entropy(mm(x), y)), opt, scaler, 0.05,
+                         contextlib.nullcontext)
+    assert out.shape == (4, 2) and torch.isfinite(loss)
+    assert any(not torch.equal(a, b) for a, b in zip(before, m.parameters()))   # a step was taken
+    assert bn.momentum == 0.1                                                    # momentum restored

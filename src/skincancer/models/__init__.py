@@ -18,13 +18,13 @@ class Classifier(nn.Module):
     """SkinNet + dropout + one linear layer. SkinNet has no outside weights."""
 
     def __init__(self, num_classes: int, width: int = 32, depths=(2, 2, 2, 2), drop: float = 0.3,
-                 arch: str = "skinnet", pretrained: bool = False, img_size: int = 224):
+                 arch: str = "skinnet", pretrained: bool = False, img_size: int = 224, mixstyle: dict | None = None):
         super().__init__()
         if arch != "skinnet":
             raise ValueError(f"unknown model.arch {arch!r} (PanDerm's ViTs are in skittlegit/PanDerm)")
         if pretrained:
             raise ValueError("SkinNet has no outside weights")
-        self.backbone = SkinNet(width, depths)
+        self.backbone = SkinNet(width, depths, mixstyle)
         self.dim = self.backbone.num_features
         self.head = nn.Sequential(nn.Dropout(drop), nn.Linear(self.dim, num_classes))
 

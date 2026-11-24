@@ -19,6 +19,7 @@ import torch
 import torch.nn as nn
 
 from . import runs
+from .regularize import mix_batch, sam_step, soft_cross_entropy
 from .config import load_config
 from .metrics import auc, source_auc
 
@@ -170,6 +171,14 @@ def train(cfg: dict) -> dict:
     use_amp = t["amp"] and dev.type == "cuda"
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
     ema = WeightAverage(model, t["ema_decay"], t.get("ema_every", 1)) if t.get("ema_decay") else None
+    mix = t.get("mix") or {}                 # {mixup: alpha, cutmix: alpha, prob: p} (section 32)
+    if mix and t["class_weighting"] != "none":
+        raise ValueError("train.mix uses soft targets without class weights: set train.class_weighting to none")
+    sam_rho = float(t.get("sam_rho") or 0)   # sharpness-aware minimisation (section 32)
+    smoothing = float(t["label_smoothing"])
+
+    def autocast():
+        return torch.autocast(dev.type, enabled=use_amp)
 
     history, best, stale, start = [], {"val_auc": -math.inf}, 0, 0
     resume = rdir / "last.pt"   # written after every epoch, so a stopped run continues where it was
@@ -197,14 +206,26 @@ def train(cfg: dict) -> dict:
         tot, n, hits = 0.0, 0, 0
         for x, y in tr_loader:
             x, y = x.to(dev, non_blocking=True), y.to(dev, non_blocking=True)
-            with torch.autocast(dev.type, enabled=use_amp):
-                out = model(x)
-                loss = criterion(out, y)
-            hits += (out.argmax(1) == y).sum().item()   # logged only: accuracy on the (augmented, resampled) batches
+            if mix:
+                x, target = mix_batch(x, y, len(classes), mix.get("mixup", 0), mix.get("cutmix", 0), mix.get("prob", 1.0))
+
+                def loss_of(m, x=x, target=target):
+                    o = m(x)
+                    return o, soft_cross_entropy(o, target, smoothing)
+            else:
+                def loss_of(m, x=x, y=y):
+                    o = m(x)
+                    return o, criterion(o, y)
             opt.zero_grad(set_to_none=True)
-            scaler.scale(loss).backward()
-            scaler.step(opt)
-            scaler.update()
+            if sam_rho:
+                out, loss = sam_step(model, loss_of, opt, scaler, sam_rho, autocast)
+            else:
+                with autocast():
+                    out, loss = loss_of(model)
+                scaler.scale(loss).backward()
+                scaler.step(opt)
+                scaler.update()
+            hits += (out.argmax(1) == y).sum().item()   # logged only: accuracy on the (augmented, resampled) batches
             if ema is not None:
                 ema.update()
             tot += loss.item() * len(y)

@@ -238,3 +238,15 @@ def test_pipeline(workdir, monkeypatch):
 
     from skincancer.analysis import gradcam
     gradcam.main(["--run", "runs/skinnet/tiny/s0", "--split", "test", "--n", "3"])
+
+
+def test_training_with_mixing_sam_and_mixstyle(workdir, monkeypatch):
+    monkeypatch.chdir(workdir)
+    from skincancer import train
+    train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=tiny_reg", "--set", "train.epochs=2",
+                "--set", "train.mix={mixup: 0.2, cutmix: 1.0, prob: 1.0}", "--set", "train.sam_rho=0.05",
+                "--set", "train.class_weighting=none",
+                "--set", "model.mixstyle={stages: [0, 1], p: 0.5, alpha: 0.1}"])
+    hist = pd.read_csv("runs/skinnet/tiny_reg/s0/history.csv")
+    assert len(hist) == 2 and hist["loss"].notna().all()
+    assert Path("runs/skinnet/tiny_reg/s0/preds/test.csv").exists()

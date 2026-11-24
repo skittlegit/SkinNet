@@ -115,7 +115,7 @@ def build_model(cfg: dict, init_weights: bool = True) -> Classifier:
     if m.get("weights", "none") != "none":
         raise ValueError("SkinNet has no outside weights (PanDerm's are in skittlegit/PanDerm)")
     return Classifier(len(classes_of(cfg)), m["width"], m["depths"], m["drop"], arch=m.get("arch", "skinnet"),
-                      img_size=cfg["data"]["img_size"])
+                      img_size=cfg["data"]["img_size"], mixstyle=m.get("mixstyle"))
 
 
 def save_config(cfg: dict, path: Path) -> None:
