@@ -1253,3 +1253,15 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - X: level at home, possibly a small gain on DDI.
 - PJ: a little lower at home, level or a small gain outside.
 - Most likely none passes step 1, which asks for gains on all three sets.
+
+**Outcome of idea W (24 Nov 2026): failed step 1, not scored on any test set.** Paired with checkpoint 5, seed averages:
+
+| Set | Checkpoint 5 | Idea W | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `val` within-source AUC | 0.903 | 0.900 | −0.003 [−0.009, +0.004] | no |
+| `midas_val` AUC | 0.808 | 0.825 | **+0.017 [+0.002, +0.032]** | **yes** |
+| `ddi_val` AUC | 0.749 | 0.730 | −0.019 [−0.050, +0.011] | no |
+
+- Fails because it is not higher on all three.
+- It is the first SkinNet training change to gain on `midas_val` by a supported amount, though it leans lower on `ddi_val`.
+- Kept with everything else (configs, runs, weights); the user decides.
