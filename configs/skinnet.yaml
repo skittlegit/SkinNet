@@ -1,8 +1,8 @@
 # SkinNet trained from random weights. The recipe is fixed in DECISIONS.md (Training);
 # change it there first. `--set key=value` overrides any field for a one-off run.
-extends: ../data.yaml
+extends: data.yaml
 
-name: skinnet                  # runs go to runs/<track>/<name>/s<seed>/ (skincancer/tracks.py)
+name: skinnet                  # runs go to runs/<name>/s<seed>/ (skincancer/paths.py)
 seed: 0
 runs_dir: runs
 results_dir: results

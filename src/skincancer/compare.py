@@ -23,7 +23,7 @@ from . import metrics as M
 from . import runs
 from .evaluate import load_preds, run_config
 from .labels import CLASSES
-from .tracks import exp_dir
+from .paths import exp_dir
 
 
 def _scores(exp_dir: Path, split: str, ids=None):

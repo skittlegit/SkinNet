@@ -1397,3 +1397,25 @@ Step 2 (test sets, scored once, in the ledger):
   - The scripts' default reference moves to checkpoint 6 once the running queue has finished, because a running job's scripts are not edited.
 - **SkinNet-KD:** built after the queue, as a separately named model that never replaces SkinNet's checkpoints. Its plan is written before it trains, in a later section.
 
+
+## 34. A flat layout; what this repository keeps (25 Nov 2026)
+
+**Decided by the user (25 Nov):**
+- Remove the leftover track subfolders in both repositories.
+- For this one: "SkinNet is not fully a complete fresh start so keep what is required".
+
+**Kept:**
+- every commit and tag, and this file as the record;
+- the checkpoints and their weights, and every run folder;
+- the docs of SkinNet's own history.
+
+**Changed:**
+- **One name per model, no track level:** `configs/<name>.yaml`, `runs/<name>/`, `results/<name>/`, `checkpoints/<name>/` (`skincancer/paths.py`, which replaces `tracks.py`). Ledger paths are rewritten to match; the looks themselves are unchanged.
+- **Docs:**
+  - `docs/IDEAS.md` and `docs/RESULTS.md` move up from `docs/skinnet/`.
+  - The two checkpoint pages become one, `docs/CHECKPOINTS.md`: the current model, then every checkpoint before it.
+- **Removed:**
+  - **`docs/COMPARISON.md`** compared checkpoint 5 with a PanDerm model that has since been replaced and deleted. Its numbers stay in sections 27 to 29 here and in the PanDerm repository's archive.
+  - **The ledger's PanDerm rows**, from when the two shared this repository. They are kept in the PanDerm repository's archive.
+  - **`scripts/run.sh` and `scripts/run_reference.sh`:** `run_idea.sh` and `step2.sh` do their work, and there are no reference models left.
+- **Default reference:** the scripts now compare new ideas with checkpoint 6.

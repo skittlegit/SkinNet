@@ -64,7 +64,7 @@ def test_fst_buckets():
 
 
 def test_config_extends_overrides_and_templates():
-    cfg = load_config("configs/skinnet/skinnet.yaml", ["model.width=48", "seed=2", "name=skinnet_w{model.width}"])
+    cfg = load_config("configs/skinnet.yaml", ["model.width=48", "seed=2", "name=skinnet_w{model.width}"])
     assert cfg["name"] == "skinnet_w48" and cfg["seed"] == 2
     assert cfg["manifest"] == "data/manifest.csv"  # from data.yaml
     assert cfg["data"]["train_splits"] == ["train"] and cfg["data"]["val_splits"] == ["val"]
@@ -93,7 +93,7 @@ def test_skinnet():
 
 def test_skinnet_starts_from_random_weights_per_seed():
     from skincancer import runs
-    cfg = load_config("configs/skinnet/skinnet.yaml")
+    cfg = load_config("configs/skinnet.yaml")
     def first_conv(seed):
         runs.set_seed(seed)
         return runs.build_model(cfg).backbone.stem[0].weight.detach().clone()
@@ -271,7 +271,7 @@ def test_make_loader_limits_worker_thread_pools(monkeypatch):
     from skincancer import runs
     from skincancer.config import load_config
     monkeypatch.delenv("OMP_NUM_THREADS", raising=False)
-    cfg = load_config("configs/skinnet/skinnet.yaml")
+    cfg = load_config("configs/skinnet.yaml")
     cfg["train"]["num_workers"] = 2
     n = torch.get_num_threads()
     df = pd.DataFrame({"image_id": ["a"], "path": ["x.jpg"], cfg["data"]["label_col"]: ["cancer"]})
@@ -304,7 +304,7 @@ def test_milk10k_labels_follow_biopsy_and_label_map(tmp_path):
 
 def test_skinnet_is_the_default_and_has_no_outside_weights():
     from skincancer import runs
-    cfg = load_config("configs/skinnet/skinnet.yaml")
+    cfg = load_config("configs/skinnet.yaml")
     assert runs.build_model(cfg).backbone.__class__ is SkinNet
     cfg["model"].update(arch="resnet18")                                # removed 23 Nov 2026
     with pytest.raises(ValueError):
@@ -335,10 +335,10 @@ def test_ddi_split_and_subset(tmp_path):
     man = pd.DataFrame({"image_id": ["a", "b", "c"], "split": ["ddi_hold", "ddi_train", "ddi_hold"]})
     man.to_csv(tmp_path / "m.csv", index=False)
     for d in ("s0", "avg"):
-        (tmp_path / "runs/skinnet/e" / d / "preds").mkdir(parents=True)
-        (tmp_path / "runs/skinnet/e" / d / "config.yaml").write_text("name: e\n")
+        (tmp_path / "runs/e" / d / "preds").mkdir(parents=True)
+        (tmp_path / "runs/e" / d / "config.yaml").write_text("name: e\n")
         pd.DataFrame({"image_id": ["a", "b", "c"], "p_cancer": [.1, .2, .3]}).to_csv(
-            tmp_path / "runs/skinnet/e" / d / "preds/ddi_test.csv", index=False)
+            tmp_path / "runs/e" / d / "preds/ddi_test.csv", index=False)
     out = make_subset("e", "ddi_test", "ddi_hold", str(tmp_path / "m.csv"), str(tmp_path / "runs"))
     assert len(out) == 2 and list(pd.read_csv(out[0])["image_id"]) == ["a", "c"]
 
@@ -383,7 +383,7 @@ def test_panderm_training_options_are_refused():
     from skincancer import train
     for key, val in (("layer_decay", 0.75), ("head_epochs", 3)):   # PanDerm's options (skittlegit/PanDerm)
         with pytest.raises(ValueError, match=key):
-            train.main(["--config", "configs/skinnet/skinnet.yaml", "--set", f"train.{key}={val}",
+            train.main(["--config", "configs/skinnet.yaml", "--set", f"train.{key}={val}",
                         "--set", "name=never_written"])
 
 
@@ -461,11 +461,10 @@ def test_derm1m_rashes_matched_by_source_and_tone():
     assert r["tone"].value_counts().to_dict() == {"dark": 3, "light": 1}
 
 
-def test_model_folders_keep_the_track_level():
-    from skincancer.tracks import exp_dir, results_dir
-    assert exp_dir("skinnet").as_posix() == "runs/skinnet/skinnet"                  # paths in the ledger still hold
-    assert exp_dir("tiny", "r").as_posix() == "r/skinnet/tiny"
-    assert results_dir("skinnet-c5", "r").as_posix() == "r/skinnet/skinnet-c5"
+def test_model_folders_by_name():
+    from skincancer.paths import exp_dir, results_dir
+    assert exp_dir("skinnet").as_posix() == "runs/skinnet"
+    assert exp_dir("tiny", "r").as_posix() == "r/tiny" and results_dir("skinnet-c6", "r").as_posix() == "r/skinnet-c6"
 
 
 def test_derm1m_test_is_test_only():

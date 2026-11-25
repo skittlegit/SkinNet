@@ -1,7 +1,7 @@
 """Make a new model out of finished runs without retraining.
 
     # seed average: one prediction per image, the mean of the seeds' probabilities.
-    # Written to runs/<track>/<exp>/avg/, next to the seeds; evaluate and compare then use it.
+    # Written to runs/<exp>/avg/, next to the seeds; evaluate and compare then use it.
     python -m skincancer.derive ensemble --exp skinnet-c3 --splits val midas_val
     # test-time flips for a model trained without them: the same weights under a new name,
     # predicting on the image and its mirror images (this is how checkpoint 2 was made)
@@ -10,9 +10,9 @@
     # held-out half, cut from the ones it already has. Not a new look: no image is scored again.
     python -m skincancer.derive subset --exp skinnet-c4 --source ddi_test --splits ddi_hold
 
-`tta` writes runs/<track>/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
+`tta` writes runs/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
 with `predict` as usual. A config with `eval.tta: true` needs no such step. `ensemble` writes
-runs/<track>/<name>/avg/preds/<split>.csv from the seeds' prediction files (--name defaults to --exp).
+runs/<name>/avg/preds/<split>.csv from the seeds' prediction files (--name defaults to --exp).
 Averaging predictions on a test-only set is a new look at that set: it needs --final and is
 recorded in the ledger like any other.
 """
@@ -29,7 +29,7 @@ import yaml
 from .labels import CLASSES
 from .predict import LEDGER, append_ledger, check_ledger
 from .runs import is_test_only, read_manifest
-from .tracks import exp_dir
+from .paths import exp_dir
 
 
 def make_tta(exp: str, name: str, runs_dir: str = "runs") -> list[Path]:

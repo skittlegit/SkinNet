@@ -1,14 +1,14 @@
 """Make a kept idea the next checkpoint: one name everywhere (DECISIONS.md, section 15).
 
-    python scripts/adopt_checkpoint.py skinnet-idea-y skinnet-c6 "Checkpoint 6 (DECISIONS.md, section 33): was idea Y"
+    python scripts/adopt_checkpoint.py skinnet-idea-ab skinnet-c7 "Checkpoint 7 (DECISIONS.md, section NN): was idea AB"
 
 Renames, in place:
-- configs/<track>/<idea>.yaml -> <name>.yaml, with `name:` and the first comment line updated;
-- runs/<track>/<idea>/ -> runs/<track>/<name>/, and `name:` in every config.yaml inside;
-- results/<track>/<idea>/ -> results/<track>/<name>/ (if it exists);
+- configs/<idea>.yaml -> <name>.yaml, with `name:` and the first comment line updated;
+- runs/<idea>/ -> runs/<name>/, and `name:` in every config.yaml inside;
+- results/<idea>/ -> results/<name>/ (if it exists);
 - every runs/final_ledger.csv row that names the idea's folders.
 Then copies each seed's best.pt, config.yaml and summary.json, and the seed average's config and
-predictions, to checkpoints/<track>/<name>/. Prints what it did; refuses if <name> exists anywhere.
+predictions, to checkpoints/<name>/. Prints what it did; refuses if <name> exists anywhere.
 """
 from __future__ import annotations
 
@@ -20,17 +20,14 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from skincancer.tracks import TRACK  # noqa: E402
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def main(idea: str, name: str, header: str) -> None:
-    cfg_old, cfg_new = ROOT / "configs" / TRACK / f"{idea}.yaml", ROOT / "configs" / TRACK / f"{name}.yaml"
-    run_old, run_new = ROOT / "runs" / TRACK / idea, ROOT / "runs" / TRACK / name
-    res_old, res_new = ROOT / "results" / TRACK / idea, ROOT / "results" / TRACK / name
-    ckpt = ROOT / "checkpoints" / TRACK / name
+    cfg_old, cfg_new = ROOT / "configs" / f"{idea}.yaml", ROOT / "configs" / f"{name}.yaml"
+    run_old, run_new = ROOT / "runs" / idea, ROOT / "runs" / name
+    res_old, res_new = ROOT / "results" / idea, ROOT / "results" / name
+    ckpt = ROOT / "checkpoints" / name
     for p in (cfg_new, run_new, res_new, ckpt):
         if p.exists():
             raise SystemExit(f"{p} already exists")
@@ -61,7 +58,7 @@ def main(idea: str, name: str, header: str) -> None:
     ledger = ROOT / "runs" / "final_ledger.csv"
     if ledger.exists():
         df = pd.read_csv(ledger)
-        old_prefix, new_prefix = f"runs/{TRACK}/{idea}/", f"runs/{TRACK}/{name}/"
+        old_prefix, new_prefix = f"runs/{idea}/", f"runs/{name}/"
         hit = df["run"].astype(str).str.startswith(old_prefix)
         df.loc[hit, "run"] = df.loc[hit, "run"].str.replace(old_prefix, new_prefix, regex=False)
         df.to_csv(ledger, index=False, lineterminator="\n")
