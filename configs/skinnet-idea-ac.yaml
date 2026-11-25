@@ -1,0 +1,8 @@
+# Idea AC (DECISIONS.md, section 35): checkpoint 6 trained for 120 epochs instead of 60 (the
+# cosine schedule stretched to match), judged against checkpoint 6.
+extends: skinnet-c6.yaml
+name: skinnet-idea-ac
+train:
+  epochs: 120
+eval:
+  watch_splits: [midas_val, ddi_val]   # scored every epoch for the record only (history.csv)

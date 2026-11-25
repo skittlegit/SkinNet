@@ -250,3 +250,23 @@ def test_training_with_mixing_sam_and_mixstyle(workdir, monkeypatch):
     hist = pd.read_csv("runs/tiny_reg/s0/history.csv")
     assert len(hist) == 2 and hist["loss"].notna().all()
     assert Path("runs/tiny_reg/s0/preds/test.csv").exists()
+
+
+def test_keep_last_epoch_and_watch_splits(workdir, monkeypatch):
+    monkeypatch.chdir(workdir)
+    from skincancer import train
+    from skincancer.metrics import auc
+    train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=tiny_last", "--set", "train.epochs=3",
+                "--set", "train.patience=0", "--set", "train.keep=last", "--set", "eval.watch_splits=[ddi_val, test]",
+                "--set", "train.select_metric=auc", "--set", "eval.tta=false"])
+    hist = pd.read_csv("runs/tiny_last/s0/history.csv")
+    assert len(hist) == 3 and {"ddi_val_auc", "test_auc"} <= set(hist.columns)
+    assert yaml.safe_load(Path("runs/tiny_last/s0/summary.json").read_text())["keep"] == "last"
+    # the kept weights are the final epoch's: their val predictions give that epoch's val score
+    m = pd.read_csv("data/manifest.csv")
+    p = pd.read_csv("runs/tiny_last/s0/preds/val.csv").merge(m[["image_id", "label_cancer"]], on="image_id")
+    p = p[p["label_cancer"].isin(["cancer", "not_cancer"])]
+    assert abs(auc(p["label_cancer"] == "cancer", p["p_cancer"]) - hist["val_auc"].iloc[-1]) < 1e-6
+    with pytest.raises(ValueError, match="patience"):
+        train.main(["--config", "configs/tiny.yaml", "--seed", "0", "--set", "name=tiny_bad_keep", "--set",
+                    "train.keep=last", "--set", "train.patience=2"])

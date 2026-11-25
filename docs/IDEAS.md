@@ -37,6 +37,8 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | Y | Flat minima: sharpness-aware minimisation (rho 0.05) and W's weight average | 24 Nov | **Kept: checkpoint 6** (`skinnet-c6`, the user's decision, 25 Nov): step 1 passed (all three higher); test sets MED-NODE +0.052, Asan +0.009 (supported), ISIC 2019 −0.021 (supported lower) (DECISIONS.md, sections 32 and 33) |
 | Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Queued; section 26's rule (DECISIONS.md, section 32) |
 | AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Queued; section 26's rule (DECISIONS.md, section 32) |
+| AB | The base recipe for 120 epochs, judged against the base | 25 Nov | Queued (DECISIONS.md, section 35) |
+| AC | Checkpoint 6 for 120 epochs, judged against checkpoint 6 | 25 Nov | Queued (DECISIONS.md, section 35) |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.

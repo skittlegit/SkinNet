@@ -1419,3 +1419,24 @@ Step 2 (test sets, scored once, in the ledger):
   - **The ledger's PanDerm rows**, from when the two shared this repository. They are kept in the PanDerm repository's archive.
   - **`scripts/run.sh` and `scripts/run_reference.sh`:** `run_idea.sh` and `step2.sh` do their work, and there are no reference models left.
 - **Default reference:** the scripts now compare new ideas with checkpoint 6.
+
+## 35. More epochs again: ideas AB and AC (25 Nov 2026)
+
+**Asked for by the user** (25 Nov): do more epochs make SkinNet better? Judge it against the base model as well, "as it will tell the actual results". Written before training.
+
+**Why ask again.** Idea N (section 14) trained checkpoint 3 for 120 epochs: `test` +0.032 (supported), DDI −0.064 (supported), discarded. Since then the models train on part of MIDAS and DDI, step 1 judges `midas_val` and `ddi_val` too, and checkpoint 6's best epoch is its last (59 of 60) for all three seeds. With this schedule the last epochs are always the calmest ones, so that alone does not show that more would help.
+
+**The two ideas** (one thing changes in each: 120 epochs instead of 60, the cosine schedule stretched to match; warm-up, patience and selection as before):
+
+| Idea | Config | Starts from | Judged against |
+| --- | --- | --- | --- |
+| AB | `configs/skinnet-idea-ab.yaml` | the base recipe (`skinnet`) | `skinnet`: what more epochs alone do |
+| AC | `configs/skinnet-idea-ac.yaml` | checkpoint 6 | `skinnet-c6`: whether they help the current model |
+
+- **Judged by section 26's rule** in step 1, then step 2 if passed. AB is never a candidate checkpoint: it starts from the base. AC could be, by the user's decision.
+- **The base model as reference.** It was trained on 12 Nov on the same data (12,562 training and 2,695 validation images) with the same recipe; the settings added since default to its behaviour. It had no `ddi_val` predictions or seed average: both were made on 25 Nov (validation sets only). It has never been scored on `ddi_hold` or the outside sets; if AB reaches step 2, `scripts/step2.sh` scores the base on them first, once, in the ledger. A caveat: the code has changed in small ways since 12 Nov, so AB against the base also carries those.
+- **Watched, not used:** every epoch records the AUC on `midas_val` and `ddi_val` in `history.csv` (`eval.watch_splits`), to show where in training the outside sets gain or lose. They never pick the epoch or stop training.
+- **On the way, checkpoint 6 against the base** (validation sets, 25 Nov): `val` within-source 0.853 → 0.906 (+0.052 [+0.034, +0.072]), `midas_val` 0.662 → 0.815 (+0.153 [+0.097, +0.209]), `ddi_val` 0.685 → 0.755 (+0.070 [+0.021, +0.122]), all supported.
+- **Z and AA** (section 32) stay stopped where they were (Z seed 1 at epoch 27 of 60) and run after these, by the user's word.
+- **Cost:** AB about 2.6 hours, AC about 5.8 hours.
+

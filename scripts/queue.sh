@@ -11,7 +11,8 @@
 #   bash scripts/queue.sh start --wait a        # start once the other repository's queue has finished
 #   bash scripts/queue.sh status                # running or not, which seed and epoch, time left, last results
 #   bash scripts/queue.sh stop                  # stop this repository's queue and its training now
-# An item is letter[@reference][:rule].
+# An item is letter[@reference][:rule][/seeds]. With /seeds (e.g. a/0) only those seeds train: a first
+# look, with no step 1 verdict and no test sets, which need all three.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
@@ -34,17 +35,19 @@ mine() {         # this repository's runner, if it is alive
   [ -f "$PIDF" ] && kill -0 "$(cat "$PIDF")" 2>/dev/null && cat "$PIDF"
 }
 
-parse() {        # item -> "letter reference rule"
-  local l=$1 rule=gain ref=$DEFAULT_REF
+parse() {        # item -> "letter reference rule seeds"
+  local l=$1 rule=gain ref=$DEFAULT_REF seeds=all
+  case $l in */*) seeds=${l##*/}; l=${l%/*};; esac
   case $l in *:*) rule=${l##*:}; l=${l%:*};; esac
   case $l in *@*) ref=${l#*@}; l=${l%@*};; esac
-  echo "$l $ref $rule"
+  echo "$l $ref $rule $seeds"
 }
 
 check_items() {
-  local bad=0 l ref rule
+  local bad=0 l ref rule seeds
   for item in "$@"; do
-    read -r l ref rule <<< "$(parse "$item")"
+    read -r l ref rule seeds <<< "$(parse "$item")"
+    [[ $seeds == all || $seeds =~ ^[0-9]+(,[0-9]+)*$ ]] || { echo "seeds $seeds: give them as 0 or 0,1"; bad=1; }
     [ -f "configs/$PREFIX-idea-$l.yaml" ] || { echo "no configs/$PREFIX-idea-$l.yaml"; bad=1; }
     [ -d "runs/$ref/avg" ] || { echo "reference $ref has no runs/$ref/avg"; bad=1; }
     case $rule in gain|guard|unseen) ;; *) echo "unknown rule $rule (gain | guard | unseen)"; bad=1;; esac
@@ -62,12 +65,16 @@ start() {
     echo "another queue is running (pid $(queue_pids | tr '\n' ' ')): pass --wait to start after it"; exit 1
   fi
   mkdir -p runs
+  local before
+  before=$(wc -l < "$LOG" 2>/dev/null || echo 0)
   printf 'cd %q && PY=%q exec bash scripts/queue.sh run %s %s\n' "$ROOT" "$PY" "$wait" "$*" > runs/queue_launch.sh
   local gitbash
   gitbash=$(cygpath -w /)\\bin\\bash.exe
   powershell.exe -NoProfile -Command "Start-Process -WindowStyle Hidden -FilePath '$gitbash' -ArgumentList '$(cygpath -m "$ROOT")/runs/queue_launch.sh'"
   for _ in 1 2 3 4 5 6 7 8 9 10; do [ -n "$(mine)" ] && break; sleep 1; done
   if [ -n "$(mine)" ]; then echo "queue started (pid $(mine)): $wait $*; log in $LOG"
+  elif tail -n +$((before + 1)) "$LOG" 2>/dev/null | grep -q "queue done"; then
+    echo "the queue ran and has already finished (nothing left to train?):"; tail -n +$((before + 1)) "$LOG"
   else echo "the queue did not start: see $LOG"; exit 1; fi
 }
 
@@ -80,10 +87,21 @@ run() {
     while queue_pids | grep -vqx $$; do sleep 60; done
   fi
   log "queue start: $*"
-  local l ref rule e v rc
+  local l ref rule seeds e v rc s
   for item in "$@"; do
-    read -r l ref rule <<< "$(parse "$item")"
+    read -r l ref rule seeds <<< "$(parse "$item")"
     e=$PREFIX-idea-$l
+    if [ "$seeds" != all ]; then   # a first look: these seeds only
+      mkdir -p "runs/$e/logs"
+      for s in ${seeds//,/ }; do
+        if [ -f "runs/$e/s$s/summary.json" ]; then log "$e seed $s already done"; continue; fi
+        log "train $e seed $s (seeds $seeds only: no step 1 verdict, no test sets)"
+        if $PY -m skincancer.train --config "configs/$e.yaml" --seed "$s" > "runs/$e/logs/s$s.log" 2>&1; then
+          log "$e seed $s done: $(tail -n 1 "runs/$e/logs/s$s.log")"
+        else log "$e seed $s FAILED: see runs/$e/logs/s$s.log"; fi
+      done
+      continue
+    fi
     log "$e start (against $ref, step 1 rule: $rule)"
     if REF=$ref PY=$PY bash scripts/run_idea.sh "$l" >> "$LOG" 2>&1; then
       v=$($PY scripts/step1_gate.py "runs/$e/logs/compare_val.log" "$rule" 2>&1); rc=$?

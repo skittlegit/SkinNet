@@ -155,6 +155,18 @@ def train(cfg: dict) -> dict:
         raise ValueError("train.sampling already balances the classes: set train.class_weighting to none")
     select_metric = t.get("select_metric", "auc")
     val_source = val_df["dataset"].to_numpy()
+    keep = t.get("keep", "best")   # best: the epoch with the best val score; last: the final epoch
+    if keep not in ("best", "last"):
+        raise ValueError(f"unknown train.keep {keep!r}")
+    if keep == "last" and t["patience"]:
+        raise ValueError("train.keep: last trains every epoch: set train.patience to 0")
+    # Scored every epoch for the record only (history.csv): they never pick the epoch or stop training.
+    watch = list(cfg["eval"].get("watch_splits") or [])
+    watch_df = runs.labelled(runs.split_rows(manifest, watch), cfg) if watch else val_df.iloc[:0]
+    if excl:
+        watch_df = watch_df[~watch_df["dataset"].isin(excl)]
+    watch_split = watch_df["split"].to_numpy()
+    n_val = len(val_df)
 
     model = runs.build_model(cfg)
     model = model.to(dev)
@@ -163,7 +175,8 @@ def train(cfg: dict) -> dict:
           f"params={n_params / 1e6:.2f}M device={dev}")
     tr_loader = runs.make_loader(train_df, cfg, train=True, seed=cfg["seed"], drop_last=True,
                                  sample_weights=sampling)
-    val_loader = runs.make_loader(val_df, cfg, train=False)
+    val_loader = runs.make_loader(pd.concat([val_df, watch_df], ignore_index=True), cfg, train=False)   # one loader, no more workers
+    y_all = np.asarray(val_loader.dataset.labels)
     criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights, dtype=torch.float32, device=dev),
                                     label_smoothing=float(t["label_smoothing"]))
     opt = torch.optim.AdamW(model.parameters(), lr=t["lr"], weight_decay=t["weight_decay"])
@@ -235,12 +248,14 @@ def train(cfg: dict) -> dict:
         model.eval()
         if ema is not None:   # validate, select and keep the averaged weights
             ema.swap()
-        pv = runs.infer(model, val_loader)
-        yv = np.asarray(val_loader.dataset.labels)
+        p_all = runs.infer(model, val_loader)
+        pv, yv = p_all[:n_val], y_all[:n_val]
+        pw, yw = p_all[n_val:], y_all[n_val:]
+        watched = {f"{s}_auc": auc(yw[watch_split == s] == 1, pw[watch_split == s, 1]) for s in watch}
         val_auc = selection_score(yv, pv[:, 1], val_source, select_metric)
         val_loss = float(-np.mean(np.log(np.clip(pv[np.arange(len(yv)), yv], 1e-7, 1.0))))
         rec = {"epoch": ep, "lr": lr, "loss": tot / max(n, 1), "train_acc": hits / max(n, 1), "val_loss": val_loss,
-               "val_acc": float((pv.argmax(1) == yv).mean()), "val_auc": val_auc, "secs": round(time.time() - t0, 1)}
+               "val_acc": float((pv.argmax(1) == yv).mean()), "val_auc": val_auc, **watched, "secs": round(time.time() - t0, 1)}
         history.append(rec)
         print("  " + "  ".join(f"{k}={v:.4g}" if isinstance(v, float) else f"{k}={v}" for k, v in rec.items()),
               flush=True)
@@ -248,10 +263,11 @@ def train(cfg: dict) -> dict:
         score = -math.inf if np.isnan(val_auc) else val_auc
         if score > best["val_auc"]:
             best = dict(rec, val_auc=score)
-            torch.save(model.state_dict(), rdir / "best.pt")
             stale = 0
         else:
             stale += 1
+        if keep == "last" or stale == 0:   # best.pt holds the kept weights: the best epoch so far, or this one
+            torch.save(model.state_dict(), rdir / "best.pt")
         if ema is not None:
             ema.swap()        # back to the trained weights, which training continues from
         tmp = rdir / "last.pt.tmp"
@@ -267,7 +283,7 @@ def train(cfg: dict) -> dict:
             break
     if not (rdir / "best.pt").exists():
         torch.save(model.state_dict(), rdir / "best.pt")
-    runs.write_json({"best": best, "select_metric": select_metric, "epochs_run": len(history), "n_train": len(train_df), "n_val": len(val_df),
+    runs.write_json({"best": best, "select_metric": select_metric, "keep": keep, "epochs_run": len(history), "n_train": len(train_df), "n_val": len(val_df),
                      "n_params": n_params, "class_counts": dict(zip(classes, counts.tolist())),
                      "loss_weights": dict(zip(classes, weights.tolist()))}, rdir / "summary.json")
     resume.unlink(missing_ok=True)   # finished: the resume state is no longer needed (several GB for PanDerm)

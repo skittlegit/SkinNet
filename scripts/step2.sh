@@ -19,6 +19,17 @@ FINAL="ddi_hold dermacon_test dermacon_other midas_test $EXT $EXTRA"
 L=$RUN/logs/final.log
 mkdir -p "$RUN/logs" "$RREF/logs"
 log "$EXP step 2 start"
+# A reference older than a test-only set (e.g. the base model and the outside sets) is scored on it
+# first, once per seed and for its average, like any model (the ledger records the look).
+MISSING=""
+for sp in $FINAL; do [ -f "$RREF/avg/preds/$sp.csv" ] || MISSING="$MISSING $sp"; done
+if [ -n "$MISSING" ]; then
+  for s in 0 1 2; do
+    $PY -m skincancer.predict --run $RREF/s$s --splits $MISSING --final >> $RREF/logs/final_missing.log 2>&1 || log "$REF predict s$s FAILED"
+  done
+  $PY -m skincancer.derive ensemble --exp $REF --splits $MISSING --final >> $RREF/logs/final_missing.log 2>&1 || log "$REF ensemble FAILED"
+  log "$REF scored for the first time on$MISSING (the ledger records it)"
+fi
 for s in 0 1 2; do
   $PY -m skincancer.predict --run $RUN/s$s --splits $FINAL --final >> $L 2>&1 || log "$EXP predict s$s FAILED"
   if [ -n "$EXTRA" ] && ! grep -q "^$RREF/s$s,$EXTRA," runs/final_ledger.csv; then
