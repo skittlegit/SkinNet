@@ -138,7 +138,7 @@ def infer(model, loader, with_features: bool = False, tta: bool = False):
     dev = next(model.parameters()).device
     probs, feats = [], []
     for x, _ in loader:
-        x = x.to(dev)
+        x = x.to(dev, non_blocking=True)
         logits, f = model(x, return_features=True)
         p = torch.softmax(logits.float(), 1)
         if tta:

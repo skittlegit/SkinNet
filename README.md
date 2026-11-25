@@ -66,6 +66,18 @@ python -m skincancer.plot_history --exp skinnet-c6                    # results/
 
 For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c6`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there. A kept idea becomes the next checkpoint with `python scripts/adopt_checkpoint.py <idea> skinnet-c<n> "<why>"`.
 
+The queue does all of that for several ideas in a row, detached from the terminal, and logs to `runs/queue.log`:
+
+```bash
+bash scripts/queue.sh start z aa              # skinnet-idea-z, then -aa: step 1, its rule, step 2 if passed
+bash scripts/queue.sh start z@skinnet-c5      # against another reference (letter[@reference][:rule])
+bash scripts/queue.sh start --wait z          # start once the PanDerm repository's queue has finished
+bash scripts/queue.sh status                  # which seed and epoch, time left, the last results
+bash scripts/queue.sh stop                    # stop it now; the same start command carries on later
+```
+
+Finished seeds are skipped and a stopped seed resumes from its `last.pt`, so nothing is lost by stopping. The queue never adopts or deletes anything.
+
 `--set key=value` overrides any config field, for example `--set model.width=48 --set name=skinnet_w48`.
 
 ## Layout
@@ -81,7 +93,7 @@ src/skincancer/predict.py         scoring a finished run; the test-set ledger
 src/skincancer/evaluate.py        metrics with confidence intervals
 src/skincancer/compare.py         paired comparison of two models on the same images
 src/skincancer/data/              label map, manifest, dedup, splits, outside sets, Derm1M, dataset and augmentation
-scripts/                          run_idea.sh (step 1), step1_gate.py (its rule), step2.sh (test sets, once), adopt_checkpoint.py
+scripts/                          queue.sh (ideas in a row) and status.py, run_idea.sh (step 1), step1_gate.py (its rule), step2.sh (test sets, once), adopt_checkpoint.py
 runs/<name>/s<seed>/              best.pt  config.yaml  history.csv  summary.json  preds/   (local, not in git)
 runs/final_ledger.csv             one row per (run, test-only set) ever scored
 results/<name>/                   metrics.csv: one row per set x subgroup x metric (local)

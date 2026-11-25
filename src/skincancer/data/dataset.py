@@ -18,7 +18,7 @@ MEAN, STD = (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
 def train_transform(img_size: int, colour: bool = False) -> A.Compose:
     """Augmentation for training from random weights on a few thousand images, where it is
     the main guard against memorising the training set. colour=True (`data.colour_aug`,
-    PanDerm-track idea PD) also varies skin tone and lighting colour: darker or lighter by a
+    off by default) also varies skin tone and lighting colour: darker or lighter by a
     gamma curve, saturation and a little hue, and a shift of each colour channel."""
     tone = [A.RandomGamma(gamma_limit=(70, 170), p=0.5),
             A.HueSaturationValue(hue_shift_limit=8, sat_shift_limit=30, val_shift_limit=0, p=0.7),
@@ -92,11 +92,12 @@ class SkinDataset(Dataset):
         idx = {c: i for i, c in enumerate(classes or [])}
         labels = self.df[label_col] if label_col in self.df else pd.Series([None] * len(self.df))
         self.labels = np.array([idx.get(l, -1) for l in labels], dtype=np.int64)
+        self.ids = self.df["image_id"].astype(str).tolist()   # plain lists: a pandas row lookup per
+        self.paths = self.df["path"].astype(str).tolist()     # image costs more than it should
 
     def __len__(self) -> int:
         return len(self.df)
 
     def __getitem__(self, i: int):
-        row = self.df.iloc[i]
-        img = self.loader(row["image_id"], row["path"])
+        img = self.loader(self.ids[i], self.paths[i])
         return self.transform(image=img)["image"], torch.tensor(self.labels[i])
