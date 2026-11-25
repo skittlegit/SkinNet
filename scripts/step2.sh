@@ -2,16 +2,16 @@
 # Step 2 for an idea that passed step 1 (DECISIONS.md, sections 29 and 30): every test-only set
 # scored once per seed and for the seed average (runs/final_ledger.csv), then the paired
 # comparison with the reference on every test set, and the metrics.
-#   bash scripts/step2.sh skinnet-idea-<x> [skinnet-c5]
-#   MF=1 EXTRA=derm1m_test bash scripts/step2.sh <idea> skinnet-c5   # also derm1m_test and MF alone (section 29)
+#   bash scripts/step2.sh skinnet-idea-<x> [skinnet-c6]
+#   MF=1 EXTRA=derm1m_test bash scripts/step2.sh <idea> skinnet-c6   # also derm1m_test and MF alone (section 29)
 # EXTRA is scored for the reference too, once (skipped if the ledger already lists it).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 PY=${PY:-.venv/Scripts/python}
 export PYTHONUNBUFFERED=1 PYTHONIOENCODING=utf-8
 EXP=${1:?usage: step2.sh <idea> [reference]}
-REF=${2:-skinnet-c5}
-RUN=runs/skinnet/$EXP; RREF=runs/skinnet/$REF   # skincancer/tracks.py
+REF=${2:-skinnet-c6}
+RUN=runs/$EXP; RREF=runs/$REF   # skincancer/paths.py
 EXTRA=${EXTRA:-}
 log() { echo "[$(date +%H:%M)] $*" >> runs/queue.log; }
 EXT="ext_hiba ext_mednode ext_mcrsl ext_derm7pt ext_asan ext_isic2019"

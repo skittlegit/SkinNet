@@ -2,7 +2,7 @@
 
 Every idea tried or planned in this project, by letter, in the order it was run. An idea that works becomes a checkpoint; one that does not is discarded and its config and trained models are deleted. This file keeps the record of all of them, so the history survives the deleting.
 
-Rules for each idea are written in [DECISIONS.md](../../DECISIONS.md) before it is run. Full numbers are in [RESULTS.md](RESULTS.md). The models that were kept are described in [CHECKPOINTS.md](CHECKPOINTS.md).
+Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is run. Full numbers are in [RESULTS.md](RESULTS.md). The models that were kept are described in [CHECKPOINTS.md](CHECKPOINTS.md).
 
 ## At a glance
 
@@ -49,8 +49,6 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Home:** our own `val` / `test` splits (Fitzpatrick17k and PAD-UFES-20). **Outside:** MIDAS, DDI and DermaCon-IN, photos from other hospitals.
 
 ## The ideas
-
-The PanDerm track's ideas (PA, PB, ...) are in [PanDerm ideas](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/IDEAS.md).
 
 ### Baseline (`skinnet`)
 

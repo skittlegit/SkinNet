@@ -1,6 +1,6 @@
 # Results: SkinNet (from scratch)
 
-Stage one: is the image a skin cancer or not? Every number is the mean of three seeds with a 95% confidence interval. The rules are in [DECISIONS.md](../../DECISIONS.md); the full table is [results/skinnet/skinnet/metrics.csv](../../results/skinnet/skinnet/metrics.csv).
+Stage one: is the image a skin cancer or not? Every number is the mean of three seeds with a 95% confidence interval. The rules are in [DECISIONS.md](../DECISIONS.md); the full table is [results/skinnet/metrics.csv](../../results/skinnet/metrics.csv).
 
 ## Baseline (12 Nov 2026)
 
@@ -197,7 +197,7 @@ DermaCon-IN everyday conditions called cancer: 24% → 28%.
 - At the fixed threshold the outside change is mostly a shift: fewer cancers missed, more false alarms. The AUC gains say the ranking improved as well, but the threshold set on our own validation split still does not carry over to other hospitals.
 - At home it costs a little: test AUC −0.007, cancers against benign lookalikes 0.797 → 0.775.
 
-**Outcome: checkpoint 3, by a decision of the team.** The rule written beforehand required a supported gain on MIDAS test or DDI, which idea O has on both, and no supported loss on our own test split, which it misses by a small margin. The team decided the trade is worth taking, since new hospitals are the open problem. See [CHECKPOINTS.md](CHECKPOINTS.md) and ([DECISIONS.md](../../DECISIONS.md), section 12).
+**Outcome: checkpoint 3, by a decision of the team.** The rule written beforehand required a supported gain on MIDAS test or DDI, which idea O has on both, and no supported loss on our own test split, which it misses by a small margin. The team decided the trade is worth taking, since new hospitals are the open problem. See [CHECKPOINTS.md](CHECKPOINTS.md) and ([DECISIONS.md](../DECISIONS.md), section 12).
 
 ## Idea I: SCIN photos in training (13 Nov 2026)
 

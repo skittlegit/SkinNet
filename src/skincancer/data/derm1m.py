@@ -72,7 +72,7 @@ TONE_CUTS = (5.0, 28.0)                   # ITA: dark <= 5 < medium <= 28 < ligh
 SPARE_SPLIT = "derm1m_spare"
 REVIEW = Path("data/derm1m_review.csv")
 DROP_VERDICTS = {"not_skin", "no_lesion", "unusable"}
-TRAINED_EXTRAS = ["milk10k"]           # extra sets the current checkpoints train on (configs/skinnet/skinnet-c4.yaml)
+TRAINED_EXTRAS = ["milk10k"]           # extra sets the current checkpoints train on (configs/skinnet-c4.yaml)
 MIN_SIDE, MAX_ASPECT = 128, 2.5
 ZIP_OF = {"IIYI": "IIYI.zip", "edu": "edu.zip", "note": "note.zip", "public": "public.zip", "pubmed": "pubmed.zip",
           "reddit": "reddit.zip", "twitter": "twitter.zip", "youtube": "youtube.zip"}

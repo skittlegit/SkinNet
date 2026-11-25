@@ -2,8 +2,8 @@
 
     python -m skincancer.evaluate --exp skinnet
 
-Reads runs/<track>/<exp>/avg/preds/<split>.csv if the seed average exists, else runs/<track>/<exp>/s*/preds/<split>.csv;
-writes results/<track>/<exp>/metrics.csv (skincancer/tracks.py) in long
+Reads runs/<exp>/avg/preds/<split>.csv if the seed average exists, else runs/<exp>/s*/preds/<split>.csv;
+writes results/<exp>/metrics.csv (skincancer/paths.py) in long
 format: exp, eval_set, subgroup_col, subgroup, metric, mean, std, ci_lo, ci_hi, n, n_malignant, n_seeds.
 """
 from __future__ import annotations
@@ -17,8 +17,8 @@ import yaml
 
 from . import metrics as M
 from .labels import CLASSES
-from .tracks import exp_dir
-from .tracks import results_dir as results_dir_of
+from .paths import exp_dir
+from .paths import results_dir as results_dir_of
 
 # eval set -> (task, subgroup columns). Subgroups by type of lesion show which cancers are
 # missed and which harmless conditions raise false alarms.

@@ -1,6 +1,6 @@
 """Step 1 verdict from a compare log (DECISIONS.md, sections 26, 29 and 30). Exit 0 = passed.
 
-    python scripts/step1_gate.py runs/skinnet/<idea>/logs/compare_val.log gain
+    python scripts/step1_gate.py runs/<idea>/logs/compare_val.log gain
     gain:  higher on all three of val (within-source AUC), midas_val and ddi_val, and lower on none
            by a supported amount (section 26's rule; the default for an idea)
     guard: only "lower on none by a supported amount" (section 29)

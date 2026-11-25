@@ -2,18 +2,18 @@
 # Step 1 for an idea: train its seeds, average them, and compare with the current checkpoint
 # on the validation sets only. Test-only sets are never touched here (scripts/run.sh does that,
 # once an idea has passed step 1).
-#   PY=.venv/Scripts/python bash scripts/run_idea.sh n            # configs/skinnet/skinnet-idea-n.yaml
+#   PY=.venv/Scripts/python bash scripts/run_idea.sh n            # configs/skinnet-idea-n.yaml
 #   REF=skinnet-c3 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh m   # against an older checkpoint
 # Safe to re-run: seeds with a finished summary.json are skipped.
 set -uo pipefail
 PY=${PY:-python}
 LETTER=${1:?usage: run_idea.sh <letter>}
-EXP=${EXP:-skinnet-idea-$LETTER}   # configs/skinnet/<EXP>.yaml
-CFG=configs/skinnet/$EXP.yaml
-REF=${REF:-skinnet-c5}
+EXP=${EXP:-skinnet-idea-$LETTER}   # configs/<EXP>.yaml
+CFG=configs/$EXP.yaml
+REF=${REF:-skinnet-c6}
 SEEDS=${SEEDS:-"0 1 2"}
 VAL=${VAL:-"val midas_val ddi_val"}   # DDI validation in step 1 since section 26
-RUN=runs/skinnet/$EXP   # skincancer/tracks.py
+RUN=runs/$EXP   # skincancer/paths.py
 LOGS=$RUN/logs
 mkdir -p "$LOGS"
 export PYTHONUNBUFFERED=1

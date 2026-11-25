@@ -18,7 +18,7 @@ from torch.utils.data import DataLoader, WeightedRandomSampler
 from .data.dataset import ImageLoader, SkinDataset, eval_transform, train_transform
 from .labels import CLASSES
 from .models import Classifier
-from .tracks import exp_dir
+from .paths import exp_dir
 
 
 def _seed_worker(worker_id: int, base: int) -> None:
@@ -41,7 +41,7 @@ def device() -> torch.device:
 
 
 def run_dir(cfg: dict) -> Path:
-    return exp_dir(cfg["name"], cfg["runs_dir"]) / f"s{cfg['seed']}"   # runs/<track>/<name>/s<seed>
+    return exp_dir(cfg["name"], cfg["runs_dir"]) / f"s{cfg['seed']}"   # runs/<name>/s<seed>
 
 
 def classes_of(cfg: dict) -> list[str]:
