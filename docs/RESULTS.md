@@ -1,6 +1,6 @@
 # Results: SkinNet (from scratch)
 
-Stage one: is the image a skin cancer or not? Every number is the mean of three seeds with a 95% confidence interval. The rules are in [DECISIONS.md](../DECISIONS.md); the full table is [results/skinnet/metrics.csv](../../results/skinnet/metrics.csv).
+Stage one: skin cancer detection. Every number is the mean of three seeds with a 95% confidence interval. The rules are in [DECISIONS.md](../DECISIONS.md); the full table is [results/skinnet/metrics.csv](../results/skinnet/metrics.csv).
 
 ## Baseline (12 Nov 2026)
 
