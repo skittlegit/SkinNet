@@ -62,7 +62,7 @@ python -m skincancer.predict --run runs/skinnet/skinnet/s0 --splits ddi_test der
 python -m skincancer.evaluate --exp skinnet                           # results/skinnet/skinnet/metrics.csv
 python -m skincancer.analysis.gradcam --run runs/skinnet/skinnet/s0 --split test
 python -m skincancer.compare --a skinnet-c1 --b skinnet-c2 --splits val test   # is b better than a?
-python -m skincancer.plot_history --exp skinnet-c5                    # results/skinnet/skinnet-c5/curves.png
+python -m skincancer.plot_history --exp skinnet-c6                    # results/skinnet/skinnet-c6/curves.png
 ```
 
 Or all three seeds, the test-only sets and the metrics in one go:
@@ -71,7 +71,7 @@ Or all three seeds, the test-only sets and the metrics in one go:
 PY=.venv/Scripts/python bash scripts/run.sh        # Windows venv; PY=python elsewhere
 ```
 
-For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/skinnet/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there.
+For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c6`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/skinnet/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there.
 
 `--set key=value` overrides any config field, for example `--set model.width=48 --set name=skinnet_w48`.
 
@@ -98,7 +98,7 @@ results/skinnet/<name>/           metrics.csv: one row per set x subgroup x metr
 checkpoints/skinnet/              the kept models' weights (local)
 ```
 
-Commands take just the model's name (`--exp skinnet-c5`); `predict --run` takes the full folder (`runs/skinnet/skinnet-c5/s0`). The `skinnet/` level in `runs/`, `results/` and `checkpoints/` is kept from before the split ([tracks.py](src/skincancer/tracks.py)), so every path in the ledger and the docs still holds.
+Commands take just the model's name (`--exp skinnet-c6`); `predict --run` takes the full folder (`runs/skinnet/skinnet-c6/s0`). The `skinnet/` level in `runs/`, `results/` and `checkpoints/` is kept from before the split ([tracks.py](src/skincancer/tracks.py)), so every path in the ledger and the docs still holds.
 
 `data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/skinnet/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
 

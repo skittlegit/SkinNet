@@ -1385,3 +1385,15 @@ Step 2 (test sets, scored once, in the ledger):
 - **Elsewhere:** level, with MIDAS leaning lower.
 - **Decision:** the user decides whether it becomes checkpoint 6. Nothing is deleted.
 
+## 33. Checkpoint 6 and SkinNet-KD (25 Nov 2026)
+
+**Decided by the user (25 Nov):** "Adopt checkpoint 6, and build KD after the queue".
+- **Checkpoint 6** is idea Y: checkpoint 5 trained with SAM (rho 0.05) and a running average of its weights (section 32). It narrowly missed section 32's rule; its one supported loss is on ISIC 2019, the one dermoscopy set.
+  - Name `skinnet-c6`, with config, runs, results and ledger rows renamed from `skinnet-idea-y` (`scripts/adopt_checkpoint.py`, new).
+  - Weights are in `checkpoints/skinnet/skinnet-c6/`; git tag `checkpoint-6`.
+- **What is compared with what:**
+  - New ideas from now on are compared with checkpoint 6.
+  - Z and AA, already queued and written against checkpoint 5, are still judged against checkpoint 5 as written.
+  - The scripts' default reference moves to checkpoint 6 once the running queue has finished, because a running job's scripts are not edited.
+- **SkinNet-KD:** built after the queue, as a separately named model that never replaces SkinNet's checkpoints. Its plan is written before it trains, in a later section.
+

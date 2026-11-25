@@ -1,6 +1,6 @@
 # Checkpoints
 
-Each track's current model is below; the earlier checkpoints and what was tried on the way are in [SkinNet checkpoints](skinnet/CHECKPOINTS.md) and [PanDerm checkpoints](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/CHECKPOINTS.md). Every idea by letter, kept and discarded: [SkinNet ideas](skinnet/IDEAS.md), [PanDerm ideas](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/IDEAS.md).
+**SkinNet's current model is checkpoint 6 (`skinnet-c6`, 25 Nov 2026; DECISIONS.md, section 33).** The comparison of checkpoint 5 with PanDerm checkpoint 2 below is kept as it was at the split. Each track's model at the split is below; the earlier checkpoints and what was tried on the way are in [SkinNet checkpoints](skinnet/CHECKPOINTS.md) and [PanDerm checkpoints](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/CHECKPOINTS.md). Every idea by letter, kept and discarded: [SkinNet ideas](skinnet/IDEAS.md), [PanDerm ideas](https://github.com/skittlegit/PanDerm/blob/main/docs/panderm/IDEAS.md).
 
 A checkpoint is a model we have decided to keep and build on. Each new idea starts from the latest checkpoint and has to beat it to become the next one. A checkpoint also records everything that was tried on the way to it, so the same experiments are not run twice.
 
@@ -20,6 +20,7 @@ Scores are the mean of three seeds. Details and confidence intervals: [SkinNet r
 | PanDerm checkpoint 2 | `panderm-c2` | `configs/panderm/panderm-c2.yaml` (was idea PH, `panderm-idea-h`; section 26) |
 | Checkpoint 5, all-DDI version | `skinnet-idea-t` | `configs/skinnet/skinnet-idea-t.yaml`: checkpoint 5 with `ddi_val` also in training (section 26) |
 | PanDerm checkpoint 2, all-DDI version | `panderm-idea-g` | `configs/panderm/panderm-idea-g.yaml`: PanDerm checkpoint 2 with `ddi_val` also in training (section 26) |
+| **Checkpoint 6 (current, 25 Nov)** | `skinnet-c6` | `configs/skinnet/skinnet-c6.yaml` (was idea Y, `skinnet-idea-y`: checkpoint 5 with SAM and a weight average; DECISIONS.md, sections 32 and 33) |
 
 One name per model, the same for its config, run folder and result folder. A run folder `runs/<track>/<name>/` holds the seeds (`s0`, `s1`, `s2`) and their average (`avg`); `results/<track>/<name>/metrics.csv` is the model's full score table. The track is `panderm` for names starting `panderm` and `skinnet` for every other. An idea being tested is `skinnet-idea-<letter>`; if kept it is renamed to the next checkpoint (`skinnet-c6`, `panderm-c3`), and if discarded it is deleted. The rule is in [DECISIONS.md](../DECISIONS.md), section 15.
 
