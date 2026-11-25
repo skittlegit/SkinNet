@@ -1,6 +1,6 @@
-# SkinNet: skin cancer or not
+# SkinNet: skin cancer detection
 
-One question about a clinical skin photo: is it a skin cancer or not? SkinNet is a small residual CNN of our own, trained from random weights on our data: no pretrained weights, no frozen layer.
+Skin cancer detection from clinical skin photos: the model tells whether a photo shows a skin cancer. SkinNet is a small residual CNN of our own, trained from random weights on our data: no pretrained weights, no frozen layer.
 
 It is one of two tracks of one project. The other, **PanDerm** (PanDerm's ViT, pretrained on about 2.1 million skin images and fine-tuned on our data), lives in its own repository, `skittlegit/PanDerm`. The two shared this repository until 24 Nov 2026 (DECISIONS.md, section 31), so its history holds both. Both tracks use the same data, splits and rules.
 
