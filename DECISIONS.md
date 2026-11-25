@@ -1353,3 +1353,35 @@ At the 90%-sensitivity threshold (fixed on `val`, seed average):
 - **Still from scratch:** SkinNet would start from random weights, with no pretrained weights in it.
 - **No longer our data alone:** its training signal would include PanDerm's.
 - **Decision:** the user is deciding whether that fits the track. If it goes ahead, it is a separately named model (`skinnet-kd`), never mixed into SkinNet's checkpoints.
+
+**Outcome of idea Y (25 Nov 2026): passed step 1, the first SkinNet training change to; on the test sets one supported loss (ISIC 2019), so by section 32's rule not a candidate. A narrow miss, put to the user.** Paired with checkpoint 5, seed averages, 95% intervals of the difference (`runs/skinnet/skinnet-idea-y/logs/`).
+
+Step 1: higher on all three, none by a supported amount.
+
+| Set | Checkpoint 5 | Idea Y | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `val` within-source AUC | 0.903 | 0.906 | +0.003 [−0.005, +0.011] | no |
+| `midas_val` | 0.808 | 0.815 | +0.007 [−0.009, +0.024] | no |
+| `ddi_val` | 0.749 | 0.755 | +0.006 [−0.023, +0.036] | no |
+
+Step 2 (test sets, scored once, in the ledger):
+
+| Set | Checkpoint 5 | Idea Y | Difference [95% interval] | Supported |
+| --- | --- | --- | --- | --- |
+| `test` (pooled) | 0.901 | 0.901 | −0.000 [−0.006, +0.006] | no |
+| `test` within-source | 0.903 | 0.898 | −0.005 [−0.014, +0.003] | no |
+| `midas_test` | 0.744 | 0.734 | −0.010 [−0.034, +0.012] | no |
+| `ddi_hold` | 0.670 | 0.676 | +0.006 [−0.018, +0.029] | no |
+| DermaCon-IN | 0.847 | 0.846 | −0.001 [−0.030, +0.028] | no |
+| `ext_hiba` | 0.860 | 0.850 | −0.011 [−0.028, +0.008] | no |
+| `ext_mednode` | 0.771 | 0.823 | **+0.052 [+0.012, +0.094]** | **yes, higher** |
+| `ext_mcrsl` | 0.804 | 0.805 | +0.001 [−0.031, +0.032] | no |
+| `ext_derm7pt` | 0.714 | 0.712 | −0.002 [−0.016, +0.013] | no |
+| `ext_asan` | 0.784 | 0.793 | **+0.009 [+0.005, +0.012]** | **yes, higher** |
+| `ext_isic2019` | 0.750 | 0.729 | **−0.021 [−0.025, −0.016]** | **yes, lower** |
+
+- **Why not a candidate:** ISIC 2019 is lower by a supported amount. It is the one dermoscopy set; SkinNet learns from clinical photos. V lost there too (section 29).
+- **What it gained:** two clinical outside sets, MED-NODE and Asan, both supported.
+- **Elsewhere:** level, with MIDAS leaning lower.
+- **Decision:** the user decides whether it becomes checkpoint 6. Nothing is deleted.
+
