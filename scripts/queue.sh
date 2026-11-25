@@ -73,7 +73,7 @@ start() {
   powershell.exe -NoProfile -Command "Start-Process -WindowStyle Hidden -FilePath '$gitbash' -ArgumentList '$(cygpath -m "$ROOT")/runs/queue_launch.sh'"
   for _ in 1 2 3 4 5 6 7 8 9 10; do [ -n "$(mine)" ] && break; sleep 1; done
   if [ -n "$(mine)" ]; then echo "queue started (pid $(mine)): $wait $*; log in $LOG"
-  elif tail -n +$((before + 1)) "$LOG" 2>/dev/null | grep -q "queue done"; then
+  elif [ -n "$(tail -n +$((before + 1)) "$LOG" 2>/dev/null | grep "queue done")" ]; then
     echo "the queue ran and has already finished (nothing left to train?):"; tail -n +$((before + 1)) "$LOG"
   else echo "the queue did not start: see $LOG"; exit 1; fi
 }
@@ -84,7 +84,8 @@ run() {
   if [ "${1:-}" = "--wait" ]; then
     shift
     log "queue waiting for the other queue to finish: $*"
-    while queue_pids | grep -vqx $$; do sleep 60; done
+    # (no grep -q in a pipe here: with pipefail, an early exit would end the wait while the other runs)
+    while [ -n "$(queue_pids | grep -vx $$)" ]; do sleep 60; done
   fi
   log "queue start: $*"
   local l ref rule seeds e v rc s
