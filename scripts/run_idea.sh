@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Step 1 for an idea: train its seeds, average them, and compare with the current checkpoint
-# on the validation sets only. Test-only sets are never touched here (scripts/run.sh does that,
+# on the validation sets only. Test-only sets are never touched here (scripts/step2.sh does that,
 # once an idea has passed step 1).
-#   PY=.venv/Scripts/python bash scripts/run_idea.sh n            # configs/skinnet-idea-n.yaml
-#   REF=skinnet-c3 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh m   # against an older checkpoint
+#   PY=.venv/Scripts/python bash scripts/run_idea.sh ab           # configs/skinnet-idea-ab.yaml
+#   REF=skinnet-c5 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh aa  # against an older checkpoint
 # Safe to re-run: seeds with a finished summary.json are skipped.
 set -uo pipefail
 PY=${PY:-python}
