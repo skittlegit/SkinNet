@@ -8,11 +8,11 @@ A checkpoint is a model we keep and build on. Each idea starts from the latest o
 | --- | --- | --- | --- |
 | Baseline | `skinnet` | `configs/skinnet.yaml` | |
 | Checkpoint 1 | `skinnet-c1` | `configs/skinnet-c1.yaml` (was idea A) | `checkpoints/skinnet-c1/` |
-| Checkpoint 2, first step (12 Nov) | `skinnet-c1-tta` | checkpoint 1's three seeds with test-time flips, averaged (ideas G + H); nothing retrained | `checkpoints/skinnet-c1-tta/` |
+| Checkpoint 2, first step (12 Nov) | `skinnet-c1-tta` | checkpoint 1's three seeds with test-time flips, averaged (ideas G + H); nothing retrained | Files deleted 26 Nov; scores below |
 | Checkpoint 2 (13 Nov) | `skinnet-c2` | `configs/skinnet-c2.yaml` (was idea O): the first step plus MIDAS photos in training | `checkpoints/skinnet-c2/` |
 | Checkpoint 3 | `skinnet-c3` | `configs/skinnet-c3.yaml` (was idea Q) | `checkpoints/skinnet-c3/` |
 | Checkpoint 4 | `skinnet-c4` | `configs/skinnet-c4.yaml` (was idea U) | `checkpoints/skinnet-c4/` |
-| Checkpoint 4, all-DDI version | `skinnet-idea-t` | `configs/skinnet-idea-t.yaml`: checkpoint 4 with `ddi_val` also in training | `checkpoints/skinnet-idea-t/` |
+| Checkpoint 4, all-DDI version | `skinnet-idea-t` | checkpoint 4 with `ddi_val` also in training (tag `checkpoint-4-all-ddi`) | Files deleted 26 Nov; scores below |
 | **Checkpoint 5** | `skinnet-c5` | `configs/skinnet-c5.yaml` (was idea Y) | `checkpoints/skinnet-c5/` |
 
 One name per model, the same for its config (`configs/<name>.yaml`), run folder (`runs/<name>/`, seeds `s0`–`s2` and their average `avg`) and result folder (`results/<name>/metrics.csv`). An idea being tested is `skinnet-idea-<letter>`; if kept, `scripts/adopt_checkpoint.py` renames it to the next checkpoint everywhere.
@@ -90,7 +90,7 @@ HIBA, MCR-SL, Derm7pt and ISIC 2019 were level (section 27).
 
 **How it became a checkpoint.** It failed step 1 (`val` and `midas_val` a little lower) and was not higher on every test set. The user chose it on 22 Nov for its DDI validation set, so that every later idea can be checked on DDI before a test set is looked at (section 26).
 
-**The all-DDI version** (`skinnet-idea-t`, tag `checkpoint-4-all-ddi`): the same recipe with `ddi_val` also in training, 328 DDI photos. `ddi_hold` 0.684, level with checkpoint 4. It cannot be checked on `ddi_val`, so new ideas are compared with checkpoint 4's line, not with it.
+**The all-DDI version** (`skinnet-idea-t`, tag `checkpoint-4-all-ddi`): the same recipe with `ddi_val` also in training, 328 DDI photos. `ddi_hold` 0.684, level with checkpoint 4. It cannot be checked on `ddi_val`, so new ideas are compared with checkpoint 4's line, not with it. Its config, runs and weights: files deleted on 26 Nov (DECISIONS.md, section 38); the config is in git history and the tag still points at its commit.
 
 ## Checkpoint 3 (14 Nov 2026)
 
@@ -167,10 +167,10 @@ Checkpoint 1's three trained models, used better when predicting. Nothing was re
 | | |
 | --- | --- |
 | What it is | For each image, each of the three seeds predicts on the image and its three mirror images (left-right, up-down, both); the twelve cancer probabilities are averaged into one |
-| Weights | The same as checkpoint 1; copies with the prediction settings are in `checkpoints/skinnet-c1-tta/` (local, git-ignored) |
-| Run folder | `runs/skinnet-c1-tta`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | The same as checkpoint 1, with the prediction settings |
+| Run folder and weight copies | Files deleted on 26 Nov (DECISIONS.md, section 38) |
 | Git tag | `checkpoint-1-tta` |
-| Built with | `python -m skincancer.derive` (commands below) |
+| Built with | `python -m skincancer.derive tta` from checkpoint 1's runs |
 
 | Score | Baseline | Checkpoint 1 | First step |
 | --- | --- | --- | --- |
@@ -269,9 +269,9 @@ Each idea has a letter and changes one thing in the current checkpoint. Its rule
 A discarded idea's result goes into [IDEAS.md](IDEAS.md) and is reported to the user; once the user has seen it, its config, runs and weights are deleted (DECISIONS.md, section 36).
 
 **Next (26 Nov 2026), each started only on the user's word:**
-- **Z, MixStyle** and **AA, mixup and CutMix** (DECISIONS.md, section 32): written against checkpoint 4 and judged against it as written. Z's seed 0 is done and seed 1 stopped at epoch 27 of 60.
 - **SkinNet-KD:** SkinNet trained from random weights to follow PanDerm's predictions. A separately named model, never one of SkinNet's checkpoints (section 33).
 - **Settled:** more epochs. Checkpoint 2 (idea N) and checkpoint 5 (idea AC) at 120 epochs gain at home and not outside (section 35).
+- **Cancelled:** Z, MixStyle, and AA, mixup and CutMix (section 32), written against checkpoint 4. They were never judged: Z's seed 0 had finished and seed 1 stopped at epoch 27 of 60, and AA never trained. Their files were deleted on 26 Nov (section 38). A style-mixing or mixup idea wanted later would be written fresh against checkpoint 5.
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 

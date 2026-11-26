@@ -1,6 +1,6 @@
 """Make a kept idea the next checkpoint: one name everywhere (DECISIONS.md, section 15).
 
-    python scripts/adopt_checkpoint.py skinnet-idea-ab skinnet-c7 "Checkpoint 7 (DECISIONS.md, section NN): was idea AB"
+    python scripts/adopt_checkpoint.py skinnet-idea-ad skinnet-c6 "Checkpoint 6 (DECISIONS.md, section NN): was idea AD"
 
 Renames, in place:
 - configs/<idea>.yaml -> <name>.yaml, with `name:` and the first comment line updated;

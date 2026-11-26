@@ -1,6 +1,6 @@
 """Training curves of a model's seeds: loss, accuracy and validation AUC against epochs.
 
-    python -m skincancer.plot_history --exp skinnet-idea-t          # -> results/<exp>/curves.png
+    python -m skincancer.plot_history --exp skinnet-c5              # -> results/<exp>/curves.png
 
 Accuracy is logged from 22 Nov 2026 on (train.py); older runs show loss and validation AUC only.
 Training accuracy is measured on the augmented, class-balanced batches the model trains on, so it is

@@ -1,6 +1,0 @@
-# Idea AA (DECISIONS.md, section 32): checkpoint 4 with mixup (alpha 0.2) or CutMix (alpha 1.0)
-# on half the batches.
-extends: skinnet-c4.yaml
-name: skinnet-idea-aa
-train:
-  mix: {mixup: 0.2, cutmix: 1.0, prob: 0.5}

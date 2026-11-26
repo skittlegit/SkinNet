@@ -111,18 +111,18 @@ python -m skincancer.train --config configs/skinnet.yaml --seed 0     # one seed
 python -m skincancer.predict --run runs/skinnet/s0 --splits ddi_hold dermacon_test dermacon_other midas_test --final
 python -m skincancer.evaluate --exp skinnet                           # results/skinnet/metrics.csv
 python -m skincancer.analysis.gradcam --run runs/skinnet/s0 --split test
-python -m skincancer.compare --a skinnet-c1 --b skinnet-c1-tta --splits val test   # is b better than a?
+python -m skincancer.compare --a skinnet-c4 --b skinnet-c5 --splits val midas_val   # is b better than a?
 python -m skincancer.plot_history --exp skinnet-c5                    # results/skinnet-c5/curves.png
 ```
 
 For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there. A kept idea becomes the next checkpoint with `python scripts/adopt_checkpoint.py <idea> skinnet-c<n> "<why>"`.
 
-The queue does all of that for several ideas in a row, detached from the terminal, and logs to `runs/queue.log`:
+The queue does all of that for several ideas in a row, detached from the terminal, and logs to `runs/queue.log`. The letters below are examples:
 
 ```bash
-bash scripts/queue.sh start z aa              # skinnet-idea-z, then -aa: step 1, its rule, step 2 if passed
-bash scripts/queue.sh start z@skinnet-c4      # against another reference (letter[@reference][:rule])
-bash scripts/queue.sh start --wait z          # start once the PanDerm repository's queue has finished
+bash scripts/queue.sh start ad ae             # skinnet-idea-ad, then -ae: step 1, its rule, step 2 if passed
+bash scripts/queue.sh start ad@skinnet-c4     # against another reference (letter[@reference][:rule])
+bash scripts/queue.sh start --wait ad         # start once the PanDerm repository's queue has finished
 bash scripts/queue.sh status                  # which seed and epoch, time left, the last results
 bash scripts/queue.sh stop                    # stop it now; the same start command carries on later
 ```
@@ -135,7 +135,7 @@ Finished seeds are skipped and a stopped seed resumes from its `last.pt`, so not
 
 ```
 configs/data.yaml                 dataset paths and split settings
-configs/                          skinnet.yaml (the recipe), checkpoints skinnet-c<n>.yaml, ideas skinnet-idea-<x>.yaml, leave-one-out
+configs/                          skinnet.yaml (the recipe), checkpoints skinnet-c<n>.yaml, ideas skinnet-idea-<x>.yaml
 docs/                             CHECKPOINTS (every kept model), IDEAS, RESULTS, DATA_PLAN, LABEL_MAP_REVIEW
 tests/                            unit and pipeline tests (synthetic data, under a minute on CPU)
 DECISIONS.md                      every rule and decision, in order

@@ -5,9 +5,9 @@
 # logs to runs/queue.log and skips finished seeds: after a stop, the same command carries on,
 # and a stopped seed resumes from its last.pt. Nothing is deleted or adopted; that is the user's call.
 #
-#   bash scripts/queue.sh start z aa            # <model>-idea-z, then -aa, against the current checkpoint
-#   bash scripts/queue.sh start z@skinnet-c4    # against another reference
-#   bash scripts/queue.sh start z:guard         # another step 1 rule: gain (default) | guard | unseen
+#   bash scripts/queue.sh start ad ae           # <model>-idea-ad, then -ae (example letters), against the current checkpoint
+#   bash scripts/queue.sh start ad@skinnet-c4   # against another reference
+#   bash scripts/queue.sh start ad:guard        # another step 1 rule: gain (default) | guard | unseen
 #   bash scripts/queue.sh start --wait a        # start once the other repository's queue has finished
 #   bash scripts/queue.sh status                # running or not, which seed and epoch, time left, last results
 #   bash scripts/queue.sh stop                  # stop this repository's queue and its training now

@@ -29,14 +29,14 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
-| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 4's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 4 |
+| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 4's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 4; files deleted 26 Nov (DECISIONS.md, section 38) |
 | U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 4** (`skinnet-c4`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
 | V | Derm1M's mycosis fungoides photos and look-alike rashes (574 / 586, matched by source and skin tone, every photo looked at) added to checkpoint 4's training | 23 Nov | Passed step 1; not kept: lower on `ext_isic2019` (−0.049) and pooled `test` AUC (−0.008), MF gains on `ddi_hold` (+0.051) and `test` (+0.017) not supported (DECISIONS.md, section 29) |
 | W | Checkpoint 4 kept as a running average of its weights and batch norm statistics | 24 Nov | Failed step 1, no test set scored: `midas_val` +0.017 (supported), `val` −0.003 and `ddi_val` −0.019 (not supported); kept for the user (DECISIONS.md, section 30) |
 | X | Checkpoint 4 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Failed step 1, no test set scored: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016; kept for the user (DECISIONS.md, section 30) |
 | Y | Flat minima: sharpness-aware minimisation (rho 0.05) and W's weight average | 24 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 25 Nov): step 1 passed (all three higher); test sets MED-NODE +0.052, Asan +0.009 (supported), ISIC 2019 −0.021 (supported lower) (DECISIONS.md, sections 32 and 33) |
-| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Stopped for AB and AC (Z seed 1 at epoch 27); runs against `skinnet-c4` by the user's word (DECISIONS.md, sections 32 and 35) |
-| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Not started; waits; runs against `skinnet-c4` by the user's word (DECISIONS.md, sections 32 and 35) |
+| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Cancelled 26 Nov (files deleted; DECISIONS.md, section 38): seed 0 done, seed 1 stopped at epoch 27 of 60, never judged |
+| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Cancelled 26 Nov (files deleted; DECISIONS.md, section 38): never trained |
 | AB | The base recipe for 120 epochs, judged against the base | 25 Nov | Failed step 1, no test set scored: `val` +0.043 (supported), `midas_val` +0.023, `ddi_val` −0.018 (DECISIONS.md, section 35) |
 | AC | Checkpoint 5 for 120 epochs, judged against checkpoint 5 | 25 Nov | Failed step 1, no test set scored: `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014; 60 epochs stay (DECISIONS.md, section 35) |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 3's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 3 at home and on MIDAS test, level on DDI |
@@ -119,7 +119,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 
 - **Compared on:** test and outside sets, paired comparison with checkpoint 1.
 - **Result:** our test split AUC 0.890 → 0.904 and false alarms 40% → 33%, a supported gain. MIDAS +0.006 and DDI +0.006, neither supported.
-- **Outcome:** kept as the first step of **checkpoint 2** (`skinnet-c1-tta`; a checkpoint of its own until 26 Nov). The rule written beforehand asked for an outside gain, and by that rule it was first discarded; the team restored it because the gain at home is real, free, and nothing is worse elsewhere.
+- **Outcome:** kept as the first step of **checkpoint 2** (`skinnet-c1-tta`; a checkpoint of its own until 26 Nov, its files deleted the same day). The rule written beforehand asked for an outside gain, and by that rule it was first discarded; the team restored it because the gain at home is real, free, and nothing is worse elsewhere.
 
 ### J. MIDAS photos in training
 
@@ -220,7 +220,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Why:** DDI has stayed near 0.65 on every from-scratch model; MIDAS rose only when its own photos were trained on (ideas J and O). Decided by the team, 20 Nov (DECISIONS.md, section 25).
 - **Compared on:** step 1 on validation, paired comparison with checkpoint 3; then the test sets with `ddi_hold` in place of DDI.
 - **Caution:** a gain on `ddi_hold` shows the model learned DDI's hospital, not that it travels to an unseen one.
-- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept as checkpoint 4's all-DDI version (user, 22 Nov): the same config as checkpoint 4 with `ddi_val` also in training, so it is the final retrain of the current recipe (DECISIONS.md, section 26).
+- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept as checkpoint 4's all-DDI version (user, 22 Nov): the same config as checkpoint 4 with `ddi_val` also in training, so it is the final retrain of the current recipe (DECISIONS.md, section 26). Its config, runs and weights were deleted on 26 Nov (DECISIONS.md, section 38); the tag `checkpoint-4-all-ddi` still points at its commit.
 
 ### U. A quarter of DDI in training, a quarter for validation
 
@@ -266,13 +266,13 @@ Letters were given when an idea was first listed, not when it was run, which is 
 
 - **What:** checkpoint 4 with MixStyle after stages 1 and 2: the colour and contrast statistics of early feature maps are mixed between images, so the network cannot tell hospitals apart by photo style (probability 0.5, alpha 0.1, the paper's settings).
 - **Compared on:** section 32's rule against checkpoint 4.
-- **Status:** seed 0 done; stopped at seed 1, epoch 27 of 60, for ideas AB and AC. Runs again on the user's word.
+- **Status:** Cancelled 26 Nov (files deleted; DECISIONS.md, section 38). Seed 0 had finished and seed 1 stopped at epoch 27 of 60, for ideas AB and AC; it was never judged.
 
 ### AA. Mixup and CutMix
 
 - **What:** checkpoint 4 with mixup (alpha 0.2) or CutMix (alpha 1.0) on half the batches, half the time each, with soft targets and label smoothing 0.1.
 - **Compared on:** section 32's rule against checkpoint 4.
-- **Status:** not started; runs after Z on the user's word.
+- **Status:** Cancelled 26 Nov (files deleted; DECISIONS.md, section 38). Never trained.
 
 ### AB and AC. More epochs again
 

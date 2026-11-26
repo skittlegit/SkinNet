@@ -43,6 +43,7 @@ File and folder names in a section are as they were when it was written. The lay
 - [35. More epochs again: ideas AB and AC (25 Nov 2026)](#35-more-epochs-again-ideas-ab-and-ac-25-nov-2026)
 - [36. Discarded ideas' files deleted; the rule from now on (26 Nov 2026)](#36-discarded-ideas-files-deleted-the-rule-from-now-on-26-nov-2026)
 - [37. Checkpoints renumbered: old 2 and 3 merged (26 Nov 2026)](#37-checkpoints-renumbered-old-2-and-3-merged-26-nov-2026)
+- [38. Cleanup: checkpoint 2's first step, idea T, ideas Z and AA, and the leave-one-out tables deleted (26 Nov 2026)](#38-cleanup-checkpoint-2s-first-step-idea-t-ideas-z-and-aa-and-the-leave-one-out-tables-deleted-26-nov-2026)
 
 ## 1. Fresh start (12 Nov 2026)
 
@@ -1521,3 +1522,21 @@ AB and AC are kept on disk for the user; neither is adopted.
 - **PanDerm's old checkpoints keep their numbers:** "PanDerm checkpoint 1 / 2" in sections 24 to 30 are unchanged.
 - **Not renamed:** commit messages, run logs and `results/compare_ext_22nov.txt`, which keep the numbers of their day. Read them with the table above.
 
+## 38. Cleanup: checkpoint 2's first step, idea T, ideas Z and AA, and the leave-one-out tables deleted (26 Nov 2026)
+
+**Decided by the user (26 Nov):** "there are so many extra like c1-tta, idea t,z,aa and also the individual dataset ones ... so do a proper cleanup".
+
+**Deleted** (about 200 MB, nearly all of it local and git-ignored):
+- **The first step of checkpoint 2** (`skinnet-c1-tta`, sections 10 and 37): its run folder, its result table (`results/skinnet-c1-tta/metrics.csv`, the one result table that was in git) and its weight copies. It had no config of its own: it was checkpoint 1's seeds predicting with test-time flips.
+- **Idea T, checkpoint 4's all-DDI version** (`skinnet-idea-t`, sections 25 and 26): its config, run folder, result tables and weights.
+- **Ideas Z and AA** (section 32): their configs and Z's run folder. AA never trained, and neither had weights or result tables.
+- **The leave-one-dataset-out result tables** (`results/skinnet-lodo-f17k/`, `-midas` and `-pad`; section 27). Their configs and runs went in section 36.
+
+**Kept:**
+- their results, written up in sections 10, 25 to 27, 32 and 37 and in [docs/IDEAS.md](docs/IDEAS.md) and [docs/CHECKPOINTS.md](docs/CHECKPOINTS.md). From now on these are the record of the leave-one-out numbers (section 36 had kept their tables so the numbers could be checked);
+- their rows in the test-set ledger (`runs/final_ledger.csv`): every look at a test set stays on record;
+- the git tags `checkpoint-1-tta` and `checkpoint-4-all-ddi`, which still point at their commits;
+- the configs (`configs/skinnet-idea-<t|z|aa>.yaml`), in git history before this commit;
+- the code for MixStyle and mixup/CutMix (`regularize.py`) and its tests. It is off unless a config turns it on.
+
+**Z and AA are cancelled, not run.** Z's seed 0 had finished and seed 1 stopped at epoch 27 of 60 (section 35); AA never started. Neither has a result. If a style-mixing or mixup idea is wanted later, it is written fresh against the current checkpoint, `skinnet-c5`, with a new letter and its rule written before it trains.
