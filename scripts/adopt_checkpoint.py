@@ -6,9 +6,10 @@ Renames, in place:
 - configs/<idea>.yaml -> <name>.yaml, with `name:` and the first comment line updated;
 - runs/<idea>/ -> runs/<name>/, and `name:` in every config.yaml inside;
 - results/<idea>/ -> results/<name>/ (if it exists);
-- every runs/final_ledger.csv row that names the idea's folders.
-Then copies each seed's best.pt, config.yaml and summary.json, and the seed average's config and
-predictions, to checkpoints/<name>/. Prints what it did; refuses if <name> exists anywhere.
+- every runs/final_ledger.csv row that names the idea's folders;
+- the `exp` label in its prediction and score tables, and the seed average's `ensemble_of` list.
+Then copies each seed's best.pt, config.yaml and summary.json, the seed average's config and
+predictions, and its score table, to checkpoints/<name>/. Prints what it did; refuses if <name> exists anywhere.
 """
 from __future__ import annotations
 
@@ -23,11 +24,23 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def main(idea: str, name: str, header: str) -> None:
-    cfg_old, cfg_new = ROOT / "configs" / f"{idea}.yaml", ROOT / "configs" / f"{name}.yaml"
-    run_old, run_new = ROOT / "runs" / idea, ROOT / "runs" / name
-    res_old, res_new = ROOT / "results" / idea, ROOT / "results" / name
-    ckpt = ROOT / "checkpoints" / name
+def relabel(folder: Path, idea: str, name: str) -> int:
+    """Every table under `folder` whose `exp` column names the idea now names the checkpoint."""
+    n = 0
+    for f in folder.rglob("*.csv"):
+        df = pd.read_csv(f)
+        if "exp" in df.columns and (df["exp"] == idea).any():
+            df.loc[df["exp"] == idea, "exp"] = name
+            df.to_csv(f, index=False, lineterminator="\n")
+            n += 1
+    return n
+
+
+def main(idea: str, name: str, header: str, root: Path = ROOT) -> None:
+    cfg_old, cfg_new = root / "configs" / f"{idea}.yaml", root / "configs" / f"{name}.yaml"
+    run_old, run_new = root / "runs" / idea, root / "runs" / name
+    res_old, res_new = root / "results" / idea, root / "results" / name
+    ckpt = root / "checkpoints" / name
     for p in (cfg_new, run_new, res_new, ckpt):
         if p.exists():
             raise SystemExit(f"{p} already exists")
@@ -49,13 +62,16 @@ def main(idea: str, name: str, header: str) -> None:
     for c in run_new.glob("*/config.yaml"):
         d = yaml.safe_load(c.read_text(encoding="utf-8"))
         d["name"] = name
+        if d.get("ensemble_of"):   # the seed average lists its seeds' folders
+            d["ensemble_of"] = [s.replace(f"runs/{idea}/", f"runs/{name}/") for s in d["ensemble_of"]]
         c.write_text(yaml.safe_dump(d, sort_keys=False), encoding="utf-8")
-    print(f"runs    {run_old.relative_to(ROOT)} -> {run_new.relative_to(ROOT)}")
+    print(f"runs    {run_old.relative_to(root)} -> {run_new.relative_to(root)}")
     if res_old.exists():
         res_old.rename(res_new)
-        print(f"results {res_old.relative_to(ROOT)} -> {res_new.relative_to(ROOT)}")
+        print(f"results {res_old.relative_to(root)} -> {res_new.relative_to(root)}")
+    print(f"labels  {relabel(run_new, idea, name) + (relabel(res_new, idea, name) if res_new.exists() else 0)} tables renamed")
 
-    ledger = ROOT / "runs" / "final_ledger.csv"
+    ledger = root / "runs" / "final_ledger.csv"
     if ledger.exists():
         df = pd.read_csv(ledger)
         old_prefix, new_prefix = f"runs/{idea}/", f"runs/{name}/"
@@ -72,7 +88,9 @@ def main(idea: str, name: str, header: str) -> None:
                 shutil.copy2(sdir / f, dst / f)
         if sdir.name == "avg" and (sdir / "preds").exists():
             shutil.copytree(sdir / "preds", dst / "preds")
-    print(f"weights copied to {ckpt.relative_to(ROOT)}")
+    if (res_new / "metrics.csv").exists():
+        shutil.copy2(res_new / "metrics.csv", ckpt / "metrics.csv")
+    print(f"weights copied to {ckpt.relative_to(root)}")
 
 
 if __name__ == "__main__":
