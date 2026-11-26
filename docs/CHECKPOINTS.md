@@ -17,9 +17,80 @@ A checkpoint is a model we keep and build on. Each idea starts from the latest o
 
 One name per model, the same for its config (`configs/<name>.yaml`), run folder (`runs/<name>/`, seeds `s0`–`s2` and their average `avg`) and result folder (`results/<name>/metrics.csv`). An idea being tested is `skinnet-idea-<letter>`; if kept, `scripts/adopt_checkpoint.py` renames it to the next checkpoint everywhere.
 
-## Earlier checkpoints and what was tried on the way
+Each section below gives a checkpoint's recipe, its scores against the checkpoint before it, and how it was adopted, newest first. Scores are seed averages with test-time flips; paired differences have 95% intervals, and "supported" means the interval excludes zero. Its scores on every test set are in the [README](../README.md); details in [RESULTS.md](RESULTS.md).
 
-The current models of both tracks are in [CHECKPOINTS.md](../CHECKPOINTS.md). Scores are the mean of three seeds; details in [RESULTS.md](RESULTS.md).
+## Checkpoint 6 (25 Nov 2026)
+
+Checkpoint 5 trained for flat minima (idea Y): sharpness-aware minimisation (SAM, rho 0.05), which takes each step against the worst nearby weights, plus a running average of the weights (decay 0.9995 per step, batch norm statistics included). Nothing else changed.
+
+| | |
+| --- | --- |
+| Training data | 18,186 images, as checkpoint 5 |
+| Training | 60 epochs, early stopping off; SAM takes two passes per step, so about an hour per seed |
+| Config | `configs/skinnet-c6.yaml` |
+| Run folder | `runs/skinnet-c6`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/skinnet-c6/` (local, git-ignored) |
+| Git tag | `checkpoint-6` |
+
+Step 1, validation sets: higher than checkpoint 5 on all three, none by a supported amount. It was the first SkinNet training change to pass step 1.
+
+| Set | Checkpoint 5 | Checkpoint 6 | Paired difference [95% interval] |
+| --- | --- | --- | --- |
+| `val`, within-source AUC | 0.903 | 0.906 | +0.003 [−0.005, +0.011] |
+| `midas_val` | 0.808 | 0.815 | +0.007 [−0.009, +0.024] |
+| `ddi_val` | 0.749 | 0.755 | +0.006 [−0.023, +0.036] |
+
+Step 2, test sets, scored once:
+
+| Set | Checkpoint 5 | Checkpoint 6 | Paired difference [95% interval] |
+| --- | --- | --- | --- |
+| Our test split | 0.901 | 0.901 | −0.000 [−0.006, +0.006] |
+| MIDAS test | 0.744 | 0.734 | −0.010 [−0.034, +0.012] |
+| DDI, held-out half | 0.670 | 0.676 | +0.006 [−0.018, +0.029] |
+| DermaCon-IN tumours | 0.847 | 0.846 | −0.001 [−0.030, +0.028] |
+| HIBA | 0.860 | 0.850 | −0.011 [−0.028, +0.008] |
+| MED-NODE | 0.771 | **0.823** | **+0.052 [+0.012, +0.094]** |
+| MCR-SL | 0.804 | 0.805 | +0.001 [−0.031, +0.032] |
+| Derm7pt | 0.714 | 0.712 | −0.002 [−0.016, +0.013] |
+| Asan and Hallym | 0.784 | **0.793** | **+0.009 [+0.005, +0.012]** |
+| ISIC 2019 (dermoscopy) | **0.750** | 0.729 | **−0.021 [−0.025, −0.016]** |
+
+**Where it stands.** The first change to training, rather than to the data, that gained on outside test sets: MED-NODE and Asan, both supported. It lost on ISIC 2019, the one dermoscopy set; SkinNet learns from clinical photos, and idea V lost there too. Against the base model `skinnet` on the validation sets, the six checkpoints together are worth `val` +0.052, `midas_val` +0.153 and `ddi_val` +0.070, all supported (DECISIONS.md, section 35).
+
+**How it became a checkpoint.** The rule written before its test scores (DECISIONS.md, section 32) asked for nothing lower by a supported amount; ISIC 2019 was. The user adopted it on 25 Nov as a narrow miss (section 33).
+
+## Checkpoint 5 (22 Nov 2026)
+
+Checkpoint 4's recipe with a quarter of DDI (`ddi_train`, 164 photos) added to training (idea U). Another quarter (`ddi_val`, 164) became a DDI validation set, used in step 1 from then on; the other half (`ddi_hold`, 328) stays test only (DECISIONS.md, section 26).
+
+| | |
+| --- | --- |
+| Training data | 18,186 images: the 18,022 of checkpoint 4 plus 164 from DDI |
+| Training | 60 epochs, early stopping off, about 30 minutes per seed |
+| Config | `configs/skinnet-c5.yaml` |
+| Run folder | `runs/skinnet-c5`: seeds in `s0`, `s1`, `s2`, their average in `avg` |
+| Weights | `checkpoints/skinnet-c5/` (local, git-ignored) |
+| Git tag | `checkpoint-5` |
+
+| Set | Checkpoint 4 | Checkpoint 5 | Paired difference [95% interval] |
+| --- | --- | --- | --- |
+| `val`, within-source AUC (step 1) | 0.905 | 0.903 | −0.003 [−0.012, +0.006] |
+| `midas_val` (step 1) | 0.818 | 0.808 | −0.010 [−0.030, +0.010] |
+| `ddi_val` (step 1) | 0.701 | **0.749** | **+0.048 [+0.015, +0.087]** |
+| Our test split | 0.903 | 0.901 | −0.002 [−0.007, +0.003] |
+| MIDAS test | 0.750 | 0.744 | −0.006 [−0.026, +0.012] |
+| DDI, held-out half | 0.641 | **0.670** | **+0.029 [+0.007, +0.052]** |
+| DermaCon-IN tumours | 0.818 | 0.847 | +0.029 [−0.014, +0.084] |
+| MED-NODE | **0.822** | 0.771 | **−0.051**, supported |
+| Asan and Hallym | 0.775 | **0.784** | **+0.009**, supported |
+
+HIBA, MCR-SL, Derm7pt and ISIC 2019 were level (section 27).
+
+**Where it stands.** 164 DDI photos raise DDI's held-out half by 0.029, two thirds of the gain from 328 (idea T, +0.043), and the DDI validation set agrees with the test half on the direction and size of the gain. Home and MIDAS are level. DDI is no longer a hospital the model has never seen: its never-seen DDI score is checkpoint 4's (0.650 on all of DDI).
+
+**How it became a checkpoint.** It failed step 1 (`val` and `midas_val` a little lower) and was not higher on every test set. The user chose it on 22 Nov for its DDI validation set, so that every later idea can be checked on DDI before a test set is looked at (section 26).
+
+**The all-DDI version** (`skinnet-idea-t`, tag `checkpoint-5-all-ddi`): the same recipe with `ddi_val` also in training, 328 DDI photos. `ddi_hold` 0.684, level with checkpoint 5. It cannot be checked on `ddi_val`, so new ideas are compared with checkpoint 5's line, not with it.
 
 ## Checkpoint 4 (14 Nov 2026)
 
@@ -135,7 +206,7 @@ It weakened the "smartphone photo means cancer" shortcut (false alarms on PAD-UF
 
 ## What was tried to get here: do not repeat
 
-Seven models were trained on the way to checkpoint 1, and two ideas for using it differently led to checkpoint 2. Everything that was not kept is listed with the reason, so nobody spends time on them again unless something else has changed (see the last section).
+Seven models were trained on the way to checkpoint 1, and two ideas for using it differently led to checkpoint 2. Everything up to checkpoint 4 that was not kept is listed with the reason, so nobody spends time on them again unless something else has changed (see the last section). The ideas after checkpoint 4 (T to AC) are in [IDEAS.md](IDEAS.md).
 
 | # | What was tried | Compared on | Result | Verdict |
 | --- | --- | --- | --- | --- |
@@ -183,22 +254,23 @@ The deciding score on validation was the within-source AUC: the AUC inside each 
 - Skin-tone analysis is left for a later stage.
 - Training on the CPU takes about 7 minutes per epoch; on the GPU, 18 seconds. Always train on the GPU.
 
-## Ideas not tried yet
+## How an idea is judged now, and what is next
 
-Each idea has a letter, continuing from A to H above. The rule is the same for every one:
+Each idea has a letter and changes one thing in the current checkpoint. Its rule is written in [DECISIONS.md](../DECISIONS.md) before it trains (section 26, as applied in section 32):
 
-- **If it works, it becomes the next checkpoint.** "Works" means a gain over the current checkpoint that the paired comparison supports, with nothing clearly worse elsewhere. Whether the gain is at home or on the outside sets is stated with it; a gain on the outside sets is the one we are after.
-- **If it does not, it is discarded:** its config and trained models are deleted and it moves to the "do not repeat" table with its result and the reason.
-- One idea at a time where possible, so a gain or a loss can be traced to one change.
+1. **Step 1, validation sets only.** Three seeds, paired with the checkpoint on `val` (within-source AUC), `midas_val` and `ddi_val`. It passes if it is higher on all three and lower on none by a supported amount.
+2. **Step 2, test sets, scored once.** An idea that passed is scored on every test set, each look recorded in `runs/final_ledger.csv`.
+3. **A candidate** if nothing is lower by a supported amount and at least one outside set is higher by a supported amount. Whether it becomes the next checkpoint is the user's decision.
 
-**Setup step: done (13 Nov 2026).** MIDAS is split by patient into a training part (552 images), an outside validation part (414, never trained on, used to choose models) and a test part (414). DDI is untouched. Ideas are now chosen on the outside validation part as well as our own.
+Nothing is deleted: a discarded idea keeps its config, runs and weights, and its result goes into [IDEAS.md](IDEAS.md).
 
-Every idea on the first list has been run (16 Nov 2026): Q is checkpoint 4, P is a reference, the rest are in the table above, S included. The PanDerm reference (DECISIONS.md, section 23) is done too. On 17 Nov the team made PanDerm a second track beside this one (section 24); its ideas are listed in [IDEAS.md](IDEAS.md). The from-scratch track stays at checkpoint 4. Data details are in [DATA_PLAN.md](../DATA_PLAN.md).
-
-**Order (16 Nov 2026):** N, M, L, K, R and S are done, all discarded, and Q became checkpoint 4 (table above). P (the ImageNet reference) is done, its lower learning rate included (table above). The PanDerm reference is done (table above). On the PanDerm track, idea PC is PanDerm checkpoint 1 (section 24; above). From Q on, an idea must be higher on every set (section 19). Reasons are in [DECISIONS.md](../DECISIONS.md), sections 16 and 19.
+**Next (26 Nov 2026), each started only on the user's word:**
+- **Z, MixStyle** and **AA, mixup and CutMix** (DECISIONS.md, section 32): written against checkpoint 5 and judged against it as written. Z's seed 0 is done and seed 1 stopped at epoch 27 of 60.
+- **SkinNet-KD:** SkinNet trained from random weights to follow PanDerm's predictions. A separately named model, never one of SkinNet's checkpoints (section 33).
+- **Settled:** more epochs. Checkpoint 3 (idea N) and checkpoint 6 (idea AC) at 120 epochs gain at home and not outside (section 35).
 
 **Later stages, not ideas for this one:** which type of cancer it is, and whether darker skin needs its own model or one combined model.
 
-**A limit to keep in mind.** The largest known lever for performance on new hospitals is starting from pretrained weights, which this project has ruled out. A from-scratch network of this size on this much data is likely to stay well below what pretrained models reach on DDI and MIDAS, whatever comes of I to N. (Idea P, 14–15 Nov: with our training data it did not. An ImageNet ResNet-18, at either learning rate, is far ahead at home and behind checkpoint 4 on MIDAS and DDI.)
+**A limit to keep in mind.** The largest known lever for performance on new hospitals is starting from pretrained weights, which this track rules out. A from-scratch network of this size on this much data stays well below the pretrained model: PanDerm is ahead of checkpoint 6 on every outside set, by 0.05 to 0.21 AUC, and by a supported amount on all but DermaCon-IN and MCR-SL ([README](../README.md)). An ImageNet ResNet-18 (idea P, 14–15 Nov) was far ahead at home and behind checkpoint 4 on MIDAS and DDI.
 
 **When a discarded idea is worth another look:** if the training data changes a lot (new sources) or the network changes a lot (much larger), results B to H no longer apply as they stand, because they were all measured with this data and this network.

@@ -2,6 +2,39 @@
 
 Stage one: skin cancer detection. Every number is the mean of three seeds with a 95% confidence interval. The rules are in [DECISIONS.md](../DECISIONS.md); the full table is [results/skinnet/metrics.csv](../results/skinnet/metrics.csv).
 
+## Where it stands now (26 Nov 2026)
+
+The current model is checkpoint 6 (`skinnet-c6`). Its scores on every test set, with missed cancers and false alarms, are in the [README](../README.md); how each checkpoint was adopted is in [CHECKPOINTS.md](CHECKPOINTS.md). The sections below this one are the record of each round, oldest first, as written at the time.
+
+**Every checkpoint on the main test sets** (AUC, three-seed averages from `results/<name>/metrics.csv`):
+
+| Model | Date | Our test split | MIDAS test | DDI | DermaCon-IN tumours |
+| --- | --- | --- | --- | --- | --- |
+| Baseline `skinnet` | 12 Nov | 0.887 | 0.591 | 0.654 | 0.825 |
+| Checkpoint 1: balanced drawing | 12 Nov | 0.890 | 0.642 | 0.623 | 0.793 |
+| Checkpoint 2: seed average and flips | 12 Nov | **0.904** | 0.645 | 0.629 | 0.826 |
+| Checkpoint 3: MIDAS photos in training | 13 Nov | 0.898 | 0.698 | 0.657 | 0.841 |
+| Checkpoint 4: MILK10k photos in training | 14 Nov | 0.903 | **0.750** | 0.650 (half: 0.641) | 0.818 |
+| Checkpoint 5: a quarter of DDI in training | 22 Nov | 0.901 | 0.744 | half: 0.670 | **0.847** |
+| Checkpoint 6: SAM and weight averaging | 25 Nov | 0.901 | 0.734 | half: **0.676** | 0.846 |
+
+- **DDI:** up to checkpoint 4, all of DDI, never trained on. From checkpoint 5, the held-out half (`ddi_hold`), from a hospital whose other photos are in training; checkpoint 4 scores 0.641 on that half.
+- **MIDAS test:** from checkpoint 3 on, MIDAS's other photos are in training.
+
+**The six outside sets no model trains on** (AUC; scored from 22 Nov, so from checkpoint 4 on):
+
+| Model | HIBA | MED-NODE | MCR-SL | Derm7pt | Asan and Hallym | ISIC 2019 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Checkpoint 4 | **0.866** | 0.822 | 0.794 | 0.709 | 0.775 | 0.748 |
+| Checkpoint 5 | 0.860 | 0.771 | 0.804 | **0.713** | 0.784 | **0.749** |
+| Checkpoint 6 | 0.849 | **0.823** | **0.805** | 0.712 | **0.793** | 0.729 |
+
+**What the record shows.**
+- **Home scores stopped rising at checkpoint 2** (about 0.90). Most changes since then traded a little at home for gains outside.
+- **New hospitals' photos in training are what moved the outside scores:** MIDAS 0.59 → 0.75 with MIDAS and MILK10k photos, DDI's half 0.64 → 0.68 with 164 DDI photos.
+- **On hospitals never trained on, SkinNet stays at 0.71 to 0.87.** Leaving a source out of training costs it about 0.09 AUC on that source (DECISIONS.md, section 27).
+- **Changes to training mostly helped at home only.** More epochs (N, AB, AC), a wider network (M), self-supervised pretraining (L) and ImageNet weights (P) all raised home scores and not outside ones. SAM (checkpoint 6) is the exception, on two of the six outside sets.
+
 ## Baseline (12 Nov 2026)
 
 SkinNet, 2.8M parameters, trained from random weights on 12,562 images (2,220 cancer) from Fitzpatrick17k and PAD-UFES-20. 60 epochs, 18 seconds per epoch on an RTX 4060. The three seeds reached validation AUC 0.883, 0.874 and 0.877.
@@ -51,7 +84,7 @@ MIDAS holds only tumours, cancers against benign lookalikes, which is why it sco
 
 ## Reading
 
-This is a baseline, and it behaves as expected for a small network trained from random weights on this data: a good score at home that does not travel. The two weaknesses it shows are the two that [DATA_PLAN.md](../DATA_PLAN.md) targets, more hard cases (benign tumours and biopsy-confirmed cancers) and smartphone photos that are not cancer.
+This is a baseline, and it behaves as expected for a small network trained from random weights on this data: a good score at home that does not travel. The two weaknesses it shows are the two that [DATA_PLAN.md](DATA_PLAN.md) targets, more hard cases (benign tumours and biopsy-confirmed cancers) and smartphone photos that are not cancer.
 
 Training was still improving slowly when it ended (best epochs 54 to 56 of 60), so a longer schedule or a larger network may add a little. Neither would fix the shortcut.
 
@@ -119,7 +152,7 @@ Three variants built on checkpoint 1, compared with it on the validation split, 
 - Adding 958 Derm7pt photos (294 cancers, 664 benign tumours) did not help. They come from one more atlas and are almost all moles and melanomas, so they add little the network had not seen.
 - Larger images did not help either. The variant at 320 pixels stopped early at epoch 56 with no gain; whatever limits the model, it is not image detail at this network size.
 - The differences from checkpoint 1 (0.007 to 0.013) are about the size of the seed-to-seed spread (0.01), so "no better" is the supported conclusion, not "worse".
-- Three rounds now point the same way: changes to how we use these two sources move the score on these two sources at most. The outside gap needs training images from other kinds of source, and a way to measure outside performance while choosing models. Both are in [DATA_PLAN.md](../DATA_PLAN.md).
+- Three rounds now point the same way: changes to how we use these two sources move the score on these two sources at most. The outside gap needs training images from other kinds of source, and a way to measure outside performance while choosing models. Both are in [DATA_PLAN.md](DATA_PLAN.md).
 
 ## Ideas G and H: averaging seeds and test-time flips (12 Nov 2026)
 

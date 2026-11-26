@@ -2,6 +2,46 @@
 
 The rules this project runs by. The code enforces them. Changing a rule means changing it here, in the code, and re-running whatever it touches.
 
+File and folder names in a section are as they were when it was written. The layout changed on 23 and 25 Nov (sections 28 and 34): configs are now `configs/<name>.yaml`, runs `runs/<name>/`, results `results/<name>/` and docs `docs/`.
+
+**Contents**
+
+- [1. Fresh start (12 Nov 2026)](#1-fresh-start-12-nov-2026)
+- [2. Classes and labels](#2-classes-and-labels)
+- [3. Splits](#3-splits)
+- [4. What trains, what selects, what tests](#4-what-trains-what-selects-what-tests)
+- [5. The network: SkinNet](#5-the-network-skinnet)
+- [6. Training](#6-training)
+- [7. Metrics and statistics](#7-metrics-and-statistics)
+- [8. Second round: training that the shortcut cannot exploit (12 Nov 2026)](#8-second-round-training-that-the-shortcut-cannot-exploit-12-nov-2026)
+- [9. Third round: more hard cases and larger images (12 Nov 2026)](#9-third-round-more-hard-cases-and-larger-images-12-nov-2026)
+- [10. Ideas G and H: averaging seeds and test-time flips (12 Nov 2026)](#10-ideas-g-and-h-averaging-seeds-and-test-time-flips-12-nov-2026)
+- [11. MIDAS split three ways; idea J (12 Nov 2026)](#11-midas-split-three-ways-idea-j-12-nov-2026)
+- [12. Idea O: idea J with early stopping off (13 Nov 2026)](#12-idea-o-idea-j-with-early-stopping-off-13-nov-2026)
+- [13. Idea I: SCIN photos in training (13 Nov 2026)](#13-idea-i-scin-photos-in-training-13-nov-2026)
+- [14. Ideas M and N: a larger network, a longer schedule (13 Nov 2026)](#14-ideas-m-and-n-a-larger-network-a-longer-schedule-13-nov-2026)
+- [15. Naming rule (13 Nov 2026)](#15-naming-rule-13-nov-2026)
+- [16. Ideas P and Q, and a wider idea L (14 Nov 2026)](#16-ideas-p-and-q-and-a-wider-idea-l-14-nov-2026)
+- [17. Idea L: self-supervised pretraining on our own photos (14 Nov 2026)](#17-idea-l-self-supervised-pretraining-on-our-own-photos-14-nov-2026)
+- [18. Idea Q: MILK10k's biopsied clinical photos in training (14 Nov 2026)](#18-idea-q-milk10ks-biopsied-clinical-photos-in-training-14-nov-2026)
+- [19. Team decisions after ideas M and N (14 Nov 2026)](#19-team-decisions-after-ideas-m-and-n-14-nov-2026)
+- [20. Idea K: ISIC 2019 dermoscopy in training (14 Nov 2026)](#20-idea-k-isic-2019-dermoscopy-in-training-14-nov-2026)
+- [21. Idea R: MILK10k drawn twice as often (15 Nov 2026)](#21-idea-r-milk10k-drawn-twice-as-often-15-nov-2026)
+- [22. Idea S: Asan and Hallym clinical photos in training (15 Nov 2026)](#22-idea-s-asan-and-hallym-clinical-photos-in-training-15-nov-2026)
+- [23. A PanDerm reference (15 Nov 2026)](#23-a-panderm-reference-15-nov-2026)
+- [24. Two tracks: from scratch and PanDerm (17 Nov 2026)](#24-two-tracks-from-scratch-and-panderm-17-nov-2026)
+- [25. Half of DDI in training, on both tracks (20 Nov 2026)](#25-half-of-ddi-in-training-on-both-tracks-20-nov-2026)
+- [26. A DDI validation set: three-way split against the half in training (22 Nov 2026)](#26-a-ddi-validation-set-three-way-split-against-the-half-in-training-22-nov-2026)
+- [27. Outside test sets never trained on, and leave-one-dataset-out (22 Nov 2026)](#27-outside-test-sets-never-trained-on-and-leave-one-dataset-out-22-nov-2026)
+- [28. Per-track folders in one repository; the ResNet-18 reference removed (23 Nov 2026)](#28-per-track-folders-in-one-repository-the-resnet-18-reference-removed-23-nov-2026)
+- [29. Derm1M mycosis fungoides photos in training: ideas V and PI (23 Nov 2026)](#29-derm1m-mycosis-fungoides-photos-in-training-ideas-v-and-pi-23-nov-2026)
+- [30. Overnight ideas W, X and PJ (24 Nov 2026)](#30-overnight-ideas-w-x-and-pj-24-nov-2026)
+- [31. Two repositories: SkinNet and PanDerm (24 Nov 2026)](#31-two-repositories-skinnet-and-panderm-24-nov-2026)
+- [32. Research-based ideas Y, Z and AA, and SkinNet-KD on hold (24 Nov 2026)](#32-research-based-ideas-y-z-and-aa-and-skinnet-kd-on-hold-24-nov-2026)
+- [33. Checkpoint 6 and SkinNet-KD (25 Nov 2026)](#33-checkpoint-6-and-skinnet-kd-25-nov-2026)
+- [34. A flat layout; what this repository keeps (25 Nov 2026)](#34-a-flat-layout-what-this-repository-keeps-25-nov-2026)
+- [35. More epochs again: ideas AB and AC (25 Nov 2026)](#35-more-epochs-again-ideas-ab-and-ac-25-nov-2026)
+
 ## 1. Fresh start (12 Nov 2026)
 
 The project was restarted on 12 Nov 2026. The classifier is now one convolutional network of our own (SkinNet), trained from random weights. Nothing in it is pretrained and no layer is frozen.
@@ -107,7 +147,7 @@ Fixed on 12 Nov 2026, before any SkinNet run was scored on a test set. The confi
 
 ## 8. Second round: training that the shortcut cannot exploit (12 Nov 2026)
 
-Written after the baseline results ([docs/skinnet/RESULTS.md](docs/skinnet/RESULTS.md)) and before any of these models was trained. No new data is used.
+Written after the baseline results ([docs/RESULTS.md](docs/RESULTS.md)) and before any of these models was trained. No new data is used.
 
 **What the baseline showed.** It learned that a smartphone photo usually means cancer (89% false alarms on PAD-UFES-20 non-cancers), and it could not tell a cancer from a benign tumour that resembles it (81% false alarms on those).
 
@@ -133,7 +173,7 @@ The other two variants are never scored on `test` or the outside sets. Training 
 
 **If none helps,** the next steps are in [docs/DATA_PLAN.md](docs/DATA_PLAN.md) (Derm7pt first) and then larger images.
 
-**Outcome (12 Nov 2026):** A was chosen and became checkpoint 1 ([docs/CHECKPOINTS.md](docs/CHECKPOINTS.md)). B and C were discarded: their configs, trained models and the two code options only they used were removed. The comparison is kept in [docs/skinnet/RESULTS.md](docs/skinnet/RESULTS.md).
+**Outcome (12 Nov 2026):** A was chosen and became checkpoint 1 ([docs/CHECKPOINTS.md](docs/CHECKPOINTS.md)). B and C were discarded: their configs, trained models and the two code options only they used were removed. The comparison is kept in [docs/RESULTS.md](docs/RESULTS.md).
 
 ## 9. Third round: more hard cases and larger images (12 Nov 2026)
 

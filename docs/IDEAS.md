@@ -1,6 +1,6 @@
 # Ideas: SkinNet, the full history
 
-Every idea tried or planned in this project, by letter, in the order it was run. An idea that works becomes a checkpoint; one that does not is discarded and its config and trained models are deleted. This file keeps the record of all of them, so the history survives the deleting.
+Every idea tried or planned in this project, by letter, in the order it was run. An idea that works becomes a checkpoint. Until 22 Nov a discarded idea's config and trained models were deleted; since then they are kept for the user to decide on (DECISIONS.md, section 26). Either way this file keeps the record of all of them.
 
 Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is run. Full numbers are in [RESULTS.md](RESULTS.md). The models that were kept are described in [CHECKPOINTS.md](CHECKPOINTS.md).
 
@@ -48,7 +48,8 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **AUC:** how well the model ranks cancers above non-cancers. 0.5 is chance, 1.0 is perfect.
 - **Within-source AUC:** the AUC inside each dataset, then averaged. It cannot be raised by telling datasets apart, so it is the score used on our own validation split.
 - **Supported:** the paired comparison's 95% interval for the difference excludes zero.
-- **Home:** our own `val` / `test` splits (Fitzpatrick17k and PAD-UFES-20). **Outside:** MIDAS, DDI and DermaCon-IN, photos from other hospitals.
+- **Home:** our own `val` / `test` splits (Fitzpatrick17k and PAD-UFES-20). **Outside:** MIDAS, DDI and DermaCon-IN, photos from other hospitals, and since 22 Nov six outside sets no model trains on (HIBA, MED-NODE, MCR-SL, Derm7pt, Asan and Hallym, ISIC 2019; DECISIONS.md, section 27).
+- **Step 1 and step 2:** step 1 compares an idea with its checkpoint on the validation sets only; step 2, only for an idea that passed, scores it once on the test sets.
 
 ## The ideas
 
@@ -232,6 +233,59 @@ Letters were given when an idea was first listed, not when it was run, which is 
   - Level with T on `ddi_hold` (−0.014, not supported).
 - **Outcome:** **kept: checkpoint 5** (`skinnet-c5`). The user chose it on 22 Nov, together with the three-way split on both tracks.
 
+### V. Derm1M's mycosis fungoides photos in training
+
+- **What:** checkpoint 5 with 574 photos of mycosis fungoides (MF), a skin lymphoma the models miss most on dark skin, and 586 look-alike rashes from Derm1M, matched by source and skin tone. Labels come from captions, and every photo used was looked at. Run on both tracks (PanDerm: idea PI).
+- **Why:** our training data holds 143 MF photos, 27 on skin types V–VI (DECISIONS.md, section 29).
+- **Compared on:** step 1 against checkpoint 5, then every test set, with MF photos against every non-cancer on `ddi_hold` and `test` as the question.
+- **Result:** passed step 1. On the test sets, lower by a supported amount on ISIC 2019 (−0.049) and pooled `test` AUC (−0.008); the MF gains on `ddi_hold` (+0.051, 12 MF photos) and `test` (+0.017) not supported. On Derm1M's own held-back photos it stayed close to chance (0.545 → 0.602).
+- **Outcome:** not kept (23 Nov). Adding these photos did not make MF on dark skin easier to catch for SkinNet; PanDerm's PI did learn them.
+
+### W. A running average of the weights
+
+- **What:** checkpoint 5, validated and kept as a running average of its weights (decay 0.9995 per step, batch norm statistics included).
+- **Compared on:** step 1 against checkpoint 5 (DECISIONS.md, section 30).
+- **Result:** `midas_val` +0.017, supported, the first SkinNet training change to gain there; `val` −0.003 and `ddi_val` −0.019, not supported.
+- **Outcome:** failed step 1 (24 Nov), not scored on test sets. Kept, and its average became half of idea Y.
+
+### X. Skin-tone and lighting colour augmentation
+
+- **What:** checkpoint 5 with random gamma, saturation, a little hue and a shift of each colour channel in training (as PanDerm's idea PD).
+- **Compared on:** step 1 against checkpoint 5 (DECISIONS.md, section 30).
+- **Result:** lower on all three: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016.
+- **Outcome:** failed step 1 (24 Nov), not scored on test sets. Colour carries information the network uses, even on MIDAS photos.
+
+### Y. Flat minima: SAM and a running average of the weights
+
+- **What:** checkpoint 5 trained with sharpness-aware minimisation (rho 0.05) and W's weight average. Chosen from a search of the research for what carries over across hospitals (DECISIONS.md, section 32).
+- **Compared on:** step 1 against checkpoint 5, then every test set.
+- **Result:** passed step 1, higher on all three validation sets. On the test sets: MED-NODE +0.052 and Asan +0.009 (both supported), ISIC 2019 −0.021 (supported lower), the rest level.
+- **Outcome:** **kept: checkpoint 6** (`skinnet-c6`), the user's decision on 25 Nov, as a narrow miss of section 32's rule (DECISIONS.md, section 33).
+
+### Z. MixStyle
+
+- **What:** checkpoint 5 with MixStyle after stages 1 and 2: the colour and contrast statistics of early feature maps are mixed between images, so the network cannot tell hospitals apart by photo style (probability 0.5, alpha 0.1, the paper's settings).
+- **Compared on:** section 32's rule against checkpoint 5.
+- **Status:** seed 0 done; stopped at seed 1, epoch 27 of 60, for ideas AB and AC. Runs again on the user's word.
+
+### AA. Mixup and CutMix
+
+- **What:** checkpoint 5 with mixup (alpha 0.2) or CutMix (alpha 1.0) on half the batches, half the time each, with soft targets and label smoothing 0.1.
+- **Compared on:** section 32's rule against checkpoint 5.
+- **Status:** not started; runs after Z on the user's word.
+
+### AB and AC. More epochs again
+
+- **What:** 120 epochs instead of 60, the schedule stretched to match. AB is the base recipe judged against the base model `skinnet`, which shows what more epochs alone do; AC is checkpoint 6 judged against checkpoint 6. Asked for by the user (DECISIONS.md, section 35).
+- **Compared on:** step 1. Every epoch also recorded `midas_val` and `ddi_val`, to see where in training the outside sets gain or lose; they chose nothing.
+- **Result:** AB `val` +0.043 (supported), `midas_val` +0.023, `ddi_val` −0.018. AC `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014. In AC `midas_val` peaks near epoch 51 and falls by epoch 119.
+- **Outcome:** both failed step 1 (26 Nov), not scored on test sets. The second 60 epochs help only within the training sources, as idea N found (14 Nov). Training stays at 60 epochs.
+
+### SkinNet-KD (planned)
+
+- **What:** SkinNet trained from random weights to follow PanDerm's predictions on our photos and Derm1M's clinical photos (knowledge distillation).
+- **Status:** on hold. A separately named model (`skinnet-kd`), never one of SkinNet's checkpoints (DECISIONS.md, sections 32 and 33).
+
 ## Keeping this file up to date
 
-When an idea is specified, add it here with its status. When it finishes, fill in what it was compared on, the result and the outcome, and update the table at the top. New ideas take the next unused letter (the next is V; on the PanDerm track, PI).
+When an idea is specified, add it here with its status. When it finishes, fill in what it was compared on, the result and the outcome, and update the table at the top. New ideas take the next unused letter (the next is AD). PanDerm's ideas are in its own repository.

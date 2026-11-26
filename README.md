@@ -4,18 +4,69 @@ Skin cancer detection from clinical skin photos: the model tells whether a photo
 
 The project's other model, fine-tuned from a pretrained dermatology foundation model, is in its own repository, `skittlegit/PanDerm`. Both use the same data, splits and rules; this repository's history holds the work from before they were separated (24 Nov 2026).
 
-The models train on about 18,350 photos and are tested on held-back photos, on MIDAS, DDI and DermaCon-IN (Indian), and on six outside sets no model ever trains on (section 27). This is stage one. Telling cancer types apart, and whether darker skin needs its own model, come later.
+The model trains on 18,186 photos from five sources. It is tested on:
+- held-back photos from those sources;
+- MIDAS (Stanford) and DDI (Stanford, all skin types), whose other photos are partly in training;
+- DermaCon-IN (India);
+- six outside sets no model ever trains on: HIBA (Argentina), MED-NODE (Netherlands), MCR-SL (Norway), Derm7pt (Italy), Asan and Hallym (Korea), ISIC 2019 ([DECISIONS.md](DECISIONS.md), section 27).
+
+This is stage one. Telling cancer types apart, and whether darker skin needs its own model, come later.
 
 This is a research prototype, not a diagnostic tool.
 
+**Team:** Ankita Vemavarapu, Aeleni Deepak Reddy and Ranganaini Sai Ruchir. **Supervisor:** Dr. Anjli Varghese.
+
 **Read [DECISIONS.md](DECISIONS.md) before changing anything.** It holds the rules for labels, splits, the network, the training recipe and the metrics, and the code enforces them. It is a record in order: each section was written before the run it governs.
 
-The project was restarted on 12 Nov 2026. The earlier experiments (fine-tuned pretrained backbones and everything built on them) are in git under the tag `pre-fresh-start`.
+## The current model
+
+Checkpoint 6, `skinnet-c6` (`configs/skinnet-c6.yaml`, 25 Nov 2026):
+- **Network:** SkinNet, 2.8 million parameters, from random weights.
+- **Training:** 60 epochs on 18,186 photos: Fitzpatrick17k, PAD-UFES-20, MILK10k, 552 MIDAS photos and 164 DDI photos. Cancer and not cancer are drawn equally often inside each source. Sharpness-aware minimisation (SAM) and a running average of the weights.
+- **Prediction:** three seeds, averaged, each predicting on the image and its mirror images.
+- **Threshold:** the one that catches 90% of cancers on `val`.
+
+| Set | Images (cancers) | AUC [95% interval] | Missed cancers | False alarms |
+| --- | --- | --- | --- | --- |
+| Our test split | 2,695 (478) | 0.901 [0.883, 0.916] | 9.4% | 35.6% |
+| MIDAS test | 414 (241) | 0.734 [0.669, 0.794] | 30.3% | 34.7% |
+| DDI, held-out half | 328 (86) | 0.676 [0.617, 0.733] | 10.5% | 68.2% |
+| DermaCon-IN tumours | 65 (19) | 0.846 [0.666, 0.972] | 15.8% | 30.4% |
+| HIBA | 279 (227) | 0.849 [0.792, 0.901] | 15.9% | 32.7% |
+| MED-NODE | 169 (70) | 0.823 [0.759, 0.884] | 7.1% | 59.6% |
+| MCR-SL | 663 (80) | 0.805 [0.680, 0.899] | 41.2% | 13.9% |
+| Derm7pt | 958 (294) | 0.712 [0.679, 0.745] | 5.4% | 76.1% |
+| Asan and Hallym | 12,144 (3,982) | 0.793 [0.785, 0.802] | 10.2% | 52.5% |
+| ISIC 2019 (dermoscopy) | 4,995 (2,498) | 0.729 [0.715, 0.742] | 20.5% | 48.9% |
+
+Of DermaCon-IN's 5,379 everyday conditions, 32.9% are called cancer.
+
+**Where it stands.** About 0.90 on photos like its training data, 0.71 to 0.85 on the seven sets from hospitals it has never trained on, and 0.68 to 0.73 on MIDAS and DDI. A threshold set on our own validation split does not carry over: outside, it misses more cancers (MCR-SL 41%) or raises more false alarms (Derm7pt 76%). Most outside gains so far came from training on photos from that hospital (MIDAS, MILK10k, DDI). Changes to training mostly helped at home only; checkpoint 6's SAM is the first that also gained on outside test sets (MED-NODE +0.052, Asan +0.009, both supported), at a cost on ISIC 2019 (−0.021). More epochs do not help outside (ideas N, AB and AC).
+
+**Against PanDerm**, the project's other model: DermFM-Zero, fine-tuned on the same photos and splits (`skittlegit/PanDerm`). Paired on the same images, seed averages:
+
+| Set | SkinNet c6 | PanDerm | PanDerm − SkinNet [95% interval] |
+| --- | --- | --- | --- |
+| Our test split | 0.901 | 0.991 | +0.090 [+0.074, +0.108] |
+| MIDAS test | 0.734 | 0.863 | +0.130 [+0.072, +0.191] |
+| DDI, held-out half | 0.676 | 0.787 | +0.111 [+0.047, +0.180] |
+| DermaCon-IN tumours | 0.846 | 0.898 | +0.053 [−0.033, +0.141], not supported |
+| HIBA | 0.849 | 0.955 | +0.105 [+0.052, +0.164] |
+| MED-NODE | 0.823 | 0.951 | +0.128 [+0.069, +0.192] |
+| MCR-SL | 0.805 | 0.901 | +0.096 [−0.027, +0.189], not supported |
+| Derm7pt | 0.712 | 0.875 | +0.163 [+0.130, +0.197] |
+| Asan and Hallym | 0.793 | 0.950 | +0.157 [+0.148, +0.164] |
+| ISIC 2019 | 0.729 | 0.934 | +0.206 [+0.193, +0.218] |
+
+- PanDerm starts from a network pretrained on about 2.1 million skin images; SkinNet has only our 18,186.
+- DermFM-Zero's pretraining included Fitzpatrick17k, all of HIBA and part of ISIC 2019, so PanDerm's scores there are optimistic. On the 2,857 ISIC 2019 images it never saw, the gap is +0.173 [+0.156, +0.190].
 
 Where to read:
-- The current model and every checkpoint before it: [docs/CHECKPOINTS.md](docs/CHECKPOINTS.md).
+- Every checkpoint, with the scores that made it one: [docs/CHECKPOINTS.md](docs/CHECKPOINTS.md).
 - Every idea by letter, kept and discarded: [docs/IDEAS.md](docs/IDEAS.md); full numbers: [docs/RESULTS.md](docs/RESULTS.md).
 - Data sources, tried and planned: [docs/DATA_PLAN.md](docs/DATA_PLAN.md).
+
+The project was restarted on 12 Nov 2026. The earlier experiments (fine-tuned pretrained backbones and everything built on them) are in git under the tag `pre-fresh-start`.
 
 ## Setup
 
@@ -37,7 +88,7 @@ The images are not in the repository. Put them under `data/raw/` as laid out in 
 | --- | --- | --- |
 | Fitzpatrick17k | training, validation, test | github.com/mattgroh/fitzpatrick17k: `python -m skincancer.data.download_fitzpatrick17k` (dead links from the Wayback Machine, checked by MD5) |
 | PAD-UFES-20 | training, validation, test | Mendeley Data; merge `imgs_part_*` into `images/` |
-| DDI | test only for the checkpoints; ideas T, U, PG, PH (section 26) train on part of it | Stanford AIMI (request access); never shown in figures |
+| DDI | a quarter training (since checkpoint 5), a quarter validation, half test ([DECISIONS.md](DECISIONS.md), section 26) | Stanford AIMI (request access); never shown in figures |
 | DermaCon-IN | test only | Harvard Dataverse: `python -m skincancer.data.download_dermacon_in` |
 | MRA-MIDAS | 40% training, 30% validation, 30% test, by patient (since checkpoint 3) | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
 | MILK10k (clinical close-ups) | training only (since checkpoint 4; `data/extra/milk10k.csv`) | ISIC Archive, doi:10.34970/648456 |
@@ -85,7 +136,8 @@ Finished seeds are skipped and a stopped seed resumes from its `last.pt`, so not
 ```
 configs/data.yaml                 dataset paths and split settings
 configs/                          skinnet.yaml (the recipe), checkpoints skinnet-c<n>.yaml, ideas skinnet-idea-<x>.yaml, leave-one-out
-docs/                             CHECKPOINTS (the current model and all before it), IDEAS, RESULTS, DATA_PLAN, LABEL_MAP_REVIEW
+docs/                             CHECKPOINTS (every kept model), IDEAS, RESULTS, DATA_PLAN, LABEL_MAP_REVIEW
+tests/                            unit and pipeline tests (synthetic data, under a minute on CPU)
 DECISIONS.md                      every rule and decision, in order
 src/skincancer/models/            skinnet.py (SkinNet), __init__.py (the classifier head)
 src/skincancer/train.py           training loop
