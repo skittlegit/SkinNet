@@ -1492,3 +1492,11 @@ Both failed step 1 (section 26's rule), so no test set was scored. Three seeds e
 **What it says.** The second 60 epochs help only within the training sources. The outside sets do not gain: in AC (seed average, `history.csv`) `midas_val` peaks near epoch 51 (0.814) and falls to 0.771 by epoch 119, and `ddi_val` peaks near epoch 28. This matches idea N (section 14). For scale, checkpoint 6's own changes over the base were worth +0.153 on `midas_val`; 120 epochs alone add +0.023, not supported. Training stays at 60 epochs. PanDerm's idea PA (its DECISIONS.md, section 10) found the same: more training lowers MIDAS.
 
 AB and AC are kept on disk for the user; neither is adopted.
+
+## 36. Discarded ideas' files deleted; the rule from now on (26 Nov 2026)
+
+**Decided by the user (26 Nov).** Since 21–22 Nov (sections 26 and 30) every idea's files were kept until the user decided. The user has now seen these results and chose to delete the discarded ones:
+- **Deleted:** ideas V, W, X, AB and AC: their configs (`configs/skinnet-idea-<v|w|x|ab|ac>.yaml`, still in git history before this commit), their run folders and V's result tables.
+- **Kept:** their results, written up in sections 29, 30 and 35 and in [docs/IDEAS.md](docs/IDEAS.md); their rows in the test-set ledger (V's looks at the test sets stay on record); everything of T, Z and AA, the checkpoints, the base model and the leave-one-dataset-out runs.
+
+**The rule from now on.** When an idea is discarded, its result is written up here and in `docs/IDEAS.md` and reported to the user. Once the user has seen it, its config, runs and results are deleted. Its ledger rows always stay.

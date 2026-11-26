@@ -1,6 +1,0 @@
-# Idea X (DECISIONS.md, section 30): checkpoint 5 with the skin-tone and lighting colour
-# augmentation of PanDerm idea PD (gamma, saturation, a little hue, a shift of each colour channel).
-extends: skinnet-c5.yaml
-name: skinnet-idea-x
-data:
-  colour_aug: true

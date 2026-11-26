@@ -1,6 +1,6 @@
 # Ideas: SkinNet, the full history
 
-Every idea tried or planned in this project, by letter, in the order it was run. An idea that works becomes a checkpoint. Until 22 Nov a discarded idea's config and trained models were deleted; since then they are kept for the user to decide on (DECISIONS.md, section 26). Either way this file keeps the record of all of them.
+Every idea tried or planned in this project, by letter, in the order it was run. An idea that works becomes a checkpoint. A discarded idea's config and trained models are deleted once the user has seen its result (DECISIONS.md, section 36; from 22 to 26 Nov they were kept until the user decided). This file keeps the record of all of them.
 
 Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is run. Full numbers are in [RESULTS.md](RESULTS.md). The models that were kept are described in [CHECKPOINTS.md](CHECKPOINTS.md).
 
@@ -246,7 +246,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **What:** checkpoint 5, validated and kept as a running average of its weights (decay 0.9995 per step, batch norm statistics included).
 - **Compared on:** step 1 against checkpoint 5 (DECISIONS.md, section 30).
 - **Result:** `midas_val` +0.017, supported, the first SkinNet training change to gain there; `val` −0.003 and `ddi_val` −0.019, not supported.
-- **Outcome:** failed step 1 (24 Nov), not scored on test sets. Kept, and its average became half of idea Y.
+- **Outcome:** failed step 1 (24 Nov), not scored on test sets. Its weight average became half of idea Y. Files deleted on 26 Nov.
 
 ### X. Skin-tone and lighting colour augmentation
 

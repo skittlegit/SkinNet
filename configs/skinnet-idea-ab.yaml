@@ -1,9 +1,0 @@
-# Idea AB (DECISIONS.md, section 35): the base recipe trained for 120 epochs instead of 60 (the
-# cosine schedule stretched to match), judged against the base model, to show what more epochs alone do.
-extends: skinnet.yaml
-name: skinnet-idea-ab
-train:
-  epochs: 120
-eval:
-  splits: [val, test, ak_side, midas_val, ddi_val]
-  watch_splits: [midas_val, ddi_val]   # scored every epoch for the record only (history.csv)

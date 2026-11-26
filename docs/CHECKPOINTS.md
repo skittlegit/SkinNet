@@ -262,7 +262,7 @@ Each idea has a letter and changes one thing in the current checkpoint. Its rule
 2. **Step 2, test sets, scored once.** An idea that passed is scored on every test set, each look recorded in `runs/final_ledger.csv`.
 3. **A candidate** if nothing is lower by a supported amount and at least one outside set is higher by a supported amount. Whether it becomes the next checkpoint is the user's decision.
 
-Nothing is deleted: a discarded idea keeps its config, runs and weights, and its result goes into [IDEAS.md](IDEAS.md).
+A discarded idea's result goes into [IDEAS.md](IDEAS.md) and is reported to the user; once the user has seen it, its config, runs and weights are deleted (DECISIONS.md, section 36).
 
 **Next (26 Nov 2026), each started only on the user's word:**
 - **Z, MixStyle** and **AA, mixup and CutMix** (DECISIONS.md, section 32): written against checkpoint 5 and judged against it as written. Z's seed 0 is done and seed 1 stopped at epoch 27 of 60.
