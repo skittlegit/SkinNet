@@ -35,10 +35,10 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | W | Checkpoint 5 kept as a running average of its weights and batch norm statistics | 24 Nov | Failed step 1, no test set scored: `midas_val` +0.017 (supported), `val` −0.003 and `ddi_val` −0.019 (not supported); kept for the user (DECISIONS.md, section 30) |
 | X | Checkpoint 5 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Failed step 1, no test set scored: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016; kept for the user (DECISIONS.md, section 30) |
 | Y | Flat minima: sharpness-aware minimisation (rho 0.05) and W's weight average | 24 Nov | **Kept: checkpoint 6** (`skinnet-c6`, the user's decision, 25 Nov): step 1 passed (all three higher); test sets MED-NODE +0.052, Asan +0.009 (supported), ISIC 2019 −0.021 (supported lower) (DECISIONS.md, sections 32 and 33) |
-| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Queued; section 26's rule (DECISIONS.md, section 32) |
-| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Queued; section 26's rule (DECISIONS.md, section 32) |
-| AB | The base recipe for 120 epochs, judged against the base | 25 Nov | Queued (DECISIONS.md, section 35) |
-| AC | Checkpoint 6 for 120 epochs, judged against checkpoint 6 | 25 Nov | Queued (DECISIONS.md, section 35) |
+| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Stopped for AB and AC (Z seed 1 at epoch 27); runs against `skinnet-c5` by the user's word (DECISIONS.md, sections 32 and 35) |
+| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Not started; waits; runs against `skinnet-c5` by the user's word (DECISIONS.md, sections 32 and 35) |
+| AB | The base recipe for 120 epochs, judged against the base | 25 Nov | Failed step 1, no test set scored: `val` +0.043 (supported), `midas_val` +0.023, `ddi_val` −0.018 (DECISIONS.md, section 35) |
+| AC | Checkpoint 6 for 120 epochs, judged against checkpoint 6 | 25 Nov | Failed step 1, no test set scored: `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014; 60 epochs stay (DECISIONS.md, section 35) |
 | – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.

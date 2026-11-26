@@ -1440,3 +1440,15 @@ Step 2 (test sets, scored once, in the ledger):
 - **Z and AA** (section 32) stay stopped where they were (Z seed 1 at epoch 27 of 60) and run after these, by the user's word.
 - **Cost:** AB about 2.6 hours, AC about 5.8 hours.
 
+### Ideas AB and AC: the result (26 Nov 2026)
+
+Both failed step 1 (section 26's rule), so no test set was scored. Three seeds each (AB seed 0 stopped early at 115 epochs), paired bootstrap, b minus a, 95% interval:
+
+| | `val` within-source | `midas_val` | `ddi_val` |
+| --- | --- | --- | --- |
+| AB against `skinnet` | +0.043 [+0.027, +0.059], supported | +0.023 [−0.013, +0.059] | −0.018 [−0.081, +0.037] |
+| AC against `skinnet-c6` | +0.028 [+0.016, +0.040], supported | −0.012 [−0.038, +0.016] | −0.014 [−0.083, +0.052] |
+
+**What it says.** The second 60 epochs help only within the training sources. The outside sets do not gain: in AC (seed average, `history.csv`) `midas_val` peaks near epoch 51 (0.814) and falls to 0.771 by epoch 119, and `ddi_val` peaks near epoch 28. This matches idea N (section 14). For scale, checkpoint 6's own changes over the base were worth +0.153 on `midas_val`; 120 epochs alone add +0.023, not supported. Training stays at 60 epochs. PanDerm's idea PA (its DECISIONS.md, section 10) found the same: more training lowers MIDAS.
+
+AB and AC are kept on disk for the user; neither is adopted.
