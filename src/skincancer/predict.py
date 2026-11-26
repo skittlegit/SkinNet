@@ -1,7 +1,7 @@
 """Score a finished run on more splits.
 
     # test-only sets: once per finished run, recorded in runs/final_ledger.csv
-    python -m skincancer.predict --run runs/skinnet-c5/s0 --splits ddi_test dermacon_test midas_test --final
+    python -m skincancer.predict --run runs/skinnet-c4/s0 --splits ddi_test dermacon_test midas_test --final
 """
 from __future__ import annotations
 

@@ -17,29 +17,29 @@ Rules for each idea are written in [DECISIONS.md](../DECISIONS.md) before it is 
 | F | Derm7pt and larger images together | 12 Nov | Discarded |
 | G | Average the three seeds | 12 Nov | Kept as part of G+H |
 | H | Test-time flips | 12 Nov | Kept as part of G+H |
-| G+H | Both together | 12 Nov | **Kept: checkpoint 2** (`skinnet-c2`) |
+| G+H | Both together | 12 Nov | **Kept: the first step of checkpoint 2** (`skinnet-c1-tta`) |
 | J | MIDAS photos added to training | 13 Nov | Discarded; led to O |
-| O | J with early stopping off | 13 Nov | **Kept: checkpoint 3** (`skinnet-c3`) |
+| O | J with early stopping off | 13 Nov | **Kept: checkpoint 2** (`skinnet-c2`) |
 | I | SCIN photos added as not cancer | 13 Nov | Discarded |
 | N | Longer schedule (120 epochs) | 14 Nov | Discarded: big gain at home, loss on DDI |
 | M | Wider network (four times the parameters) | 14 Nov | Discarded |
-| Q | MILK10k's biopsied clinical photos added (five new centres) | 14 Nov | **Kept: checkpoint 4** (`skinnet-c4`) |
+| Q | MILK10k's biopsied clinical photos added (five new centres) | 14 Nov | **Kept: checkpoint 3** (`skinnet-c3`) |
 | L | Self-supervised pretraining on our own and other unlabelled photos | 14 Nov | Discarded: largest SkinNet gain at home, loss on MIDAS |
 | P | Pretrained (ImageNet) weights | 14 Nov | Reference only: ImageNet start helps at home, not outside, at either learning rate |
 | K | ISIC 2019 dermoscopy images added (5,000-image subsample) | 15 Nov | Discarded: loss on MIDAS, flat at home |
 | R | MILK10k drawn twice as often | 15 Nov | Discarded: loss at home, flat on MIDAS |
 | S | Asan and Hallym clinical photos added (Korea; 5,000-photo subsample of 99 px thumbnails) | 16 Nov | Discarded: gain at home, loss on MIDAS |
-| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 5's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 5 |
-| U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
-| V | Derm1M's mycosis fungoides photos and look-alike rashes (574 / 586, matched by source and skin tone, every photo looked at) added to checkpoint 5's training | 23 Nov | Passed step 1; not kept: lower on `ext_isic2019` (−0.049) and pooled `test` AUC (−0.008), MF gains on `ddi_hold` (+0.051) and `test` (+0.017) not supported (DECISIONS.md, section 29) |
-| W | Checkpoint 5 kept as a running average of its weights and batch norm statistics | 24 Nov | Failed step 1, no test set scored: `midas_val` +0.017 (supported), `val` −0.003 and `ddi_val` −0.019 (not supported); kept for the user (DECISIONS.md, section 30) |
-| X | Checkpoint 5 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Failed step 1, no test set scored: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016; kept for the user (DECISIONS.md, section 30) |
-| Y | Flat minima: sharpness-aware minimisation (rho 0.05) and W's weight average | 24 Nov | **Kept: checkpoint 6** (`skinnet-c6`, the user's decision, 25 Nov): step 1 passed (all three higher); test sets MED-NODE +0.052, Asan +0.009 (supported), ISIC 2019 −0.021 (supported lower) (DECISIONS.md, sections 32 and 33) |
-| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Stopped for AB and AC (Z seed 1 at epoch 27); runs against `skinnet-c5` by the user's word (DECISIONS.md, sections 32 and 35) |
-| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Not started; waits; runs against `skinnet-c5` by the user's word (DECISIONS.md, sections 32 and 35) |
+| T | Half of DDI (`ddi_train`) added to training; DDI then scored on its other half (`ddi_hold`) | 20 Nov | Failed step 1; retrained for a look on 21 Nov: `ddi_hold` 0.641 → 0.684 (supported); **kept: checkpoint 4's all-DDI version** (user, 22 Nov); new ideas are compared with checkpoint 4 |
+| U | A quarter of DDI (`ddi_train`) in training, another quarter (`ddi_val`) in step 1; compared with T on `ddi_hold` | 22 Nov | **Kept: checkpoint 4** (`skinnet-c4`, the user's decision, 22 Nov): step 1 failed (`val`, `midas_val` a little lower); `ddi_val` +0.048, `ddi_hold` 0.641 → 0.670 (both supported); level with T |
+| V | Derm1M's mycosis fungoides photos and look-alike rashes (574 / 586, matched by source and skin tone, every photo looked at) added to checkpoint 4's training | 23 Nov | Passed step 1; not kept: lower on `ext_isic2019` (−0.049) and pooled `test` AUC (−0.008), MF gains on `ddi_hold` (+0.051) and `test` (+0.017) not supported (DECISIONS.md, section 29) |
+| W | Checkpoint 4 kept as a running average of its weights and batch norm statistics | 24 Nov | Failed step 1, no test set scored: `midas_val` +0.017 (supported), `val` −0.003 and `ddi_val` −0.019 (not supported); kept for the user (DECISIONS.md, section 30) |
+| X | Checkpoint 4 with skin-tone and lighting colour augmentation (as PanDerm's PD) | 24 Nov | Failed step 1, no test set scored: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016; kept for the user (DECISIONS.md, section 30) |
+| Y | Flat minima: sharpness-aware minimisation (rho 0.05) and W's weight average | 24 Nov | **Kept: checkpoint 5** (`skinnet-c5`, the user's decision, 25 Nov): step 1 passed (all three higher); test sets MED-NODE +0.052, Asan +0.009 (supported), ISIC 2019 −0.021 (supported lower) (DECISIONS.md, sections 32 and 33) |
+| Z | MixStyle after stages 1 and 2: the network cannot lean on each hospital's photo style | 24 Nov | Stopped for AB and AC (Z seed 1 at epoch 27); runs against `skinnet-c4` by the user's word (DECISIONS.md, sections 32 and 35) |
+| AA | Mixup (0.2) or CutMix (1.0) on half the batches, soft targets | 24 Nov | Not started; waits; runs against `skinnet-c4` by the user's word (DECISIONS.md, sections 32 and 35) |
 | AB | The base recipe for 120 epochs, judged against the base | 25 Nov | Failed step 1, no test set scored: `val` +0.043 (supported), `midas_val` +0.023, `ddi_val` −0.018 (DECISIONS.md, section 35) |
-| AC | Checkpoint 6 for 120 epochs, judged against checkpoint 6 | 25 Nov | Failed step 1, no test set scored: `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014; 60 epochs stay (DECISIONS.md, section 35) |
-| – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 4's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 4 at home and on MIDAS test, level on DDI |
+| AC | Checkpoint 5 for 120 epochs, judged against checkpoint 5 | 25 Nov | Failed step 1, no test set scored: `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014; 60 epochs stay (DECISIONS.md, section 35) |
+| – | PanDerm reference: a skin-pretrained ViT-B/16 on checkpoint 3's data | 16 Nov | Reference (never a checkpoint): ahead of checkpoint 3 at home and on MIDAS test, level on DDI |
 
 Letters were given when an idea was first listed, not when it was run, which is why I comes after O and K is last.
 
@@ -119,68 +119,68 @@ Letters were given when an idea was first listed, not when it was run, which is 
 
 - **Compared on:** test and outside sets, paired comparison with checkpoint 1.
 - **Result:** our test split AUC 0.890 → 0.904 and false alarms 40% → 33%, a supported gain. MIDAS +0.006 and DDI +0.006, neither supported.
-- **Outcome:** kept. **Checkpoint 2** (`skinnet-c2`). The rule written beforehand asked for an outside gain, and by that rule it was first discarded; the team restored it because the gain at home is real, free, and nothing is worse elsewhere.
+- **Outcome:** kept as the first step of **checkpoint 2** (`skinnet-c1-tta`; a checkpoint of its own until 26 Nov). The rule written beforehand asked for an outside gain, and by that rule it was first discarded; the team restored it because the gain at home is real, free, and nothing is worse elsewhere.
 
 ### J. MIDAS photos in training
 
 - **Setup first:** MIDAS was split by patient into a training part (552 images), an outside validation part (414, never trained on) and a test part (414). From here models are also chosen on the outside validation part.
 - **What:** checkpoint 1's recipe with the 552 MIDAS training photos added.
-- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 2.
+- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 1-TTA.
 - **Result:** MIDAS validation AUC 0.689 → 0.782 (supported gain), but within-source AUC on our validation split 0.888 → 0.876 (supported loss). Most of the loss was one seed stopped early at epoch 25.
 - **Outcome:** discarded at the first step, not scored on test sets. Its diagnosis led to O.
 
 ### O. J with early stopping off
 
 - **What:** J, with every seed trained for all 60 epochs.
-- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 2.
+- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 1-TTA.
 - **Result:** DDI 0.629 → 0.657 and MIDAS test 0.645 → 0.698, both supported. Our test split 0.904 → 0.898, a small supported loss.
-- **Outcome:** kept. **Checkpoint 3** (`skinnet-c3`). It met the gain conditions and narrowly missed the no-loss one; the team accepted the trade. The first gain shown on a source never seen (DDI).
+- **Outcome:** kept. **Checkpoint 2** (`skinnet-c2`). It met the gain conditions and narrowly missed the no-loss one; the team accepted the trade. The first gain shown on a source never seen (DDI).
 
 ### I. SCIN photos as not cancer
 
-- **What:** checkpoint 3's recipe with 2,907 SCIN phone photos of everyday conditions (eczema, contact dermatitis, hives, insect bites) added as not cancer, one per case.
-- **Compared on:** validation only, paired comparison with checkpoint 3.
+- **What:** checkpoint 2's recipe with 2,907 SCIN phone photos of everyday conditions (eczema, contact dermatitis, hives, insect bites) added as not cancer, one per case.
+- **Compared on:** validation only, paired comparison with checkpoint 2.
 - **Result:** our validation split within-source AUC 0.882 → 0.902 (supported gain); MIDAS validation AUC 0.793 → 0.729 (supported loss).
 - **Outcome:** discarded at the first step, not scored on test sets. Easy not-cancer photos help at home and hurt on tumours. The photos stay on disk (`data/raw/scin`); a much smaller share of the draws is untested.
 
 ### N. Longer schedule
 
-- **What:** checkpoint 3's recipe trained for 120 epochs, not 60.
-- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 3.
+- **What:** checkpoint 2's recipe trained for 120 epochs, not 60.
+- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 2.
 - **Result:** validation: within-source AUC 0.882 → 0.921 (supported), MIDAS validation 0.793 → 0.795 (flat). Test sets: our test split 0.898 → 0.930 (supported gain), MIDAS test 0.698 → 0.733 (not supported), DDI 0.657 → 0.592 (supported loss).
 - **Outcome:** discarded (14 Nov). The largest gain at home in the project, paid for on the hospital never seen. The seeds peaked at epochs 80 to 107, so 60 epochs did cut training short, but the extra training learns our home datasets, not skin cancer in general.
 
 ### M. Wider network
 
-- **What:** checkpoint 3's recipe with the network at twice the width, 11.2 million parameters against 2.8 million.
-- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 3.
+- **What:** checkpoint 2's recipe with the network at twice the width, 11.2 million parameters against 2.8 million.
+- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 2.
 - **Result:** within-source AUC on our validation split 0.882 → 0.885, not supported; MIDAS validation AUC 0.793 → 0.773, a supported loss.
 - **Outcome:** discarded at the first step (14 Nov), not scored on test sets. Width is not what holds the network back: four times the parameters on the same images learns nothing more that carries to other hospitals.
 
 ### L. Self-supervised pretraining on our own and other unlabelled photos
 
 - **What:** learn general skin features without labels, then train cancer / not cancer. Widened on 14 Nov (DECISIONS.md, section 16): besides our training photos, also the unlabelled photos on disk that no evaluation set uses (SCIN, Derm7pt clinical). Never any validation or test image. No outside weights.
-- **What was trained:** DECISIONS.md, section 17: SimCLR for 200 epochs on about 17,000 photos without their labels (`src/skincancer/pretrain.py`), then checkpoint 3's recipe from those weights.
-- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 3, and with checkpoint 4 alongside.
-- **Result:** within-source AUC on our validation split 0.882 → 0.939, supported, the largest SkinNet gain at home; MIDAS validation 0.793 → 0.753, lower (−0.065 against checkpoint 4, a supported loss).
+- **What was trained:** DECISIONS.md, section 17: SimCLR for 200 epochs on about 17,000 photos without their labels (`src/skincancer/pretrain.py`), then checkpoint 2's recipe from those weights.
+- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 2, and with checkpoint 3 alongside.
+- **Result:** within-source AUC on our validation split 0.882 → 0.939, supported, the largest SkinNet gain at home; MIDAS validation 0.793 → 0.753, lower (−0.065 against checkpoint 3, a supported loss).
 - **Outcome:** discarded at the first step (14 Nov), not scored on test sets. Pretraining on mostly our own photos teaches the network our home datasets, not other hospitals: the same pattern as ideas I and N, and as the ImageNet ResNet-18 reference. The pretraining code was kept for later use until 23 Nov, when the user had it removed (DECISIONS.md, section 28; it is in git history before that date).
 
 ### Q. More biopsy-confirmed tumour photos from new sources
 
 - **What:** clinical photos (not dermoscopy) of cancers and benign lookalikes from hospitals not yet in training. Idea O is the only change that moved a score on a source never seen, and it did so with photos of this kind.
 - **Source found (14 Nov):** MILK10k (ISIC archive; CC BY-NC 4.0): clinical close-ups of 5,240 lesions from Vienna, Ankara, Queensland, Memorial Sloan Kettering and Skopje, 5,016 confirmed by histopathology. None of the centres is Stanford or in India, so DDI stays unseen.
-- **What was trained:** checkpoint 3's recipe with 4,908 MILK10k close-ups added (3,620 cancer, 1,288 not cancer), 18,022 training images in all (DECISIONS.md, section 18).
-- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 3.
+- **What was trained:** checkpoint 2's recipe with 4,908 MILK10k close-ups added (3,620 cancer, 1,288 not cancer), 18,022 training images in all (DECISIONS.md, section 18).
+- **Compared on:** validation, then test and outside sets, paired comparison with checkpoint 2.
 - **Result:** MIDAS validation 0.793 → 0.818 and our validation split 0.882 → 0.905 (within-source), both higher. Test sets: MIDAS test 0.698 → 0.750 and our test split 0.876 → 0.907 (within-source), both supported gains; cancers against benign lookalikes at home 0.775 → 0.831; DDI 0.657 → 0.650, flat.
-- **Outcome:** kept. **Checkpoint 4** (`skinnet-c4`, 14 Nov). The rule asked for a rise on every test set and DDI was 0.007 lower, inside the noise; the team accepted it. The first new data to help on a second outside source since checkpoint 3; flat on DDI in every skin-tone group.
+- **Outcome:** kept. **Checkpoint 3** (`skinnet-c3`, 14 Nov). The rule asked for a rise on every test set and DDI was 0.007 lower, inside the noise; the team accepted it. The first new data to help on a second outside source since checkpoint 2; flat on DDI in every skin-tone group.
 
 ### P. Pretrained weights
 
 - **What:** start from ImageNet weights and train every layer. The largest known lever for new hospitals.
-- **Status:** listed on 14 Nov after the supervisor called the outside scores poor (DECISIONS.md, section 16). The team decided the same day (section 19) to run it as a reference comparison only: the from-scratch rule stays for every checkpoint, and P measures what the rule costs. Two models on checkpoint 3's recipe: torchvision's ResNet-18 from ImageNet weights (`ref-resnet18-r2`) and the same network from random weights (`ref-resnet18-r1`), so the gain can be put on the weights and not on the network. Both are scored once on every set.
+- **Status:** listed on 14 Nov after the supervisor called the outside scores poor (DECISIONS.md, section 16). The team decided the same day (section 19) to run it as a reference comparison only: the from-scratch rule stays for every checkpoint, and P measures what the rule costs. Two models on checkpoint 2's recipe: torchvision's ResNet-18 from ImageNet weights (`ref-resnet18-r2`) and the same network from random weights (`ref-resnet18-r1`), so the gain can be put on the weights and not on the network. Both are scored once on every set.
 - **Result (14 Nov):**
 
-| Set | Score | Checkpoint 3 | Checkpoint 4 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
+| Set | Score | Checkpoint 2 | Checkpoint 3 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
 | --- | --- | --- | --- | --- | --- | --- |
 | `val` | Within-source AUC | 0.882 | 0.905 | 0.875 | 0.943 | +0.067 [+0.048, +0.090], supported |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.785 | 0.756 | −0.029 [−0.094, +0.036] |
@@ -190,93 +190,93 @@ Letters were given when an idea was first listed, not when it was run, which is 
 | DDI | AUC | 0.657 | 0.650 | 0.664 | 0.626 | −0.037 [−0.085, +0.008] |
 | DermaCon-IN tumours | AUC | 0.841 | 0.818 | 0.836 | 0.867 | +0.031 [−0.115, +0.205] |
 
-- **Outcome:** a measurement, not a candidate. The bigger network alone does not help. ImageNet weights raise every home score by 0.05 to 0.07 and no outside score; checkpoint 4 is ahead of the ImageNet model on MIDAS and DDI. With this recipe the from-scratch rule costs nothing outside. The learning rate (1e-3 on every layer) was not tuned for an ImageNet start, so the same model was trained at 1e-4 (`ref-resnet18-r3`, 15 Nov): better everywhere at home (within-source AUC on our test split 0.964, the best in the project), still below checkpoint 4 on MIDAS validation (0.778), MIDAS test (0.737) and DDI (0.631). The reading stands.
+- **Outcome:** a measurement, not a candidate. The bigger network alone does not help. ImageNet weights raise every home score by 0.05 to 0.07 and no outside score; checkpoint 3 is ahead of the ImageNet model on MIDAS and DDI. With this recipe the from-scratch rule costs nothing outside. The learning rate (1e-3 on every layer) was not tuned for an ImageNet start, so the same model was trained at 1e-4 (`ref-resnet18-r3`, 15 Nov): better everywhere at home (within-source AUC on our test split 0.964, the best in the project), still below checkpoint 3 on MIDAS validation (0.778), MIDAS test (0.737) and DDI (0.631). The reading stands.
 
 ### K. ISIC 2019 in training
 
 - **What:** add about 8,500 cancers and 12,900 nevi from ISIC 2019. These are dermoscopy images, a different kind of picture from ordinary photos.
-- **Status:** not started. Large download; uncertain whether it carries over to clinical photos. Team decision (14 Nov, DECISIONS.md section 19): tried only if Q becomes a checkpoint with a supported gain on MIDAS test or DDI; dropped otherwise. Q did, so K goes ahead (section 20): checkpoint 4's recipe plus a fixed subsample of 2,500 cancers and 2,500 not cancer, one image per lesion, so dermoscopy is about a fifth of the draws, not over half (`data/extra/isic2019.csv`).
-- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 4.
+- **Status:** not started. Large download; uncertain whether it carries over to clinical photos. Team decision (14 Nov, DECISIONS.md section 19): tried only if Q becomes a checkpoint with a supported gain on MIDAS test or DDI; dropped otherwise. Q did, so K goes ahead (section 20): checkpoint 3's recipe plus a fixed subsample of 2,500 cancers and 2,500 not cancer, one image per lesion, so dermoscopy is about a fifth of the draws, not over half (`data/extra/isic2019.csv`).
+- **Compared on:** validation only (ours and the MIDAS validation part), paired comparison with checkpoint 3.
 - **Result:** MIDAS validation 0.818 → 0.791, a supported loss; within-source AUC on our validation split 0.905 → 0.908, flat.
 - **Outcome:** discarded at the first step (15 Nov), not scored on test sets. Dermoscopy close-ups do not carry over to clinic photos and crowd out what MILK10k taught. The subsample stays on disk.
 ### R. MILK10k drawn twice as often
 
-- **What:** checkpoint 4's recipe with MILK10k's photos drawn twice as often (27% of the draws → 43%). MILK10k is the only new data since checkpoint 3 that raised an outside score.
+- **What:** checkpoint 3's recipe with MILK10k's photos drawn twice as often (27% of the draws → 43%). MILK10k is the only new data since checkpoint 2 that raised an outside score.
 - **Chosen** without the team when the list ran out (DECISIONS.md, section 21), so the GPU was not idle overnight.
-- **Compared on:** validation only, paired comparison with checkpoint 4.
+- **Compared on:** validation only, paired comparison with checkpoint 3.
 - **Result:** within-source AUC on our validation split 0.905 → 0.894, a supported loss; MIDAS validation 0.818 → 0.815, flat.
 - **Outcome:** discarded at the first step (15 Nov), not scored on test sets. MILK10k's gain came from having new centres' photos, not from how often they are drawn.
 ### S. Asan and Hallym clinical photos
 
-- **What:** checkpoint 4's recipe with 5,000 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,500 benign growths), about a fifth of the draws. Published only as 99 x 99 pixel thumbnails, so they are blurred when scaled up to 224.
+- **What:** checkpoint 3's recipe with 5,000 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,500 benign growths), about a fifth of the draws. Published only as 99 x 99 pixel thumbnails, so they are blurred when scaled up to 224.
 - **Why:** chosen after a search for more biopsy-confirmed clinical photos from new places (15 Nov), the only kind of data that has raised an outside score. A new country, and mostly skin types III to IV.
-- **Compared on:** validation only, paired comparison with checkpoint 4.
+- **Compared on:** validation only, paired comparison with checkpoint 3.
 - **Result:** within-source AUC on our validation split 0.905 → 0.924, a supported gain; MIDAS validation 0.818 → 0.792, a supported loss.
 - **Outcome:** discarded at the first step (16 Nov), not scored on test sets (DECISIONS.md, section 22). The thumbnails' blur is the likely cause; the full-size images, available only on request to Asan, are untested.
 
 ### T. Half of DDI in training
 
-- **What:** checkpoint 4's recipe with half of DDI (`ddi_train`, 328 images, split by near-duplicate group and stratified by cancer and skin type) added to training. DDI is then scored on its other half (`ddi_hold`, 328 images) only. Run on both tracks (PanDerm: idea PG).
+- **What:** checkpoint 3's recipe with half of DDI (`ddi_train`, 328 images, split by near-duplicate group and stratified by cancer and skin type) added to training. DDI is then scored on its other half (`ddi_hold`, 328 images) only. Run on both tracks (PanDerm: idea PG).
 - **Why:** DDI has stayed near 0.65 on every from-scratch model; MIDAS rose only when its own photos were trained on (ideas J and O). Decided by the team, 20 Nov (DECISIONS.md, section 25).
-- **Compared on:** step 1 on validation, paired comparison with checkpoint 4; then the test sets with `ddi_hold` in place of DDI.
+- **Compared on:** step 1 on validation, paired comparison with checkpoint 3; then the test sets with `ddi_hold` in place of DDI.
 - **Caution:** a gain on `ddi_hold` shows the model learned DDI's hospital, not that it travels to an unseen one.
-- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept as checkpoint 5's all-DDI version (user, 22 Nov): the same config as checkpoint 5 with `ddi_val` also in training, so it is the final retrain of the current recipe (DECISIONS.md, section 26).
+- **Status:** discarded at step 1 (20 Nov): within-source AUC on `val` 0.905 → 0.902, MIDAS validation 0.818 → 0.803, neither supported; not scored on any test set (DECISIONS.md, section 25). Retrained on 21 Nov for an exploratory look at the user's request: `ddi_hold` 0.641 → 0.684 (supported), the rest level; Run again with a DDI validation set as idea U (section 26). Kept as checkpoint 4's all-DDI version (user, 22 Nov): the same config as checkpoint 4 with `ddi_val` also in training, so it is the final retrain of the current recipe (DECISIONS.md, section 26).
 
 ### U. A quarter of DDI in training, a quarter for validation
 
-- **What:** checkpoint 4's recipe with a quarter of DDI (`ddi_train`, 164 images) in training. Another quarter (`ddi_val`) joins step 1, and `ddi_hold` stays the test. Run on both tracks (PanDerm: idea PH).
+- **What:** checkpoint 3's recipe with a quarter of DDI (`ddi_train`, 164 images) in training. Another quarter (`ddi_val`) joins step 1, and `ddi_hold` stays the test. Run on both tracks (PanDerm: idea PH).
 - **Why:** T could not show its DDI gain at step 1, which had no DDI set (DECISIONS.md, section 26).
-- **Compared on:** step 1 on `val`, `midas_val` and `ddi_val` against checkpoint 4. Then the test sets, against checkpoint 4 and against T on `ddi_hold`.
+- **Compared on:** step 1 on `val`, `midas_val` and `ddi_val` against checkpoint 3. Then the test sets, against checkpoint 3 and against T on `ddi_hold`.
 - **Result:**
   - Step 1 failed: `val` −0.003 and `midas_val` −0.010, neither supported.
   - `ddi_val` +0.048 and `ddi_hold` 0.641 → 0.670, both supported.
   - Level with T on `ddi_hold` (−0.014, not supported).
-- **Outcome:** **kept: checkpoint 5** (`skinnet-c5`). The user chose it on 22 Nov, together with the three-way split on both tracks.
+- **Outcome:** **kept: checkpoint 4** (`skinnet-c4`). The user chose it on 22 Nov, together with the three-way split on both tracks.
 
 ### V. Derm1M's mycosis fungoides photos in training
 
-- **What:** checkpoint 5 with 574 photos of mycosis fungoides (MF), a skin lymphoma the models miss most on dark skin, and 586 look-alike rashes from Derm1M, matched by source and skin tone. Labels come from captions, and every photo used was looked at. Run on both tracks (PanDerm: idea PI).
+- **What:** checkpoint 4 with 574 photos of mycosis fungoides (MF), a skin lymphoma the models miss most on dark skin, and 586 look-alike rashes from Derm1M, matched by source and skin tone. Labels come from captions, and every photo used was looked at. Run on both tracks (PanDerm: idea PI).
 - **Why:** our training data holds 143 MF photos, 27 on skin types V–VI (DECISIONS.md, section 29).
-- **Compared on:** step 1 against checkpoint 5, then every test set, with MF photos against every non-cancer on `ddi_hold` and `test` as the question.
+- **Compared on:** step 1 against checkpoint 4, then every test set, with MF photos against every non-cancer on `ddi_hold` and `test` as the question.
 - **Result:** passed step 1. On the test sets, lower by a supported amount on ISIC 2019 (−0.049) and pooled `test` AUC (−0.008); the MF gains on `ddi_hold` (+0.051, 12 MF photos) and `test` (+0.017) not supported. On Derm1M's own held-back photos it stayed close to chance (0.545 → 0.602).
 - **Outcome:** not kept (23 Nov). Adding these photos did not make MF on dark skin easier to catch for SkinNet; PanDerm's PI did learn them.
 
 ### W. A running average of the weights
 
-- **What:** checkpoint 5, validated and kept as a running average of its weights (decay 0.9995 per step, batch norm statistics included).
-- **Compared on:** step 1 against checkpoint 5 (DECISIONS.md, section 30).
+- **What:** checkpoint 4, validated and kept as a running average of its weights (decay 0.9995 per step, batch norm statistics included).
+- **Compared on:** step 1 against checkpoint 4 (DECISIONS.md, section 30).
 - **Result:** `midas_val` +0.017, supported, the first SkinNet training change to gain there; `val` −0.003 and `ddi_val` −0.019, not supported.
 - **Outcome:** failed step 1 (24 Nov), not scored on test sets. Its weight average became half of idea Y. Files deleted on 26 Nov.
 
 ### X. Skin-tone and lighting colour augmentation
 
-- **What:** checkpoint 5 with random gamma, saturation, a little hue and a shift of each colour channel in training (as PanDerm's idea PD).
-- **Compared on:** step 1 against checkpoint 5 (DECISIONS.md, section 30).
+- **What:** checkpoint 4 with random gamma, saturation, a little hue and a shift of each colour channel in training (as PanDerm's idea PD).
+- **Compared on:** step 1 against checkpoint 4 (DECISIONS.md, section 30).
 - **Result:** lower on all three: `val` −0.014 and `midas_val` −0.054 (both supported), `ddi_val` −0.016.
 - **Outcome:** failed step 1 (24 Nov), not scored on test sets. Colour carries information the network uses, even on MIDAS photos.
 
 ### Y. Flat minima: SAM and a running average of the weights
 
-- **What:** checkpoint 5 trained with sharpness-aware minimisation (rho 0.05) and W's weight average. Chosen from a search of the research for what carries over across hospitals (DECISIONS.md, section 32).
-- **Compared on:** step 1 against checkpoint 5, then every test set.
+- **What:** checkpoint 4 trained with sharpness-aware minimisation (rho 0.05) and W's weight average. Chosen from a search of the research for what carries over across hospitals (DECISIONS.md, section 32).
+- **Compared on:** step 1 against checkpoint 4, then every test set.
 - **Result:** passed step 1, higher on all three validation sets. On the test sets: MED-NODE +0.052 and Asan +0.009 (both supported), ISIC 2019 −0.021 (supported lower), the rest level.
-- **Outcome:** **kept: checkpoint 6** (`skinnet-c6`), the user's decision on 25 Nov, as a narrow miss of section 32's rule (DECISIONS.md, section 33).
+- **Outcome:** **kept: checkpoint 5** (`skinnet-c5`), the user's decision on 25 Nov, as a narrow miss of section 32's rule (DECISIONS.md, section 33).
 
 ### Z. MixStyle
 
-- **What:** checkpoint 5 with MixStyle after stages 1 and 2: the colour and contrast statistics of early feature maps are mixed between images, so the network cannot tell hospitals apart by photo style (probability 0.5, alpha 0.1, the paper's settings).
-- **Compared on:** section 32's rule against checkpoint 5.
+- **What:** checkpoint 4 with MixStyle after stages 1 and 2: the colour and contrast statistics of early feature maps are mixed between images, so the network cannot tell hospitals apart by photo style (probability 0.5, alpha 0.1, the paper's settings).
+- **Compared on:** section 32's rule against checkpoint 4.
 - **Status:** seed 0 done; stopped at seed 1, epoch 27 of 60, for ideas AB and AC. Runs again on the user's word.
 
 ### AA. Mixup and CutMix
 
-- **What:** checkpoint 5 with mixup (alpha 0.2) or CutMix (alpha 1.0) on half the batches, half the time each, with soft targets and label smoothing 0.1.
-- **Compared on:** section 32's rule against checkpoint 5.
+- **What:** checkpoint 4 with mixup (alpha 0.2) or CutMix (alpha 1.0) on half the batches, half the time each, with soft targets and label smoothing 0.1.
+- **Compared on:** section 32's rule against checkpoint 4.
 - **Status:** not started; runs after Z on the user's word.
 
 ### AB and AC. More epochs again
 
-- **What:** 120 epochs instead of 60, the schedule stretched to match. AB is the base recipe judged against the base model `skinnet`, which shows what more epochs alone do; AC is checkpoint 6 judged against checkpoint 6. Asked for by the user (DECISIONS.md, section 35).
+- **What:** 120 epochs instead of 60, the schedule stretched to match. AB is the base recipe judged against the base model `skinnet`, which shows what more epochs alone do; AC is checkpoint 5 judged against checkpoint 5. Asked for by the user (DECISIONS.md, section 35).
 - **Compared on:** step 1. Every epoch also recorded `midas_val` and `ddi_val`, to see where in training the outside sets gain or lose; they chose nothing.
 - **Result:** AB `val` +0.043 (supported), `midas_val` +0.023, `ddi_val` −0.018. AC `val` +0.028 (supported), `midas_val` −0.012, `ddi_val` −0.014. In AC `midas_val` peaks near epoch 51 and falls by epoch 119.
 - **Outcome:** both failed step 1 (26 Nov), not scored on test sets. The second 60 epochs help only within the training sources, as idea N found (14 Nov). Training stays at 60 epochs.

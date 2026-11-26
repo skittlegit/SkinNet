@@ -1,6 +1,6 @@
 # Data plan: what to add after the baseline
 
-Status (15 Nov 2026): the plan below is the original one of 12 Nov and is kept as a record. What happened to each source is in [the ideas](IDEAS.md): MIDAS (checkpoint 3) and MILK10k (checkpoint 4) helped outside; Derm7pt, SCIN and ISIC 2019 did not. The search of 15 Nov for more sources is in the last section.
+Status (15 Nov 2026): the plan below is the original one of 12 Nov and is kept as a record. What happened to each source is in [the ideas](IDEAS.md): MIDAS (checkpoint 2) and MILK10k (checkpoint 3) helped outside; Derm7pt, SCIN and ISIC 2019 did not. The search of 15 Nov for more sources is in the last section.
 
 ## Why more data
 

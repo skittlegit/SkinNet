@@ -3,14 +3,14 @@
 # on the validation sets only. Test-only sets are never touched here (scripts/step2.sh does that,
 # once an idea has passed step 1).
 #   PY=.venv/Scripts/python bash scripts/run_idea.sh ab           # configs/skinnet-idea-ab.yaml
-#   REF=skinnet-c5 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh aa  # against an older checkpoint
+#   REF=skinnet-c4 SEEDS="0 1 2" PY=python bash scripts/run_idea.sh aa  # against an older checkpoint
 # Safe to re-run: seeds with a finished summary.json are skipped.
 set -uo pipefail
 PY=${PY:-python}
 LETTER=${1:?usage: run_idea.sh <letter>}
 EXP=${EXP:-skinnet-idea-$LETTER}   # configs/<EXP>.yaml
 CFG=configs/$EXP.yaml
-REF=${REF:-skinnet-c6}
+REF=${REF:-skinnet-c5}
 SEEDS=${SEEDS:-"0 1 2"}
 VAL=${VAL:-"val midas_val ddi_val"}   # DDI validation in step 1 since section 26
 RUN=runs/$EXP   # skincancer/paths.py

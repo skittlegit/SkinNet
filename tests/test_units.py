@@ -464,7 +464,7 @@ def test_derm1m_rashes_matched_by_source_and_tone():
 def test_model_folders_by_name():
     from skincancer.paths import exp_dir, results_dir
     assert exp_dir("skinnet").as_posix() == "runs/skinnet"
-    assert exp_dir("tiny", "r").as_posix() == "r/tiny" and results_dir("skinnet-c6", "r").as_posix() == "r/skinnet-c6"
+    assert exp_dir("tiny", "r").as_posix() == "r/tiny" and results_dir("skinnet-c5", "r").as_posix() == "r/skinnet-c5"
 
 
 def test_derm1m_test_is_test_only():

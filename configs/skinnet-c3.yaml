@@ -1,10 +1,6 @@
-# Checkpoint 3 (DECISIONS.md, sections 11 and 12): checkpoint 1's recipe with the MIDAS training share
-# added, early stopping off (every seed runs all 60 epochs) and test-time flips when predicting.
-extends: skinnet-c1.yaml
+# Checkpoint 3 (DECISIONS.md, sections 18 and 19; idea Q): checkpoint 2's recipe with MILK10k's
+# biopsied clinical close-ups added as training-only data (data/extra/milk10k.csv).
+extends: skinnet-c2.yaml
 name: skinnet-c3
 data:
-  train_splits: [train, midas_train]
-train:
-  patience: 0
-eval:
-  tta: true
+  extra_train: [milk10k]

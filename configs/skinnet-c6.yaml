@@ -1,9 +1,0 @@
-# Checkpoint 6 (DECISIONS.md, section 33; the user's decision, 25 Nov): checkpoint 5 trained for flat minima, SAM (rho 0.05) plus a running average of the weights.
-# Was: Idea Y (DECISIONS.md, section 32): checkpoint 5 trained for flat minima, sharpness-aware
-# minimisation (rho 0.05) plus idea W's running average of the weights.
-extends: skinnet-c5.yaml
-name: skinnet-c6
-train:
-  sam_rho: 0.05
-  ema_decay: 0.9995
-  ema_every: 1

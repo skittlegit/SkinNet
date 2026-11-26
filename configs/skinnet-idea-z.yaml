@@ -1,6 +1,6 @@
-# Idea Z (DECISIONS.md, section 32): checkpoint 5 with MixStyle after the first two stages, so the
+# Idea Z (DECISIONS.md, section 32): checkpoint 4 with MixStyle after the first two stages, so the
 # network cannot lean on each hospital's photo style (colour and contrast statistics).
-extends: skinnet-c5.yaml
+extends: skinnet-c4.yaml
 name: skinnet-idea-z
 model:
   mixstyle: {stages: [0, 1], p: 0.5, alpha: 0.1}

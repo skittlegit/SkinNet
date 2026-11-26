@@ -20,7 +20,7 @@ This is a research prototype, not a diagnostic tool.
 
 ## The current model
 
-Checkpoint 6, `skinnet-c6` (`configs/skinnet-c6.yaml`, 25 Nov 2026):
+Checkpoint 5, `skinnet-c5` (`configs/skinnet-c5.yaml`, 25 Nov 2026):
 - **Network:** SkinNet, 2.8 million parameters, from random weights.
 - **Training:** 60 epochs on 18,186 photos: Fitzpatrick17k, PAD-UFES-20, MILK10k, 552 MIDAS photos and 164 DDI photos. Cancer and not cancer are drawn equally often inside each source. Sharpness-aware minimisation (SAM) and a running average of the weights.
 - **Prediction:** three seeds, averaged, each predicting on the image and its mirror images.
@@ -41,11 +41,11 @@ Checkpoint 6, `skinnet-c6` (`configs/skinnet-c6.yaml`, 25 Nov 2026):
 
 Of DermaCon-IN's 5,379 everyday conditions, 32.9% are called cancer.
 
-**Where it stands.** About 0.90 on photos like its training data, 0.71 to 0.85 on the seven sets from hospitals it has never trained on, and 0.68 to 0.73 on MIDAS and DDI. A threshold set on our own validation split does not carry over: outside, it misses more cancers (MCR-SL 41%) or raises more false alarms (Derm7pt 76%). Most outside gains so far came from training on photos from that hospital (MIDAS, MILK10k, DDI). Changes to training mostly helped at home only; checkpoint 6's SAM is the first that also gained on outside test sets (MED-NODE +0.052, Asan +0.009, both supported), at a cost on ISIC 2019 (−0.021). More epochs do not help outside (ideas N, AB and AC).
+**Where it stands.** About 0.90 on photos like its training data, 0.71 to 0.85 on the seven sets from hospitals it has never trained on, and 0.68 to 0.73 on MIDAS and DDI. A threshold set on our own validation split does not carry over: outside, it misses more cancers (MCR-SL 41%) or raises more false alarms (Derm7pt 76%). Most outside gains so far came from training on photos from that hospital (MIDAS, MILK10k, DDI). Changes to training mostly helped at home only; checkpoint 5's SAM is the first that also gained on outside test sets (MED-NODE +0.052, Asan +0.009, both supported), at a cost on ISIC 2019 (−0.021). More epochs do not help outside (ideas N, AB and AC).
 
 **Against PanDerm**, the project's other model: DermFM-Zero, fine-tuned on the same photos and splits (`skittlegit/PanDerm`). Paired on the same images, seed averages:
 
-| Set | SkinNet c6 | PanDerm | PanDerm − SkinNet [95% interval] |
+| Set | SkinNet c5 | PanDerm | PanDerm − SkinNet [95% interval] |
 | --- | --- | --- | --- |
 | Our test split | 0.901 | 0.991 | +0.090 [+0.074, +0.108] |
 | MIDAS test | 0.734 | 0.863 | +0.130 [+0.072, +0.191] |
@@ -88,10 +88,10 @@ The images are not in the repository. Put them under `data/raw/` as laid out in 
 | --- | --- | --- |
 | Fitzpatrick17k | training, validation, test | github.com/mattgroh/fitzpatrick17k: `python -m skincancer.data.download_fitzpatrick17k` (dead links from the Wayback Machine, checked by MD5) |
 | PAD-UFES-20 | training, validation, test | Mendeley Data; merge `imgs_part_*` into `images/` |
-| DDI | a quarter training (since checkpoint 5), a quarter validation, half test ([DECISIONS.md](DECISIONS.md), section 26) | Stanford AIMI (request access); never shown in figures |
+| DDI | a quarter training (since checkpoint 4), a quarter validation, half test ([DECISIONS.md](DECISIONS.md), section 26) | Stanford AIMI (request access); never shown in figures |
 | DermaCon-IN | test only | Harvard Dataverse: `python -m skincancer.data.download_dermacon_in` |
-| MRA-MIDAS | 40% training, 30% validation, 30% test, by patient (since checkpoint 3) | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
-| MILK10k (clinical close-ups) | training only (since checkpoint 4; `data/extra/milk10k.csv`) | ISIC Archive, doi:10.34970/648456 |
+| MRA-MIDAS | 40% training, 30% validation, 30% test, by patient (since checkpoint 2) | Stanford AIMI on Redivis: `python -m skincancer.data.download_midas` |
+| MILK10k (clinical close-ups) | training only (since checkpoint 3; `data/extra/milk10k.csv`) | ISIC Archive, doi:10.34970/648456 |
 | HIBA, MED-NODE, Derm7pt, Asan and Hallym, ISIC 2019, MCR-SL | test only, never trained on (`data/external.csv`, splits `ext_*`; section 27) | `python -m skincancer.data.extra --help`, then `python -m skincancer.data.external` |
 
 The pipeline that built the committed files, for reference:
@@ -111,17 +111,17 @@ python -m skincancer.train --config configs/skinnet.yaml --seed 0     # one seed
 python -m skincancer.predict --run runs/skinnet/s0 --splits ddi_hold dermacon_test dermacon_other midas_test --final
 python -m skincancer.evaluate --exp skinnet                           # results/skinnet/metrics.csv
 python -m skincancer.analysis.gradcam --run runs/skinnet/s0 --split test
-python -m skincancer.compare --a skinnet-c1 --b skinnet-c2 --splits val test   # is b better than a?
-python -m skincancer.plot_history --exp skinnet-c6                    # results/skinnet-c6/curves.png
+python -m skincancer.compare --a skinnet-c1 --b skinnet-c1-tta --splits val test   # is b better than a?
+python -m skincancer.plot_history --exp skinnet-c5                    # results/skinnet-c5/curves.png
 ```
 
-For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c6`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there. A kept idea becomes the next checkpoint with `python scripts/adopt_checkpoint.py <idea> skinnet-c<n> "<why>"`.
+For an idea under test, `scripts/run_idea.sh <letter>` trains `configs/skinnet-idea-<letter>.yaml`, averages the seeds and compares with the current checkpoint (`skinnet-c5`; set `REF`) on the validation sets only (`val`, `midas_val`, `ddi_val`); `python scripts/step1_gate.py runs/<idea>/logs/compare_val.log` applies the step 1 rule (section 26), and `bash scripts/step2.sh <idea>` scores an idea that passed it on every test-only set, once, and compares it with the checkpoint there. A kept idea becomes the next checkpoint with `python scripts/adopt_checkpoint.py <idea> skinnet-c<n> "<why>"`.
 
 The queue does all of that for several ideas in a row, detached from the terminal, and logs to `runs/queue.log`:
 
 ```bash
 bash scripts/queue.sh start z aa              # skinnet-idea-z, then -aa: step 1, its rule, step 2 if passed
-bash scripts/queue.sh start z@skinnet-c5      # against another reference (letter[@reference][:rule])
+bash scripts/queue.sh start z@skinnet-c4      # against another reference (letter[@reference][:rule])
 bash scripts/queue.sh start --wait z          # start once the PanDerm repository's queue has finished
 bash scripts/queue.sh status                  # which seed and epoch, time left, the last results
 bash scripts/queue.sh stop                    # stop it now; the same start command carries on later
@@ -152,7 +152,7 @@ results/<name>/                   metrics.csv: one row per set x subgroup x metr
 checkpoints/<name>/               the kept models' weights (local)
 ```
 
-Commands take just the model's name (`--exp skinnet-c6`); `predict --run` takes the full folder (`runs/skinnet-c6/s0`). Paths are in [paths.py](src/skincancer/paths.py).
+Commands take just the model's name (`--exp skinnet-c5`); `predict --run` takes the full folder (`runs/skinnet-c5/s0`). Paths are in [paths.py](src/skincancer/paths.py).
 
 `data/manifest.csv` has one row per image (cancer or not, type of lesion, dataset, group, split); [data/splits/SUMMARY.md](data/splits/SUMMARY.md) counts them. `runs/<name>/s<seed>/preds/<split>.csv` has the predicted class probabilities. Evaluation reads only those two.
 

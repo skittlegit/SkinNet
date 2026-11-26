@@ -4,7 +4,7 @@ Stage one: skin cancer detection. Every number is the mean of three seeds with a
 
 ## Where it stands now (26 Nov 2026)
 
-The current model is checkpoint 6 (`skinnet-c6`). Its scores on every test set, with missed cancers and false alarms, are in the [README](../README.md); how each checkpoint was adopted is in [CHECKPOINTS.md](CHECKPOINTS.md). The sections below this one are the record of each round, oldest first, as written at the time.
+The current model is checkpoint 5 (`skinnet-c5`). Its scores on every test set, with missed cancers and false alarms, are in the [README](../README.md); how each checkpoint was adopted is in [CHECKPOINTS.md](CHECKPOINTS.md). The sections below this one are the record of each round, oldest first, as written at the time.
 
 **Every checkpoint on the main test sets** (AUC, three-seed averages from `results/<name>/metrics.csv`):
 
@@ -12,28 +12,28 @@ The current model is checkpoint 6 (`skinnet-c6`). Its scores on every test set, 
 | --- | --- | --- | --- | --- | --- |
 | Baseline `skinnet` | 12 Nov | 0.887 | 0.591 | 0.654 | 0.825 |
 | Checkpoint 1: balanced drawing | 12 Nov | 0.890 | 0.642 | 0.623 | 0.793 |
-| Checkpoint 2: seed average and flips | 12 Nov | **0.904** | 0.645 | 0.629 | 0.826 |
-| Checkpoint 3: MIDAS photos in training | 13 Nov | 0.898 | 0.698 | 0.657 | 0.841 |
-| Checkpoint 4: MILK10k photos in training | 14 Nov | 0.903 | **0.750** | 0.650 (half: 0.641) | 0.818 |
-| Checkpoint 5: a quarter of DDI in training | 22 Nov | 0.901 | 0.744 | half: 0.670 | **0.847** |
-| Checkpoint 6: SAM and weight averaging | 25 Nov | 0.901 | 0.734 | half: **0.676** | 0.846 |
+| Checkpoint 2, first step: seed average and flips | 12 Nov | **0.904** | 0.645 | 0.629 | 0.826 |
+| Checkpoint 2: MIDAS photos in training | 13 Nov | 0.898 | 0.698 | 0.657 | 0.841 |
+| Checkpoint 3: MILK10k photos in training | 14 Nov | 0.903 | **0.750** | 0.650 (half: 0.641) | 0.818 |
+| Checkpoint 4: a quarter of DDI in training | 22 Nov | 0.901 | 0.744 | half: 0.670 | **0.847** |
+| Checkpoint 5: SAM and weight averaging | 25 Nov | 0.901 | 0.734 | half: **0.676** | 0.846 |
 
-- **DDI:** up to checkpoint 4, all of DDI, never trained on. From checkpoint 5, the held-out half (`ddi_hold`), from a hospital whose other photos are in training; checkpoint 4 scores 0.641 on that half.
-- **MIDAS test:** from checkpoint 3 on, MIDAS's other photos are in training.
+- **DDI:** up to checkpoint 3, all of DDI, never trained on. From checkpoint 4, the held-out half (`ddi_hold`), from a hospital whose other photos are in training; checkpoint 3 scores 0.641 on that half.
+- **MIDAS test:** from checkpoint 2 on, MIDAS's other photos are in training.
 
-**The six outside sets no model trains on** (AUC; scored from 22 Nov, so from checkpoint 4 on):
+**The six outside sets no model trains on** (AUC; scored from 22 Nov, so from checkpoint 3 on):
 
 | Model | HIBA | MED-NODE | MCR-SL | Derm7pt | Asan and Hallym | ISIC 2019 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Checkpoint 4 | **0.866** | 0.822 | 0.794 | 0.709 | 0.775 | 0.748 |
-| Checkpoint 5 | 0.860 | 0.771 | 0.804 | **0.713** | 0.784 | **0.749** |
-| Checkpoint 6 | 0.849 | **0.823** | **0.805** | 0.712 | **0.793** | 0.729 |
+| Checkpoint 3 | **0.866** | 0.822 | 0.794 | 0.709 | 0.775 | 0.748 |
+| Checkpoint 4 | 0.860 | 0.771 | 0.804 | **0.713** | 0.784 | **0.749** |
+| Checkpoint 5 | 0.849 | **0.823** | **0.805** | 0.712 | **0.793** | 0.729 |
 
 **What the record shows.**
-- **Home scores stopped rising at checkpoint 2** (about 0.90). Most changes since then traded a little at home for gains outside.
+- **Home scores stopped rising on 12 Nov** (about 0.90, checkpoint 1-TTA). Most changes since then traded a little at home for gains outside.
 - **New hospitals' photos in training are what moved the outside scores:** MIDAS 0.59 → 0.75 with MIDAS and MILK10k photos, DDI's half 0.64 → 0.68 with 164 DDI photos.
 - **On hospitals never trained on, SkinNet stays at 0.71 to 0.87.** Leaving a source out of training costs it about 0.09 AUC on that source (DECISIONS.md, section 27).
-- **Changes to training mostly helped at home only.** More epochs (N, AB, AC), a wider network (M), self-supervised pretraining (L) and ImageNet weights (P) all raised home scores and not outside ones. SAM (checkpoint 6) is the exception, on two of the six outside sets.
+- **Changes to training mostly helped at home only.** More epochs (N, AB, AC), a wider network (M), self-supervised pretraining (L) and ImageNet weights (P) all raised home scores and not outside ones. SAM (checkpoint 5) is the exception, on two of the six outside sets.
 
 ## Baseline (12 Nov 2026)
 
@@ -184,7 +184,7 @@ All three passed the 0.005 bar. G + H was the best and was the one scored on the
 | DermaCon-IN tumours: AUC | 0.793 | 0.826 | +0.033 [−0.008, 0.084] |
 | DermaCon-IN everyday conditions called cancer | 34% | 24% | |
 
-**Outcome: checkpoint 2, after a change of rule.** The rule written beforehand required the paired interval to be above zero on MIDAS or DDI. On both it includes zero, so G + H was first discarded. The team then decided that a free, supported gain on our own test split with nothing worse anywhere counts as working, and restored it as checkpoint 2 ([CHECKPOINTS.md](CHECKPOINTS.md)). The outside numbers stand as they are: not shown to be better.
+**Outcome: checkpoint 1-TTA, after a change of rule.** The rule written beforehand required the paired interval to be above zero on MIDAS or DDI. On both it includes zero, so G + H was first discarded. The team then decided that a free, supported gain on our own test split with nothing worse anywhere counts as working, and restored it as checkpoint 1-TTA ([CHECKPOINTS.md](CHECKPOINTS.md)). The outside numbers stand as they are: not shown to be better.
 
 **Reading.**
 
@@ -195,13 +195,13 @@ All three passed the 0.005 bar. G + H was the best and was the one scored on the
 
 ## Ideas J and O: MIDAS photos in training (13 Nov 2026)
 
-MIDAS was split by patient into three parts: 552 images that may be trained on, 414 for outside validation (never trained on, used to choose models) and 414 for testing. From here on a MIDAS test score is on those 414 images; earlier sections used all 1,380. Checkpoint 2 re-scored on the new parts: outside validation 0.689, MIDAS test 0.645.
+MIDAS was split by patient into three parts: 552 images that may be trained on, 414 for outside validation (never trained on, used to choose models) and 414 for testing. From here on a MIDAS test score is on those 414 images; earlier sections used all 1,380. Checkpoint 1-TTA re-scored on the new parts: outside validation 0.689, MIDAS test 0.645.
 
 **Idea J** is checkpoint 1's recipe with the 552 MIDAS training images added. On the outside validation part it gained +0.093 AUC, but within-source AUC on our own validation split fell by 0.012, a supported loss, so it failed the first step and was not scored on any test set. Most of that loss was one seed stopped early at epoch 25.
 
-**Idea O** is idea J with early stopping off, so every seed trains for 60 epochs. Both compared with checkpoint 2 after test-time flips and the seed average:
+**Idea O** is idea J with early stopping off, so every seed trains for 60 epochs. Both compared with checkpoint 1-TTA after test-time flips and the seed average:
 
-| Set | Score | Checkpoint 2 | Idea O | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 1-TTA | Idea O | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.689 | 0.793 | +0.104 [+0.071, +0.134] | yes |
 | `val` | AUC | 0.901 | 0.898 | −0.003 [−0.008, +0.003] | no |
@@ -214,7 +214,7 @@ MIDAS was split by patient into three parts: 552 images that may be trained on, 
 
 At the threshold that catches 90% of cancers on our validation split:
 
-| Set | Cancers missed: checkpoint 2 | Idea O | False alarms: checkpoint 2 | Idea O |
+| Set | Cancers missed: checkpoint 1-TTA | Idea O | False alarms: checkpoint 1-TTA | Idea O |
 | --- | --- | --- | --- | --- |
 | Our test split | 9% | 10% | 33% | 34% |
 | MIDAS test | 50% | 33% | 31% | 41% |
@@ -230,13 +230,13 @@ DermaCon-IN everyday conditions called cancer: 24% → 28%.
 - At the fixed threshold the outside change is mostly a shift: fewer cancers missed, more false alarms. The AUC gains say the ranking improved as well, but the threshold set on our own validation split still does not carry over to other hospitals.
 - At home it costs a little: test AUC −0.007, cancers against benign lookalikes 0.797 → 0.775.
 
-**Outcome: checkpoint 3, by a decision of the team.** The rule written beforehand required a supported gain on MIDAS test or DDI, which idea O has on both, and no supported loss on our own test split, which it misses by a small margin. The team decided the trade is worth taking, since new hospitals are the open problem. See [CHECKPOINTS.md](CHECKPOINTS.md) and ([DECISIONS.md](../DECISIONS.md), section 12).
+**Outcome: checkpoint 2, by a decision of the team.** The rule written beforehand required a supported gain on MIDAS test or DDI, which idea O has on both, and no supported loss on our own test split, which it misses by a small margin. The team decided the trade is worth taking, since new hospitals are the open problem. See [CHECKPOINTS.md](CHECKPOINTS.md) and ([DECISIONS.md](../DECISIONS.md), section 12).
 
 ## Idea I: SCIN photos in training (13 Nov 2026)
 
-SCIN is a public set of phone photos of everyday skin conditions (eczema, contact dermatitis, hives, insect bites). 2,907 of them, one per case, were added to checkpoint 3's training images as not cancer. Cases with a cancer or pre-cancer anywhere in the dermatologists' list were left out.
+SCIN is a public set of phone photos of everyday skin conditions (eczema, contact dermatitis, hives, insect bites). 2,907 of them, one per case, were added to checkpoint 2's training images as not cancer. Cases with a cancer or pre-cancer anywhere in the dermatologists' list were left out.
 
-| Set | Score | Checkpoint 3 | Idea I | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 2 | Idea I | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.729 | −0.064 [−0.096, −0.032] | yes |
 | `val` | AUC | 0.898 | 0.913 | +0.015 [+0.008, +0.023] | yes |
@@ -247,17 +247,17 @@ SCIN is a public set of phone photos of everyday skin conditions (eczema, contac
 **Reading.**
 
 - At home it is the largest gain since checkpoint 1. Our validation split holds many everyday conditions from Fitzpatrick17k, and more examples of those make them easier to tell from cancer.
-- On the MIDAS validation part it gives back most of what checkpoint 3 gained (0.793 → 0.729; checkpoint 2 was 0.689). MIDAS is all tumours: the question there is cancer against a benign growth, and SCIN has no growths at all.
+- On the MIDAS validation part it gives back most of what checkpoint 2 gained (0.793 → 0.729; checkpoint 1-TTA was 0.689). MIDAS is all tumours: the question there is cancer against a benign growth, and SCIN has no growths at all.
 - The likely cause is dilution. In the balanced drawing SCIN took about 18% of every epoch, all of it easy "rash, so not cancer" examples, and the share of draws going to the hard tumour-against-tumour cases fell.
-- So more photos from a new source is not enough on its own. What helped in checkpoint 3 was photos of the hard distinction from a new source.
+- So more photos from a new source is not enough on its own. What helped in checkpoint 2 was photos of the hard distinction from a new source.
 
 ## Ideas M and N: a wider network, a longer schedule (14 Nov 2026)
 
-Both are checkpoint 3's recipe with one thing changed: M has the network at twice the width (11.2 million parameters against 2.8 million), N trains for 120 epochs instead of 60. Three seeds each, test-time flips and the seed average, paired comparison with checkpoint 3.
+Both are checkpoint 2's recipe with one thing changed: M has the network at twice the width (11.2 million parameters against 2.8 million), N trains for 120 epochs instead of 60. Three seeds each, test-time flips and the seed average, paired comparison with checkpoint 2.
 
 **Step 1, validation:**
 
-| Set | Score | Checkpoint 3 | Idea M | Idea N |
+| Set | Score | Checkpoint 2 | Idea M | Idea N |
 | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.773 (−0.020, supported loss) | 0.795 (+0.002, not supported) |
 | `val` | AUC | 0.898 | 0.897 (−0.001) | 0.930 (+0.032, supported) |
@@ -265,7 +265,7 @@ Both are checkpoint 3's recipe with one thing changed: M has the network at twic
 
 M failed step 1 and was not scored on any test set. N passed and was scored once on the test sets:
 
-| Set | Score | Checkpoint 3 | Idea N | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 2 | Idea N | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `test` | AUC | 0.898 | 0.930 | +0.032 [+0.022, +0.041] | yes |
 | `test` | Within-source AUC | 0.876 | 0.924 | +0.048 [+0.030, +0.071] | yes |
@@ -278,14 +278,14 @@ M failed step 1 and was not scored on any test set. N passed and was scored once
 **Reading.**
 
 - Width is not the limit. Four times the parameters on the same 13,000 images learns nothing more that carries to other hospitals.
-- Length is a limit at home only. N's seeds did best at epochs 80 to 107, long after checkpoint 3's schedule had ended, and our own test split rose from 0.898 to 0.930. On DDI, a hospital no model here has seen, it fell from 0.657 to 0.592. The extra epochs taught the network our two home datasets better, and part of what it learned does not hold anywhere else.
+- Length is a limit at home only. N's seeds did best at epochs 80 to 107, long after checkpoint 2's schedule had ended, and our own test split rose from 0.898 to 0.930. On DDI, a hospital no model here has seen, it fell from 0.657 to 0.592. The extra epochs taught the network our two home datasets better, and part of what it learned does not hold anywhere else.
 - So the supervisor's point is right that 60 epochs was not the end of training, but more of it on the same photos widens the gap to other hospitals. The gap needs different photos or different starting weights (ideas Q, L and P), not more of the same training.
 
 ## Idea L: self-supervised pretraining (14 Nov 2026)
 
-SkinNet first learned from about 17,000 photos without their labels (SimCLR, 200 epochs: our training photos, the MIDAS training part, Derm7pt and SCIN), then was trained with checkpoint 3's recipe from those weights. Three seeds, test-time flips and the seed average. Judged against checkpoint 3 as specified; checkpoint 4 alongside.
+SkinNet first learned from about 17,000 photos without their labels (SimCLR, 200 epochs: our training photos, the MIDAS training part, Derm7pt and SCIN), then was trained with checkpoint 2's recipe from those weights. Three seeds, test-time flips and the seed average. Judged against checkpoint 2 as specified; checkpoint 3 alongside.
 
-| Set | Score | Checkpoint 3 | Checkpoint 4 | Idea L | L against checkpoint 3 | L against checkpoint 4 |
+| Set | Score | Checkpoint 2 | Checkpoint 3 | Idea L | L against checkpoint 2 | L against checkpoint 3 |
 | --- | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.753 | −0.040 [−0.093, +0.015] | −0.065 [−0.111, −0.018], supported |
 | `val` | AUC | 0.898 | 0.900 | 0.936 | +0.038 [+0.027, +0.049], supported | +0.036 [+0.024, +0.049], supported |
@@ -297,9 +297,9 @@ SkinNet first learned from about 17,000 photos without their labels (SimCLR, 200
 
 ## Idea P: what ImageNet weights would add, a reference (14 Nov 2026)
 
-Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recipe unchanged: one from ImageNet weights, one from random weights, so the effect of the weights can be told apart from the effect of a different, larger network. Three seeds each, test-time flips and the seed average, scored once on every set. Never a checkpoint.
+Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 2's recipe unchanged: one from ImageNet weights, one from random weights, so the effect of the weights can be told apart from the effect of a different, larger network. Three seeds each, test-time flips and the seed average, scored once on every set. Never a checkpoint.
 
-| Set | Score | Checkpoint 3 | Checkpoint 4 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
+| Set | Score | Checkpoint 2 | Checkpoint 3 | ResNet-18, random start | ResNet-18, ImageNet start | ImageNet against random start [95% interval] |
 | --- | --- | --- | --- | --- | --- | --- |
 | `val` | Within-source AUC | 0.882 | 0.905 | 0.875 | 0.943 | +0.067 [+0.048, +0.090], supported |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.818 | 0.785 | 0.756 | −0.029 [−0.094, +0.036] |
@@ -313,10 +313,10 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 
 - A bigger network on its own does nothing: the random-start ResNet-18 matches SkinNet within noise everywhere, as idea M found.
 - ImageNet weights make the model much better on our two home datasets and no better at other hospitals. This is the same pattern as ideas I, N and L: whatever helps the network learn our home photos better does not carry outside.
-- Checkpoint 4, from scratch with more hospitals' photos in training, is ahead of the ImageNet model on MIDAS (0.750 against 0.723 on its test part) and DDI (0.650 against 0.626). New photos from new places did more for the outside scores than ImageNet weights.
-- The ImageNet model was trained at checkpoint 3's learning rate (1e-3 on every layer), not tuned for a pretrained start, so a third reference used ten times lower, the usual choice for fine-tuning (15 Nov):
+- Checkpoint 3, from scratch with more hospitals' photos in training, is ahead of the ImageNet model on MIDAS (0.750 against 0.723 on its test part) and DDI (0.650 against 0.626). New photos from new places did more for the outside scores than ImageNet weights.
+- The ImageNet model was trained at checkpoint 2's learning rate (1e-3 on every layer), not tuned for a pretrained start, so a third reference used ten times lower, the usual choice for fine-tuning (15 Nov):
 
-| Set | Score | Checkpoint 4 | ImageNet, lr 1e-3 | ImageNet, lr 1e-4 | lr 1e-4 against checkpoint 4 [95% interval] |
+| Set | Score | Checkpoint 3 | ImageNet, lr 1e-3 | ImageNet, lr 1e-4 | lr 1e-4 against checkpoint 3 [95% interval] |
 | --- | --- | --- | --- | --- | --- |
 | `val` | Within-source AUC | 0.905 | 0.943 | 0.961 | +0.056 [+0.041, +0.073], supported |
 | `midas_val` (outside validation) | AUC | 0.818 | 0.756 | 0.778 | −0.041 [−0.085, +0.005] |
@@ -325,13 +325,13 @@ Two torchvision ResNet-18 models (11.2 million parameters), checkpoint 3's recip
 | DDI | AUC | 0.650 | 0.626 | 0.631 | −0.019 [−0.060, +0.021] |
 | DermaCon-IN tumours | AUC | 0.818 | 0.867 | 0.804 | −0.014 [−0.187, +0.143] |
 
-- The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 4 on all three outside sets. The outside gap is about the training photos, not the starting weights.
+- The lower rate helps at home (the best home scores in the project) and a little outside, and is still below checkpoint 3 on all three outside sets. The outside gap is about the training photos, not the starting weights.
 
 ## Idea S: Asan and Hallym clinical photos in training (16 Nov 2026)
 
-Checkpoint 4's recipe with 4,999 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,499 not cancer), about a fifth of the draws. They are published only as 99 x 99 pixel thumbnails. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.
+Checkpoint 3's recipe with 4,999 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,499 not cancer), about a fifth of the draws. They are published only as 99 x 99 pixel thumbnails. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 3.
 
-| Set | Score | Checkpoint 4 | Idea S | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 3 | Idea S | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.818 | 0.792 | −0.026 [−0.051, −0.003] | yes, a loss |
 | `val` | AUC | 0.900 | 0.911 | +0.011 [+0.003, +0.019] | yes, a gain |
@@ -343,9 +343,9 @@ Checkpoint 4's recipe with 4,999 biopsied clinical photos from two Korean hospit
 
 ## Idea R: MILK10k drawn twice as often (15 Nov 2026)
 
-Checkpoint 4's recipe with MILK10k's share of the draws raised from 27% to 43%. Paired comparison with checkpoint 4.
+Checkpoint 3's recipe with MILK10k's share of the draws raised from 27% to 43%. Paired comparison with checkpoint 3.
 
-| Set | Score | Checkpoint 4 | Idea R | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 3 | Idea R | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.818 | 0.815 | −0.004 [−0.028, +0.021] | no |
 | `val` | AUC | 0.900 | 0.884 | −0.016 [−0.024, −0.010] | yes, a loss |
@@ -355,9 +355,9 @@ Checkpoint 4's recipe with MILK10k's share of the draws raised from 27% to 43%. 
 
 ## Idea K: ISIC 2019 dermoscopy in training (15 Nov 2026)
 
-Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancers, 2,500 not cancer, one per lesion), about a fifth of the draws. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 4.
+Checkpoint 3's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancers, 2,500 not cancer, one per lesion), about a fifth of the draws. Three seeds, test-time flips and the seed average, paired comparison with checkpoint 3.
 
-| Set | Score | Checkpoint 4 | Idea K | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 3 | Idea K | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.818 | 0.791 | −0.028 [−0.051, −0.005] | yes, a loss |
 | `val` | AUC | 0.900 | 0.893 | −0.007 [−0.016, +0.001] | no |
@@ -367,11 +367,11 @@ Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancer
 
 **Reading.** Dermoscopy adds thousands of cancers, but they are close-ups through a lens with no skin around them. They did nothing at home and cost 0.028 on MIDAS's clinic photos. Together with idea Q, it says what kind of data helps: clinical photos of the hard cases, from new places. More cancers of a different kind of image do not.
 
-## Idea Q: MILK10k photos in training, checkpoint 4 (14 Nov 2026)
+## Idea Q: MILK10k photos in training, checkpoint 3 (14 Nov 2026)
 
-4,908 biopsy-confirmed clinical close-ups from MILK10k (five centres: Vienna, Ankara, Queensland, Memorial Sloan Kettering, Skopje) added to checkpoint 3's training images: 3,620 cancers (2,520 BCC, 652 SCC, 448 melanoma) and 1,288 benign growths. Three seeds, test-time flips, seed average, paired comparison with checkpoint 3.
+4,908 biopsy-confirmed clinical close-ups from MILK10k (five centres: Vienna, Ankara, Queensland, Memorial Sloan Kettering, Skopje) added to checkpoint 2's training images: 3,620 cancers (2,520 BCC, 652 SCC, 448 melanoma) and 1,288 benign growths. Three seeds, test-time flips, seed average, paired comparison with checkpoint 2.
 
-| Set | Score | Checkpoint 3 | Checkpoint 4 (idea Q) | Difference [95% interval] | Supported |
+| Set | Score | Checkpoint 2 | Checkpoint 3 (idea Q) | Difference [95% interval] | Supported |
 | --- | --- | --- | --- | --- | --- |
 | `midas_val` (outside validation) | AUC | 0.793 | 0.818 | +0.026 [−0.005, +0.059] | no |
 | `val` | Within-source AUC | 0.882 | 0.905 | +0.024 [+0.009, +0.039] | yes |
@@ -383,11 +383,11 @@ Checkpoint 4's recipe with 5,000 ISIC 2019 dermoscopy images added (2,500 cancer
 
 At the threshold fixed on validation: MIDAS test false alarms 41% → 29% and missed cancers 33% → 29%; at home, cancers against benign lookalikes 0.775 → 0.831.
 
-**Outcome: checkpoint 4, by a decision of the team.** The rule (DECISIONS.md, section 19) asked for a rise on every test set; DDI was 0.007 lower, inside the noise, and nothing was lower by a supported amount.
+**Outcome: checkpoint 3, by a decision of the team.** The rule (DECISIONS.md, section 19) asked for a rise on every test set; DDI was 0.007 lower, inside the noise, and nothing was lower by a supported amount.
 
 **Reading.**
 
-- The first idea since checkpoint 3 to rise on both validation sets, and the largest gain yet on the hard question: cancer against a benign growth that looks like one. That is what MILK10k is made of.
+- The first idea since checkpoint 2 to rise on both validation sets, and the largest gain yet on the hard question: cancer against a benign growth that looks like one. That is what MILK10k is made of.
 - It helps on MIDAS, a hospital it has not trained on more than before, so the gain is not just learning MILK10k's photos.
-- DDI is flat, and skin tone does not explain it. A first guess was that MILK10k's mostly lighter-skinned centres would not help on DDI's darker skin, but by DDI's skin-tone groups (about 200 images each) checkpoint 4 is 0.676 → 0.645 on Fitzpatrick I–II, 0.679 → 0.713 on III–IV and 0.625 → 0.607 on V–VI: lower on the lightest group too, and every change within noise. Why it helps on MIDAS and not on DDI is open. One difference that may matter: MIDAS's cancers are all BCC, SCC and melanoma, the three types MILK10k has, while 40 of DDI's 171 cancers are rarer types (32 mycosis fungoides, 6 Kaposi sarcoma). In training those appear only in Fitzpatrick17k (236 photos), and adding MILK10k makes them a smaller share of what the network sees. A guess, not tested.
+- DDI is flat, and skin tone does not explain it. A first guess was that MILK10k's mostly lighter-skinned centres would not help on DDI's darker skin, but by DDI's skin-tone groups (about 200 images each) checkpoint 3 is 0.676 → 0.645 on Fitzpatrick I–II, 0.679 → 0.713 on III–IV and 0.625 → 0.607 on V–VI: lower on the lightest group too, and every change within noise. Why it helps on MIDAS and not on DDI is open. One difference that may matter: MIDAS's cancers are all BCC, SCC and melanoma, the three types MILK10k has, while 40 of DDI's 171 cancers are rarer types (32 mycosis fungoides, 6 Kaposi sarcoma). In training those appear only in Fitzpatrick17k (236 photos), and adding MILK10k makes them a smaller share of what the network sees. A guess, not tested.
 - It calls actinic keratoses (pre-cancers, never trained on) cancer more often (80% → 88%), in line with a training set that is half basal cell carcinoma.

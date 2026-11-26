@@ -1,9 +1,9 @@
 """Paired comparison of two models on the same images.
 
     python -m skincancer.compare --a skinnet-idea-t --b skinnet-lodo-pad --splits test --datasets pad_ufes_20
-    python -m skincancer.compare --a skinnet-c2 --b skinnet-c3 --splits test ddi_test midas_test
+    python -m skincancer.compare --a skinnet-c1-tta --b skinnet-c2 --splits test ddi_test midas_test
     # one kind of cancer against every non-cancer in the set (here mycosis fungoides, section 29)
-    python -m skincancer.compare --a skinnet-c5 --b skinnet-idea-v --splits ddi_hold --positives "mycosis.fungoides"
+    python -m skincancer.compare --a skinnet-c4 --b skinnet-idea-v --splits ddi_hold --positives "mycosis.fungoides"
 
 Two separate confidence intervals overlap long before a difference stops being real, because
 most of their width is which images happened to be in the test set, and both models share

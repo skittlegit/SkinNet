@@ -2,13 +2,13 @@
 
     # seed average: one prediction per image, the mean of the seeds' probabilities.
     # Written to runs/<exp>/avg/, next to the seeds; evaluate and compare then use it.
-    python -m skincancer.derive ensemble --exp skinnet-c3 --splits val midas_val
+    python -m skincancer.derive ensemble --exp skinnet-c2 --splits val midas_val
     # test-time flips for a model trained without them: the same weights under a new name,
-    # predicting on the image and its mirror images (this is how checkpoint 2 was made)
-    python -m skincancer.derive tta --exp skinnet-c1 --name skinnet-c2
+    # predicting on the image and its mirror images (this is how checkpoint 1-TTA was made)
+    python -m skincancer.derive tta --exp skinnet-c1 --name skinnet-c1-tta
     # a model scored on all of DDI before it was split (section 25): its predictions on the
     # held-out half, cut from the ones it already has. Not a new look: no image is scored again.
-    python -m skincancer.derive subset --exp skinnet-c4 --source ddi_test --splits ddi_hold
+    python -m skincancer.derive subset --exp skinnet-c3 --source ddi_test --splits ddi_hold
 
 `tta` writes runs/<name>/s<seed>/ with the weights and a config that has eval.tta on; score it
 with `predict` as usual. A config with `eval.tta: true` needs no such step. `ensemble` writes

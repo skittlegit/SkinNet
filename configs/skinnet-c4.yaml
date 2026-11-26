@@ -1,6 +1,9 @@
-# Checkpoint 4 (DECISIONS.md, sections 18 and 19; idea Q): checkpoint 3's recipe with MILK10k's
-# biopsied clinical close-ups added as training-only data (data/extra/milk10k.csv).
+# Checkpoint 4 (DECISIONS.md, section 26; was idea U): checkpoint 3's recipe with a quarter of DDI
+# (ddi_train, 164 images) in training; another quarter (ddi_val) joins step 1 and the held-out half
+# (ddi_hold) is the test. Chosen by the user on 22 Nov over idea T (all 328 trainable DDI images).
 extends: skinnet-c3.yaml
 name: skinnet-c4
 data:
-  extra_train: [milk10k]
+  train_splits: [train, midas_train, ddi_train]
+eval:
+  splits: [val, test, ak_side, midas_val, ddi_val]

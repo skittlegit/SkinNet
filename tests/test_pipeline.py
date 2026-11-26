@@ -208,7 +208,7 @@ def test_pipeline(workdir, monkeypatch):
     same = compare.main(["--a", "tiny", "--b", "tiny", "--splits", "val", "--n-boot", "50"])
     assert (same["diff"] == 0).all() and (same["supported"] == "no").all()
 
-    # derived models (how checkpoint 2 is built): test-time flips, then the seed average
+    # derived models (how checkpoint 1-TTA is built): test-time flips, then the seed average
     from skincancer import derive
     derive.main(["tta", "--exp", "tiny", "--name", "tiny_tta"])
     assert yaml.safe_load(Path("runs/tiny_tta/s1/config.yaml").read_text())["eval"]["tta"] is True
