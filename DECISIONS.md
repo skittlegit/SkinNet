@@ -1497,6 +1497,7 @@ AB and AC are kept on disk for the user; neither is adopted.
 
 **Decided by the user (26 Nov).** Since 21–22 Nov (sections 26 and 30) every idea's files were kept until the user decided. The user has now seen these results and chose to delete the discarded ones:
 - **Deleted:** ideas V, W, X, AB and AC: their configs (`configs/skinnet-idea-<v|w|x|ab|ac>.yaml`, still in git history before this commit), their run folders and V's result tables.
-- **Kept:** their results, written up in sections 29, 30 and 35 and in [docs/IDEAS.md](docs/IDEAS.md); their rows in the test-set ledger (V's looks at the test sets stay on record); everything of T, Z and AA, the checkpoints, the base model and the leave-one-dataset-out runs.
+- **Kept:** their results, written up in sections 29, 30 and 35 and in [docs/IDEAS.md](docs/IDEAS.md); their rows in the test-set ledger (V's looks at the test sets stay on record); everything of T, Z and AA, the checkpoints and the base model.
+- **Also deleted (the user, the same day):** the three leave-one-dataset-out configs and runs (`skinnet-lodo-f17k`, `-midas`, `-pad`; section 27). Their result tables (`results/skinnet-lodo-*/`, local) and ledger rows stay, so the numbers in section 27 can still be checked.
 
 **The rule from now on.** When an idea is discarded, its result is written up here and in `docs/IDEAS.md` and reported to the user. Once the user has seen it, its config, runs and results are deleted. Its ledger rows always stay.

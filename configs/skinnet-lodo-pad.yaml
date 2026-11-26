@@ -1,6 +1,0 @@
-# Leave-one-dataset-out (DECISIONS.md, section 27): checkpoint 5's all-DDI recipe (idea T) with pad_ufes_20
-# left out of training and validation. A measurement, never a checkpoint.
-extends: skinnet-idea-t.yaml
-name: skinnet-lodo-pad
-data:
-  exclude_datasets: [pad_ufes_20]
