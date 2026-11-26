@@ -141,7 +141,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **What:** checkpoint 2's recipe with 2,907 SCIN phone photos of everyday conditions (eczema, contact dermatitis, hives, insect bites) added as not cancer, one per case.
 - **Compared on:** validation only, paired comparison with checkpoint 2.
 - **Result:** our validation split within-source AUC 0.882 → 0.902 (supported gain); MIDAS validation AUC 0.793 → 0.729 (supported loss).
-- **Outcome:** discarded at the first step, not scored on test sets. Easy not-cancer photos help at home and hurt on tumours. The photos stay on disk (`data/raw/scin`); a much smaller share of the draws is untested.
+- **Outcome:** discarded at the first step, not scored on test sets. Easy not-cancer photos help at home and hurt on tumours. The photos stay on disk (`data/raw/scin`); a much smaller share of the draws is untested. The SCIN loader in `data/extra.py` was removed on 26 Nov (DECISIONS.md, section 39; it is in git history before that date).
 
 ### N. Longer schedule
 
@@ -205,7 +205,7 @@ Letters were given when an idea was first listed, not when it was run, which is 
 - **Chosen** without the team when the list ran out (DECISIONS.md, section 21), so the GPU was not idle overnight.
 - **Compared on:** validation only, paired comparison with checkpoint 3.
 - **Result:** within-source AUC on our validation split 0.905 → 0.894, a supported loss; MIDAS validation 0.818 → 0.815, flat.
-- **Outcome:** discarded at the first step (15 Nov), not scored on test sets. MILK10k's gain came from having new centres' photos, not from how often they are drawn.
+- **Outcome:** discarded at the first step (15 Nov), not scored on test sets. MILK10k's gain came from having new centres' photos, not from how often they are drawn. The sampling option it used (`train.dataset_weight`) was removed on 26 Nov (DECISIONS.md, section 39; it is in git history before that date).
 ### S. Asan and Hallym clinical photos
 
 - **What:** checkpoint 3's recipe with 5,000 biopsied clinical photos from two Korean hospitals added (2,500 cancers, 2,500 benign growths), about a fifth of the draws. Published only as 99 x 99 pixel thumbnails, so they are blurred when scaled up to 224.

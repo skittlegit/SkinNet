@@ -35,13 +35,11 @@ def class_weights(counts: np.ndarray, weighting: str) -> np.ndarray:
     return w / (w * pi).sum()
 
 
-def sample_weights(df: pd.DataFrame, mode: str, label_col: str,
-                   dataset_weight: dict | None = None) -> np.ndarray | None:
+def sample_weights(df: pd.DataFrame, mode: str, label_col: str) -> np.ndarray | None:
     """Per-image sampling weights for training (mean 1), or None for one plain pass per epoch.
 
     source_class: inside each dataset, cancer and not cancer are drawn equally often, so the
-    kind of photo no longer predicts the class. A dataset keeps its share of the draws, times
-    `dataset_weight[dataset]` if given (e.g. {milk10k: 2} draws MILK10k twice as often)."""
+    kind of photo no longer predicts the class. A dataset keeps its share of the draws."""
     if mode == "none":
         return None
     if mode != "source_class":
@@ -50,10 +48,6 @@ def sample_weights(df: pd.DataFrame, mode: str, label_col: str,
     for _, cell in df.groupby(["dataset", label_col]):
         in_dataset = df["dataset"] == cell["dataset"].iloc[0]
         w[cell.index] = in_dataset.sum() / df.loc[in_dataset, label_col].nunique() / len(cell)
-    for name, factor in (dataset_weight or {}).items():
-        if not (df["dataset"] == name).any():
-            raise ValueError(f"train.dataset_weight names a dataset not in training: {name!r}")
-        w[(df["dataset"] == name).to_numpy()] *= factor
     return w / w.mean()
 
 
@@ -124,8 +118,6 @@ def train(cfg: dict) -> dict:
     for key in ("layer_decay", "head_epochs"):   # PanDerm's options, in skittlegit/PanDerm since section 31
         if t.get(key):
             raise ValueError(f"train.{key} is for PanDerm's ViTs (skittlegit/PanDerm)")
-    if cfg["model"].get("init"):   # idea L's start from self-supervised weights, removed 23 Nov 2026 (section 28)
-        raise ValueError("model.init is no longer supported: idea L's pretraining was removed (DECISIONS.md, section 28)")
     runs.set_seed(cfg["seed"])
     rdir = runs.run_dir(cfg)
     rdir.mkdir(parents=True, exist_ok=True)
@@ -139,18 +131,13 @@ def train(cfg: dict) -> dict:
         extra = load_extra(cfg["data"]["extra_train"], cfg["data"]["label_col"], runs.classes_of(cfg))
         train_df = pd.concat([train_df, extra[train_df.columns.intersection(extra.columns)]], ignore_index=True)
     val_df = runs.labelled(runs.split_rows(manifest, cfg["data"]["val_splits"]), cfg)
-    excl = cfg["data"].get("exclude_datasets") or []   # leave-one-dataset-out: kept out of training and validation
-    if excl:
-        train_df = train_df[~train_df["dataset"].isin(excl)]
-        val_df = val_df[~val_df["dataset"].isin(excl)]
-        print(f"[{cfg['name']} s{cfg['seed']}] datasets left out: {excl}")
     label_col = cfg["data"]["label_col"]
     counts = train_df[label_col].value_counts().reindex(classes, fill_value=0).to_numpy(float)
     if (counts == 0).any():
         raise ValueError(f"empty class in training data: {dict(zip(classes, counts))}")
     weights = class_weights(counts, t["class_weighting"])
     train_df = train_df.reset_index(drop=True)
-    sampling = sample_weights(train_df, t.get("sampling", "none"), label_col, t.get("dataset_weight"))
+    sampling = sample_weights(train_df, t.get("sampling", "none"), label_col)
     if sampling is not None and t["class_weighting"] != "none":
         raise ValueError("train.sampling already balances the classes: set train.class_weighting to none")
     select_metric = t.get("select_metric", "auc")
@@ -163,8 +150,6 @@ def train(cfg: dict) -> dict:
     # Scored every epoch for the record only (history.csv): they never pick the epoch or stop training.
     watch = list(cfg["eval"].get("watch_splits") or [])
     watch_df = runs.labelled(runs.split_rows(manifest, watch), cfg) if watch else val_df.iloc[:0]
-    if excl:
-        watch_df = watch_df[~watch_df["dataset"].isin(excl)]
     watch_split = watch_df["split"].to_numpy()
     n_val = len(val_df)
 

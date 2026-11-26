@@ -1,22 +1,16 @@
 """Training-only extra data, kept outside the frozen manifest.
 
-    python -m skincancer.data.extra scin
+    python -m skincancer.data.extra milk10k
 
 Writes data/extra/<name>.csv in the manifest's columns with split = "train_extra". The
 manifest, the groups and every validation / test split stay untouched, so models trained
 with and without the extra data are scored on exactly the same images. A config opts in
-with `data.extra_train: [scin]`. Extra images that near-duplicate any validation or test
+with `data.extra_train: [milk10k]`. Extra images that near-duplicate any validation or test
 image (same thresholds as data/dedup.py) are dropped.
 
 Derm7pt (Kawahara et al., IEEE JBHI 2019; CC BY-NC-ND 4.0, never shown in figures): one
 clinical (non-dermoscopic) photo per case from an Italian dermoscopy atlas. Mostly nevi and
 melanomas, some BCC, no SCC. It records no skin type.
-
-SCIN (Ward et al., JAMA Netw Open 2024; images contributed by the public through Google
-Search): phone photos of everyday skin conditions with a dermatologists' differential and
-no biopsy. Used as not cancer only: one photo per case, and a case is left out if any
-cancer, pre-cancer or uncertain growth appears anywhere in its differential.
-    python -m skincancer.data.extra scin --download    # fetch the tables and photos first
 
 MILK10k (ISIC collection 425, MILK study team, CC BY-NC 4.0; idea Q): clinical close-ups of
 biopsied lesions from five centres. Only histopathology-confirmed lesions are used.
@@ -36,8 +30,6 @@ marked as biopsied are used, and a fixed subsample of 2,500 cancers and 2,500 no
 from __future__ import annotations
 
 import argparse
-import ast
-import re
 from pathlib import Path
 
 import numpy as np
@@ -74,76 +66,6 @@ def derm7pt_rows(root: Path) -> pd.DataFrame:
         "acral|palm|sole", case=False)
     df["patient_id"] = ids
     return df
-
-
-SCIN_URL = "https://storage.googleapis.com/dx-scin-public-data/"
-SCIN_NOT_SAFE = re.compile(
-    "carcinoma|scc|melanoma|cancer|lymphoma|sarcoma|metasta|leukemia|paget|neoplasm|atypical nevus|"
-    "actinic keratosis|lymphomatoid|arsenical|porokeratosis|histiocytosis|keratoacanthoma|bowen|"
-    "mycosis fungoides|remove from labeling", re.I)
-
-
-def scin_table(root: Path) -> pd.DataFrame:
-    d = root / "scin"
-    cases = pd.read_csv(d / "scin_cases.csv", dtype={"case_id": str})
-    labels = pd.read_csv(d / "scin_labels.csv", dtype={"case_id": str})
-    t = cases.merge(labels, on="case_id")
-    t["conditions"] = t["weighted_skin_condition_label"].map(lambda s: ast.literal_eval(s) if isinstance(s, str) else {})
-    return t
-
-
-def scin_rows(root: Path) -> pd.DataFrame:
-    t = scin_table(root)
-    top = t["conditions"].map(lambda c: max(c, key=c.get) if c else "")
-    safe = t["conditions"].map(lambda c: bool(c) and not any(SCIN_NOT_SAFE.search(k) for k in c))
-    ids = "scin_" + t["case_id"].str.lstrip("-")
-    df = pd.DataFrame({
-        "image_id": ids, "group_id": ids, "dataset": "scin",
-        "path": "scin/images/" + t["image_1_path"].astype(str).str.rsplit("/", n=1).str[-1],
-        "diagnosis": top, "label_4class": "exclude",
-        "label_fine": np.where(safe, "non_tumour", "unlabelled"),
-    })
-    df["label_binary"] = np.where(safe, 0.0, np.nan)   # ungraded, or a cancer somewhere in the differential
-    df["label_cancer"] = df["label_binary"].map({0.0: "not_cancer"})
-    df["fst"] = np.nan
-    df["fst_bucket"] = np.nan
-    df["site"] = np.nan
-    df["is_acral"] = False
-    df["patient_id"] = ids
-    return df
-
-
-def scin_download(root: Path, workers: int = 16) -> None:
-    """Fetch the two tables, then the first photo of every usable case (about 1.2 MB each)."""
-    from concurrent.futures import ThreadPoolExecutor
-    import socket
-    from urllib.request import urlretrieve
-    socket.setdefaulttimeout(60)   # a stalled connection fails and is fetched by the next run
-    d = root / "scin"
-    (d / "images").mkdir(parents=True, exist_ok=True)
-    for f in ("scin_cases.csv", "scin_labels.csv"):
-        if not (d / f).exists():
-            urlretrieve(SCIN_URL + "dataset/" + f, d / f)
-    rows = scin_rows(root)
-    todo = [p for p in rows.loc[rows["label_binary"].notna(), "path"] if not (root / p).exists()]
-    print(f"{len(todo)} photos to fetch", flush=True)
-
-    def get(p: str) -> bool:
-        tmp = root / (p + ".part")
-        try:
-            urlretrieve(SCIN_URL + "dataset/images/" + p.rsplit("/", 1)[-1], tmp)
-            tmp.replace(root / p)
-            return True
-        except Exception as e:   # reported below; a second run fetches what is missing
-            print("failed", p, e, flush=True)
-            return False
-
-    with ThreadPoolExecutor(workers) as ex:
-        done = 0
-        for i, ok in enumerate(ex.map(get, todo), 1):
-            done += ok
-            if i % 200 == 0 or i == len(todo):
-                print(f"{i}/{len(todo)} tried, {done} fetched", flush=True)
 
 
 MILK_API = "https://api.isic-archive.com/api/v2/images/search/?collections=425&limit=100"   # ISIC collection 425
@@ -523,7 +445,7 @@ def drop_eval_duplicates(extra: pd.DataFrame, manifest: pd.DataFrame, root: Path
 
 def build(name: str, cfg: dict, check_duplicates: bool = True) -> pd.DataFrame:
     root = Path(cfg["data_root"])
-    df = {"derm7pt": derm7pt_rows, "scin": scin_rows, "milk10k": milk10k_rows, "isic2019": isic2019_rows,
+    df = {"derm7pt": derm7pt_rows, "milk10k": milk10k_rows, "isic2019": isic2019_rows,
           "asan": asan_rows}[name](root)
     df["exclude_reason"] = pd.Series(np.nan, index=df.index, dtype=object)
     df.loc[df["label_binary"].isna(), "exclude_reason"] = "no_cancer_label"
@@ -547,13 +469,13 @@ def load_extra(names: list[str], label_col: str, classes: list[str], extra_dir: 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("name", choices=["derm7pt", "scin", "milk10k", "isic2019", "asan", "hiba", "mednode", "mcrsl"])
-    ap.add_argument("--download", action="store_true", help="scin, milk10k, isic2019, asan, hiba, mednode, mcrsl: fetch the tables and photos, then stop")
+    ap.add_argument("name", choices=["derm7pt", "milk10k", "isic2019", "asan", "hiba", "mednode", "mcrsl"])
+    ap.add_argument("--download", action="store_true", help="milk10k, isic2019, asan, hiba, mednode, mcrsl: fetch the tables and photos, then stop")
     ap.add_argument("--data-config", default="configs/data.yaml")
     args = ap.parse_args(argv)
     cfg = load_data_config(args.data_config)
     if args.download:
-        return {"scin": scin_download, "milk10k": milk10k_download, "isic2019": isic2019_download,
+        return {"milk10k": milk10k_download, "isic2019": isic2019_download,
                 "asan": asan_download, "hiba": hiba_download, "mednode": mednode_download,
                 "mcrsl": mcrsl_download}[args.name](Path(cfg["data_root"]))
     df = build(args.name, cfg)

@@ -39,7 +39,7 @@ def _scores(exp_dir: Path, split: str, ids=None):
 
 def compare(a: str, b: str, split: str, manifest: pd.DataFrame, runs_dir="runs", n_boot: int = 2000, seed: int = 0,
             datasets=None, positives: str | None = None) -> list[dict]:
-    """datasets: score only the images from these sources (e.g. the one a leave-one-dataset-out model left out).
+    """datasets: score only the images from these sources (e.g. one source of a mixed test split).
     positives: keep only the cancers whose diagnosis matches this regular expression (case ignored);
     every non-cancer stays."""
     ids, sa = _scores(exp_dir(a, runs_dir), split)

@@ -44,6 +44,7 @@ File and folder names in a section are as they were when it was written. The lay
 - [36. Discarded ideas' files deleted; the rule from now on (26 Nov 2026)](#36-discarded-ideas-files-deleted-the-rule-from-now-on-26-nov-2026)
 - [37. Checkpoints renumbered: old 2 and 3 merged (26 Nov 2026)](#37-checkpoints-renumbered-old-2-and-3-merged-26-nov-2026)
 - [38. Cleanup: checkpoint 2's first step, idea T, ideas Z and AA, and the leave-one-out tables deleted (26 Nov 2026)](#38-cleanup-checkpoint-2s-first-step-idea-t-ideas-z-and-aa-and-the-leave-one-out-tables-deleted-26-nov-2026)
+- [39. Code of deleted experiments removed (26 Nov 2026)](#39-code-of-deleted-experiments-removed-26-nov-2026)
 
 ## 1. Fresh start (12 Nov 2026)
 
@@ -1540,3 +1541,13 @@ AB and AC are kept on disk for the user; neither is adopted.
 - the code for MixStyle and mixup/CutMix (`regularize.py`) and its tests. It is off unless a config turns it on.
 
 **Z and AA are cancelled, not run.** Z's seed 0 had finished and seed 1 stopped at epoch 27 of 60 (section 35); AA never started. Neither has a result. If a style-mixing or mixup idea is wanted later, it is written fresh against the current checkpoint, `skinnet-c5`, with a new letter and its rule written before it trains.
+
+## 39. Code of deleted experiments removed (26 Nov 2026)
+
+**Decided by the user (26 Nov).** Code that only served deleted or discarded experiments is removed. No kept config uses any of it.
+- **`data.exclude_datasets`** in `train.py`: the leave-one-dataset-out option of section 27. Its runs and tables went in sections 36 and 38.
+- **`train.dataset_weight`** in `train.py` (`sample_weights`): the per-dataset sampling weight of idea R (section 21). Balanced drawing inside each dataset (`train.sampling: source_class`) stays. Its test keeps the balanced-drawing checks; only the `dataset_weight` checks are removed.
+- **The SCIN loaders** in `data/extra.py` (`scin_table`, `scin_rows`, `scin_download` and the `scin` choice of its command line): idea I (section 13). The SCIN photos stay on disk (`data/raw/scin`), and so does the local table `data/extra/scin.csv`.
+- **The `model.init` guard** in `train.py`: it only raised an error for idea L's removed pretraining (section 28).
+
+The code is in git history before this commit.
