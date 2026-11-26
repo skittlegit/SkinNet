@@ -1035,7 +1035,7 @@ Step 1 fails on `val` alone (a little lower, not supported). Scored once on the 
 - **Not run yet, the user's call:** a ViT-L from scratch on 18,350 photos throws away the 2.1 million pretraining images that make PanDerm what it is. Large ViTs trained from scratch do poorly even on 1.3 million ImageNet photos. It would take about 1–2 days for one seed.
 - **Split:** changing it would mean rebuilding every split and retraining every model to stay comparable.
 
-**Outcome (22 Nov, scored once; `results/compare_ext_22nov.txt`).** AUC; paired differences are b minus a with 95% intervals over bootstrap resamples of groups.
+**Outcome (22 Nov, scored once; the comparison output is kept outside the repository, in `skincancer/backups/skinnet_compare_ext_22nov.txt`).** AUC; paired differences are b minus a with 95% intervals over bootstrap resamples of groups.
 
 | Split | Ckpt 3 | Ckpt 4 | T | PanDerm ckpt 1 | PanDerm ckpt 2 | PG |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -1520,7 +1520,7 @@ AB and AC are kept on disk for the user; neither is adopted.
 
 - **Renamed everywhere:** configs, run, result and weight folders (and the names inside their saved configs and summaries), the 156 ledger rows that name them, the git tags, the scripts' default reference, and every section of this file. Each config resolves exactly as before (checked config by config).
 - **PanDerm's old checkpoints keep their numbers:** "PanDerm checkpoint 1 / 2" in sections 24 to 30 are unchanged.
-- **Not renamed:** commit messages, run logs and `results/compare_ext_22nov.txt`, which keep the numbers of their day. Read them with the table above.
+- **Not renamed:** commit messages, run logs and the 22 Nov comparison output of section 27 (`skincancer/backups/skinnet_compare_ext_22nov.txt`), which keep the numbers of their day. Read them with the table above.
 
 ## 38. Cleanup: checkpoint 2's first step, idea T, ideas Z and AA, and the leave-one-out tables deleted (26 Nov 2026)
 
